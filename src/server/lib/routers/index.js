@@ -1,10 +1,16 @@
 const { Router } = require('express');
-const client = require('./client');
+const client = require('../client');
 const logger = require('winston');
 
-const router = new Router();
+const main = new Router();
 
-router.use((req, res, next) => {
+main.get('/', (req, res) => {
+  res.render('index');
+});
+
+const api = new Router();
+
+api.use((req, res, next) => {
   if (req.query.key !== process.env.AUTH_KEY) {
     res.status(401).end('Invalid auth key!');
     return;
@@ -12,7 +18,7 @@ router.use((req, res, next) => {
   next();
 });
 
-router.get('/event/on', (req, res) => {
+api.get('/event/on', (req, res) => {
   const { device } = req.query;
 
   logger.debug('/event/on device:', device);
@@ -21,7 +27,7 @@ router.get('/event/on', (req, res) => {
   res.end();
 });
 
-router.get('/event/off', (req, res) => {
+api.get('/event/off', (req, res) => {
   const { device } = req.query;
 
   logger.debug('/event/off device:', device);
@@ -30,4 +36,5 @@ router.get('/event/off', (req, res) => {
   res.end();
 });
 
-module.exports = router;
+exports.main = main;
+exports.api = api;
