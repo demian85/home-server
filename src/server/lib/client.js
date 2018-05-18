@@ -164,29 +164,29 @@ async function updateCustomReport() {
 
   let customReport = { temperature, humidity, realFeel };
 
-    try {
-      const weather = await getWeather();
-      const temperatureDiff = Math.round((temperature - weather.main.temp) * 10) / 10;
-      const humidityDiff = Math.round(humidity - weather.main.humidity);
-      const tempDiffStr = temperatureDiff > 0 ? `+${temperatureDiff}` : String(temperatureDiff);
-      const humDiffStr = humidityDiff > 0 ? `+${humidityDiff}` : String(humidityDiff);
+  try {
+    const weather = await getWeather();
+    const temperatureDiff = Math.round((temperature - weather.main.temp) * 10) / 10;
+    const humidityDiff = Math.round(humidity - weather.main.humidity);
+    const tempDiffStr = temperatureDiff > 0 ? `+${temperatureDiff}` : String(temperatureDiff);
+    const humDiffStr = humidityDiff > 0 ? `+${humidityDiff}` : String(humidityDiff);
 
-      Object.assign(customReport, {
-        temperatureDiff: tempDiffStr,
-        humidityDiff: humDiffStr,
-        weather: {
-          temperature: weather.main.temp,
-          humidity: weather.main.humidity,
-          windSpeedKmh: Math.round(weather.wind.speed / 1000 * 3600)
-        }
-      });
-    } catch (err) {
-      logger.error('error parsing weather report');
-    }
+    Object.assign(customReport, {
+      temperatureDiff: tempDiffStr,
+      humidityDiff: humDiffStr,
+      weather: {
+        temperature: weather.main.temp,
+        humidity: weather.main.humidity,
+        windSpeedKmh: Math.round(weather.wind.speed / 1000 * 3600)
+      }
+    });
+  } catch (err) {
+    logger.error('error parsing weather report');
+  }
 
-    logger.info('custom report:', customReport);
+  logger.info('custom report:', customReport);
 
-    client.publish(topics._report, JSON.stringify(customReport), { retain: true });
+  client.publish(topics._report, JSON.stringify(customReport), { retain: true });
 }
 
 module.exports = client;
