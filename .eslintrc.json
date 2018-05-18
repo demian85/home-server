@@ -2,17 +2,8 @@
   "root": true,
   "extends": "eslint:recommended",
   "env": {
-    "node": true,
-    "es6": true,
-    "browser": true
+    "es6": true
   },
-  "parserOptions": {
-    "ecmaVersion": 8,
-    "sourceType": "module",
-    "ecmaFeatures": {
-      "jsx": true
-    }
-},
   "rules": {
     "no-console": "off"
   }
