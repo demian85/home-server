@@ -123,6 +123,8 @@ function getRoomRealFeel() {
 }
 
 function updateHeaterState() {
+  logger.debug(`updateHeaterState()`);
+
   const { triggerTemp, state: heaterState, lastStateChange, temperature, humidity } = state.heater;
 
   if (temperature === null || humidity === null) {
@@ -133,28 +135,30 @@ function updateHeaterState() {
   // calculate how long the device has been in this state
   const stateDurationSecs = Math.round((Date.now() - lastStateChange) / 1000);
 
-  logger.debug(`last state change was ${stateDurationSecs} seconds ago`);
+  logger.info(`last state change was ${stateDurationSecs} seconds ago`);
 
   // keep the same state for at least 15 minutes
   if (stateDurationSecs < state.heater.minStateDurationSecs) {
-    logger.debug(`skipping...`);
+    logger.info(`skipping...`);
     return;
   }
 
   const realFeel = getRoomRealFeel();
 
   if (heaterState === 'off' && realFeel < triggerTemp) {
-    logger.debug('turning device on...');
+    logger.info('turning device on...');
     client.publish(topics.heater.cmnd, '1');
   }
 
   if (heaterState === 'on' && realFeel >= (triggerTemp + 0.5)) {
-    logger.debug('turning device off...');
+    logger.info('turning device off...');
     client.publish(topics.heater.cmnd, '0');
   }
 }
 
 async function updateCustomReport() {
+  logger.debug(`updateCustomReport()`);
+
   const { temperature, humidity } = state.heater;
   const realFeel = getRoomRealFeel();
 
