@@ -8,7 +8,7 @@ db.on("error", function (err) {
   logger.error(err);
 });
 
-exports.set = promisify(db.set);
-exports.mset = promisify(db.mset);
-exports.get = promisify(db.get);
+exports.set = promisify(db.set.bind(db));
+exports.mset = promisify(db.mset.bind(db));
+exports.get = promisify(db.get.bind(db));
 
