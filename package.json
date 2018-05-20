@@ -17,12 +17,14 @@
   "author": "Demian Rodriguez",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "dotenv": "^5.0.1",
     "express": "^4.16.3",
     "feels": "^3.0.0",
     "mqtt": "^2.17.0",
     "react": "^16.3.2",
     "react-router": "^4.2.0",
+    "redis": "^2.8.0",
     "request": "^2.85.0",
     "winston": "^2.4.2"
   },

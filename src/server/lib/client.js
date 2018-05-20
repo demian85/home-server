@@ -2,6 +2,7 @@ const mqtt = require('mqtt');
 const Feels = require('feels');
 const logger = require('winston');
 const { getWeather } = require('./weather');
+const db = require('./db');
 
 const state = {
   heater: {
@@ -47,7 +48,7 @@ const parsers = {
     updateHeaterState();
   },
 
-  [topics.heater.sensor]: (payload) => {
+  [topics.heater.sensor]: async (payload) => {
     const data = JSON.parse(payload);
     const temperature = parseFloat(data.SI7021.Temperature) || null;
     const humidity = parseFloat(data.SI7021.Humidity) || null;
@@ -59,7 +60,7 @@ const parsers = {
       updateHeaterState();
     }
 
-    updateCustomReport();
+    await updateCustomReport();
   },
 
   [topics.heater.stat]: (payload) => {
@@ -89,7 +90,7 @@ function initMqttClient() {
 
       if (parser) {
         try {
-          parser(payload);
+          await parser(payload);
         } catch (err) {
           logger.error('unexpected error parsing payload for topic', topic);
           throw err;
@@ -162,7 +163,7 @@ async function updateCustomReport() {
   const { temperature, humidity } = state.heater;
   const realFeel = getRoomRealFeel();
 
-  let customReport = { temperature, humidity, realFeel };
+  let report = { temperature, humidity, realFeel };
 
   try {
     const weather = await getWeather();
@@ -171,7 +172,7 @@ async function updateCustomReport() {
     const tempDiffStr = temperatureDiff > 0 ? `+${temperatureDiff}` : String(temperatureDiff);
     const humDiffStr = humidityDiff > 0 ? `+${humidityDiff}` : String(humidityDiff);
 
-    Object.assign(customReport, {
+    Object.assign(report, {
       temperatureDiff: tempDiffStr,
       humidityDiff: humDiffStr,
       weather: {
@@ -184,9 +185,11 @@ async function updateCustomReport() {
     logger.error('error parsing weather report');
   }
 
-  logger.info('custom report:', customReport);
+  logger.info('custom report:', report);
 
-  client.publish(topics._report, JSON.stringify(customReport), { retain: true });
+  await db.set('report', JSON.stringify(report));
+
+  client.publish(topics._report, JSON.stringify(report), { retain: true });
 }
 
 module.exports = client;
