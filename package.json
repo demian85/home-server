@@ -9,6 +9,7 @@
   },
   "scripts": {
     "start": "node src/index.js",
+    "dev": "webpack -p",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -24,11 +25,20 @@
     "mqtt": "^2.17.0",
     "react": "^16.3.2",
     "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
     "redis": "^2.8.0",
     "request": "^2.85.0",
     "winston": "^2.4.2"
   },
   "devDependencies": {
-    "eslint": "^4.19.1"
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "css-loader": "^0.28.11",
+    "eslint": "^4.19.1",
+    "style-loader": "^0.21.0",
+    "webpack": "^4.8.3",
+    "webpack-cli": "^2.1.3"
   }
 }
