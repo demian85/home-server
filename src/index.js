@@ -5,7 +5,8 @@ const express = require('express');
 
 logger.level = process.env.LOG_LEVEL || 'info';
 
-const { main, api } = require('./server/lib/routers');
+const main = require('./server/lib/routers/main');
+const api = require('./server/lib/routers/api');
 
 const app = express();
 app.use(main);

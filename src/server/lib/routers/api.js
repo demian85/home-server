@@ -1,14 +1,9 @@
 const logger = require('winston');
 const bodyParser = require('body-parser');
 const { Router } = require('express');
-const db = require('../db');
-const client = require('../client');
-
-const main = new Router();
-
-main.get('/', (req, res) => {
-  res.render('index');
-});
+const db = require('./db');
+const client = require('./mqtt/client');
+const { updateHeaterState } = require('../main');
 
 const api = new Router();
 
@@ -41,6 +36,7 @@ api.get('/event/off', (req, res) => {
 });
 
 api.get('/report', async (req, res) => {
+  logger.debug('/report');
   try {
     const report = await db.get('report');
     res.json(report);
@@ -52,15 +48,11 @@ api.get('/report', async (req, res) => {
   res.end();
 });
 
-api.post('/config', async (req, res) => {
-  const { triggerTemp, presence, auto } = req.body.config;
-
+api.get('/config', async (req, res) => {
+  logger.debug('GET /config');
   try {
-    await db.mset([
-      'triggerTemp', triggerTemp,
-      'presence', presence,
-      'auto', auto,
-    ]);
+    const config = await db.getHeaterConfig();
+    res.json(config);
   } catch (err) {
     logger.error(err);
     res.status(500);
@@ -69,5 +61,24 @@ api.post('/config', async (req, res) => {
   res.end();
 });
 
-exports.main = main;
-exports.api = api;
+api.post('/config', async (req, res) => {
+  const config = req.body.config || {};
+
+  logger.debug('POST /config', config);
+
+  const triggerTemp = Number(config.triggerTemp);
+  const minStateDurationSecs = Number(config.minStateDurationSecs);
+  const autoMode = Boolean(config.autoMode);
+
+  try {
+    await db.set('heater.config', JSON.stringify({ triggerTemp, minStateDurationSecs, autoMode }));
+    await updateHeaterState(client);
+  } catch (err) {
+    logger.error(err);
+    res.status(500);
+  }
+
+  res.end();
+});
+
+module.exports = api;
