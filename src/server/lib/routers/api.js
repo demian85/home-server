@@ -1,8 +1,8 @@
 const logger = require('winston');
 const bodyParser = require('body-parser');
 const { Router } = require('express');
-const db = require('./db');
-const client = require('./mqtt/client');
+const db = require('../db');
+const client = require('../mqtt/client');
 const { updateHeaterState } = require('../main');
 
 const api = new Router();
