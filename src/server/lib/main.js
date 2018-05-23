@@ -58,7 +58,7 @@ async function updateReport() {
   logger.debug(`updateCustomReport()`);
 
   const { temperature, humidity } = await db.getHeaterSensor();
-  const realFeel = getRoomRealFeel();
+  const realFeel = await getRoomRealFeel();
 
   let report = { temperature, humidity, realFeel };
 
