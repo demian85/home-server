@@ -1,14 +1,16 @@
 const request = require('request');
 const logger = require('winston');
+const db = require('./db');
 
-const updateInterval = 1000 * 60 * 15; // 15 minutes
-
-let weather;
-let lastUpdate = null;
+const expireTimeoutSecs = 60 * 15; // 15 minutes
 
 async function getWeather() {
-  if ((Date.now() - lastUpdate) < updateInterval) {
-    return weather;
+
+  const value = await db.get('weather');
+
+  if (value) {
+    logger.debug('returning cached weather report');
+    return JSON.parse(value);
   }
 
   return new Promise((resolve, reject) => {
@@ -16,15 +18,16 @@ async function getWeather() {
 
     logger.info('requesting weather...', url);
 
-    request.get({ url, json: true}, (err, res, body) => {
+    request.get({ url, json: true}, async (err, res, body) => {
       if (err) {
         return reject(err);
       }
 
-      logger.debug('main weather report:', body.main);
+      const weather = body;
 
-      weather = body;
-      lastUpdate = Date.now();
+      logger.debug('saving weather report:', weather);
+
+      await db.set('weather', JSON.stringify(weather), 'EX', expireTimeoutSecs);
 
       resolve(weather);
     });

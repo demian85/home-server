@@ -4,7 +4,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const dev = process.env.NODE_ENV === 'development';
 
-const clientConfig = {
+const config = {
   mode: process.env.NODE_ENV || 'development',
   entry: './src/client/index.js',
   devtool: dev ? 'cheap-module-eval-source-map' : 'source-map',
@@ -54,4 +54,4 @@ const clientConfig = {
   ],
 };
 
-module.exports = clientConfig;
+module.exports = config;

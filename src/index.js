@@ -17,7 +17,7 @@ app.engine('html', require('hbs').__express);
 
 app.use(compression());
 app.use(express.static(`${process.cwd()}/dist/client/public`));
-app.use(main);
 app.use('/api', api);
+app.use(main);
 
 app.listen(process.env.PORT);

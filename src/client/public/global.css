@@ -6,22 +6,35 @@
 
 html {
   height: 100%;
-  font-size: 12px;
+  font-size: 16px;
 }
 
 body {
   height: 100%;
-  background: #525659;
-  font-size: 12px;
+  background: #fff;
+  color: #666;
+  font-size: 16px;
+  font-family: "Open Sans", sans-serif;
   cursor: default;
 }
 
 #root {
   height: 100%;
+  margin: 1rem;
 }
 
 h1, h2, h3, h4 {
   font-size: 1rem;
   font-weight: normal;
+}
+
+input, select, label {
+  font-size: 16px;
+  font-family: "Open Sans", sans-serif;
+  vertical-align: middle;
+}
+
+label > span {
+  vertical-align: middle;
 }
 

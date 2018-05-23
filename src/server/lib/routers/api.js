@@ -50,6 +50,7 @@ api.get('/report', async (req, res) => {
 
 api.get('/config', async (req, res) => {
   logger.debug('GET /config');
+
   try {
     const config = await db.getHeaterConfig();
     res.json(config);
@@ -73,6 +74,7 @@ api.post('/config', async (req, res) => {
   try {
     await db.set('heater.config', JSON.stringify({ triggerTemp, minStateDurationSecs, autoMode }));
     await updateHeaterState(client);
+    res.json(await db.getHeaterConfig());
   } catch (err) {
     logger.error(err);
     res.status(500);
