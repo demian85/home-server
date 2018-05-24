@@ -1,5 +1,5 @@
 module.exports = {
   triggerTemp: 22,
   minStateDurationSecs: 60 * 15,
-  autoMode: false,
+  autoMode: true,
 };
