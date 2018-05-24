@@ -12,7 +12,12 @@ export default class App extends React.Component {
     this.state = {
       loaded: false,
       config: null,
-      report: null
+      report: null,
+      status: {
+        lamp: 'on',
+        patio: 'off',
+        heater: 'off',
+      },
     };
   }
 
@@ -28,7 +33,7 @@ export default class App extends React.Component {
         {
           !this.state.loaded && <div>Loading...</div>
         }
-        <Route exact path="/" render={() => <Home report={this.state.report} />} />
+        <Route exact path="/" render={() => <Home report={this.state.report} status={this.state.status} />} />
         <Route path="/config" render={() => <Config value={this.state.config} />} />
       </section>
     );

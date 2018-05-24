@@ -1,7 +1,6 @@
 .root {
   display: flex;
   flex-flow: column nowrap;
-  text-align: center;
 }
 
 footer {
@@ -19,5 +18,14 @@ footer a:hover {
 }
 
 .dashboard {
-  margin: 1em auto;
+  margin: 1em;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-gap: 1em;
+}
+
+.dashboard > div {
+  border: 1px solid #666;
+  border-radius: 6px;
 }

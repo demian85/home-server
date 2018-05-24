@@ -19,8 +19,9 @@ body {
 }
 
 #root {
+  max-width: 768px;
   height: 100%;
-  margin: 1rem;
+  margin: 1rem auto;
 }
 
 h1, h2, h3, h4 {

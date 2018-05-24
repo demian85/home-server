@@ -1,0 +1,13 @@
+.root {
+  text-align: center;
+}
+
+.root h3 {
+  font-weight: bold;
+}
+
+.root input[type=checkbox] {
+  width: 30px;
+  height: 30px;
+  vertical-align: middle;
+}
