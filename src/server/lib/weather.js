@@ -25,9 +25,9 @@ async function getWeather() {
 
       const weather = body;
 
-      logger.debug('saving weather report:', weather);
-
       await db.set('weather', JSON.stringify(weather), 'EX', expireTimeoutSecs);
+
+      logger.debug('saved updated weather report');
 
       resolve(weather);
     });
