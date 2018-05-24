@@ -10,7 +10,8 @@ const api = new Router();
 api.use(bodyParser.json());
 
 api.use((req, res, next) => {
-  if (req.query.key !== process.env.AUTH_KEY) {
+  const key = process.env.AUTH_KEY;
+  if (req.query.key !== key && req.headers.authorization !== key) {
     res.status(401).end('Invalid auth key!');
     return;
   }
@@ -38,7 +39,7 @@ api.get('/event/off', (req, res) => {
 api.get('/report', async (req, res) => {
   logger.debug('/report');
   try {
-    const report = await db.get('report');
+    const report = await db.getReport();
     res.json(report);
   } catch (err) {
     logger.error(err);

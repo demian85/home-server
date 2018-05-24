@@ -34,4 +34,9 @@ exports.getHeaterConfig = async () => {
   return defaultConfig;
 };
 
+exports.getReport = async () => {
+  const value = await exports.get('report');
+  return value && JSON.parse(value);
+};
+
 

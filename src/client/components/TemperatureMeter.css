@@ -1,0 +1,7 @@
+.root {
+  font-weight: bold;
+  padding: 1em 2em 1em 1em;
+  border: 1px solid #ccc;
+  background: url(/images/thermometer.svg) no-repeat right center;
+  background-size: 24px;
+}

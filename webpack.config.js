@@ -46,6 +46,10 @@ const config = {
       {
         from: path.resolve(__dirname, 'src/client/public/global.css'),
         to: path.resolve(__dirname, 'dist/client/public/global.css')
+      },
+      {
+        from: path.resolve(__dirname, 'src/client/public/images'),
+        to: path.resolve(__dirname, 'dist/client/public/images')
       }
     ]),
     new MiniCssExtractPlugin({

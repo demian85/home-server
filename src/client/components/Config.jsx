@@ -6,11 +6,8 @@ export default class Config extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      autoMode: false,
-      triggerTemp: 22,
-      minStateDurationSecs: 60 * 15,
-    };
+
+    this.state = props.value || {};
   }
 
   async onChange() {
@@ -23,16 +20,6 @@ export default class Config extends React.Component {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': localStorage.jwt || ''
-      }
-    });
-    console.log(res);
-  }
-
-  async onLoad() {
-    const res = await fetch('/api/config', {
-      method: 'GET',
-      headers: {
         'Authorization': localStorage.jwt || ''
       }
     });

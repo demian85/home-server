@@ -48,7 +48,7 @@ async function updateHeaterState(mqttClient) {
     mqttClient.publish(topics.heater.cmnd, '1');
   }
 
-  if (state.on && realFeel >= (triggerTemp + 0.3)) {
+  if (state.on && realFeel >= (triggerTemp + 0.5)) {
     logger.info('turning device off...');
     mqttClient.publish(topics.heater.cmnd, '0');
   }
