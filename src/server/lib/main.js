@@ -24,7 +24,7 @@ async function updateHeaterState(mqttClient) {
   const state = await db.getHeaterState();
 
   if (!sensor || !state) {
-    logger.error(`bad sensor readings! skipping...`);
+    logger.error(`not enough data! skipping...`);
     return;
   }
 
