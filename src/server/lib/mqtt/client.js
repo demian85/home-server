@@ -43,7 +43,6 @@ function initMqttClient() {
     logger.info('mqtt client connected');
 
     client.subscribe([
-      'config/#',
       topics.heater.stat,
       topics.heater.sensor
     ]);
