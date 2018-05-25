@@ -28,7 +28,15 @@ async function updateHeaterState(mqttClient) {
     return;
   }
 
-  const { triggerTemp, minStateDurationSecs } = await db.getHeaterConfig();
+  const heaterConfig = await db.getHeaterConfig();
+  const { defaultTriggerTemp, tempGroups, minStateDurationSecs } = heaterConfig;
+
+  const currentHour = new Date().getHours();
+  const currentTempGroup = tempGroups.find(entry => currentHour >= entry.start && currentHour < entry.end);
+
+  const triggerTemp = currentTempGroup ? currentTempGroup.temp : defaultTriggerTemp;
+
+  logger.debug('Trigger temp:', triggerTemp);
 
   // calculate how long the device has been in this state
   const stateDurationSecs = Math.round((Date.now() - state.lastChange) / 1000);

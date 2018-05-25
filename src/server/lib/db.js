@@ -32,7 +32,7 @@ exports.getHeaterConfig = async () => {
   // const value = await exports.get('heater.config');
   // return value && JSON.parse(value);
   logger.debug('current config:', defaultConfig);
-  return defaultConfig;
+  return defaultConfig.heater;
 };
 
 exports.getReport = async () => {
