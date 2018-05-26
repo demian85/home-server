@@ -36,7 +36,7 @@ async function updateHeaterState(mqttClient) {
 
   const triggerTemp = currentTempGroup ? currentTempGroup.temp : defaultTriggerTemp;
 
-  logger.debug('Trigger temp:', triggerTemp);
+  logger.debug('trigger temp:', triggerTemp);
 
   // calculate how long the device has been in this state
   const stateDurationSecs = Math.round((Date.now() - state.lastChange) / 1000);
@@ -62,7 +62,7 @@ async function updateHeaterState(mqttClient) {
   }
 }
 
-async function updateReport(mqttClient) {
+async function updateReport() {
   logger.debug(`updateCustomReport()`);
 
   const { temperature, humidity } = await db.getHeaterSensor();
@@ -91,8 +91,6 @@ async function updateReport(mqttClient) {
   }
 
   logger.info('custom report:', report);
-
-  mqttClient.publish(topics.report, JSON.stringify(report), { retain: true });
 
   await db.set('report', JSON.stringify(report));
 }

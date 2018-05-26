@@ -10,7 +10,7 @@ const parsers = {
     const autoMode = String(payload) === '1';
     const defaultConfig = await db.getHeaterConfig();
     const newConfig = Object.assign(defaultConfig, { autoMode });
-    logger.debug('Config change:', newConfig);
+    logger.debug('config change:', newConfig);
     await db.set('heater.config', JSON.stringify(newConfig));
   },
 
