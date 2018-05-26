@@ -6,6 +6,14 @@ const { updateHeaterState, updateReport } = require('../main');
 
 const parsers = {
 
+  'config/heater_auto': async (payload) => {
+    const autoMode = String(payload) === '1';
+    const defaultConfig = await db.getHeaterConfig();
+    const newConfig = Object.assign(defaultConfig, { autoMode });
+    logger.debug('Config change:', newConfig);
+    await db.set('heater.config', JSON.stringify(newConfig));
+  },
+
   [topics.heater.stat]: async (payload) => {
     const on = String(payload).toLowerCase() === 'on';
     const lastChange = Date.now();
@@ -28,7 +36,7 @@ const parsers = {
       await updateHeaterState(client);
     }
 
-    await updateReport();
+    await updateReport(client);
   }
 };
 
@@ -43,24 +51,25 @@ function initMqttClient() {
     logger.info('mqtt client connected');
 
     client.subscribe([
+      'config/heater_auto',
       topics.heater.stat,
       topics.heater.sensor
     ]);
+  });
 
-    client.on('message', async (topic, payload) => {
-      logger.debug(`message for topic "${topic}":`, payload.toString());
+  client.on('message', async (topic, payload) => {
+    logger.debug(`message for topic "${topic}":`, payload.toString());
 
-      const parser = parsers[topic];
+    const parser = parsers[topic];
 
-      if (parser) {
-        try {
-          await parser(payload);
-        } catch (err) {
-          logger.error('unexpected error parsing payload for topic', topic);
-          throw err;
-        }
+    if (parser) {
+      try {
+        await parser(payload);
+      } catch (err) {
+        logger.error('unexpected error parsing payload for topic', topic);
+        throw err;
       }
-    });
+    }
   });
 
   client.on('close', () => {
