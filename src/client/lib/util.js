@@ -3,7 +3,7 @@ export async function apiCall(path, method = 'GET', body = {}) {
     method,
     body,
     headers: {
-      Authorization: localStorage.jwt
+      Authorization: API_KEY
     }
   });
   return res.body && res.json();
