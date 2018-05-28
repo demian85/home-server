@@ -8,8 +8,5 @@
     "ecmaFeatures": {
       "jsx": true
     }
-  },
-  "globals": {
-    "API_KEY": true
   }
 }
