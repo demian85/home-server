@@ -25,6 +25,9 @@ export default function Home(props) {
       <pre>
         { JSON.stringify(props.report, null, '  ') }
       </pre>
+      <pre>
+        { JSON.stringify(props.config, null, '  ') }
+      </pre>
     </section>
   );
 }

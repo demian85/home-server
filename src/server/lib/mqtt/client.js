@@ -45,7 +45,7 @@ const client = initMqttClient();
 function initMqttClient() {
   logger.info('initializing mqtt client...');
 
-  const client = mqtt.connect(process.env.CLOUDMQTT_URL);
+  const client = mqtt.connect(process.env.MQTT_URL);
 
   client.on('connect', () => {
     logger.info('mqtt client connected');

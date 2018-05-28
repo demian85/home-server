@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import { apiCall } from '../lib/util';
+import { initMqttClient } from '../lib/mqtt';
 
 import Home from './Home';
 import Config from './Config';
@@ -9,22 +9,35 @@ export default class App extends React.Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
       loaded: false,
+      mqttClient: null,
       config: null,
       report: null,
+      auth: null,
       status: {
-        lamp: 'on',
-        patio: 'off',
-        heater: 'off',
+        'sonoff-lamp': 'on',
+        'sonoff-patio': 'off',
+        'sonoff-heater': 'off',
       },
     };
   }
 
   async componentDidMount() {
-    const report = await apiCall('/report');
-    const config = await apiCall('/config');
-    this.setState({ loaded: true, report, config });
+    const res = await fetch('/init', { credentials: 'include' });
+    const { report, config, auth } = await res.json();
+    localStorage.apiKey = auth.apiKey;
+    localStorage.mqttUrl = auth.mqttUrl;
+    const mqttClient = initMqttClient();
+
+    this.setState({
+      loaded: true,
+      mqttClient,
+      report,
+      config,
+      auth
+    });
   }
 
   render() {

@@ -68,12 +68,13 @@ api.post('/config', async (req, res) => {
 
   logger.debug('POST /config', config);
 
-  const triggerTemp = Number(config.triggerTemp);
+  const defaultTriggerTemp = Number(config.defaultTriggerTemp);
   const minStateDurationSecs = Number(config.minStateDurationSecs);
   const autoMode = Boolean(config.autoMode);
+  const tempGroups = config.tempGroups || [];
 
   try {
-    await db.set('heater.config', JSON.stringify({ triggerTemp, minStateDurationSecs, autoMode }));
+    await db.set('heater.config', JSON.stringify({ defaultTriggerTemp, minStateDurationSecs, autoMode, tempGroups }));
     await updateHeaterState(client);
     res.json(await db.getHeaterConfig());
   } catch (err) {
