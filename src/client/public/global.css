@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700|Oswald:500');
+
+* {
+  margin: 0;
+}
+
+html {
+  height: 100%;
+  font-size: 16px;
+}
+
+body {
+  height: 100%;
+  background: #fff;
+  color: #666;
+  font-size: 16px;
+  font-family: "Open Sans", sans-serif;
+  cursor: default;
+}
+
+#root {
+  max-width: 768px;
+  height: 100%;
+}
+
+h1, h2, h3, h4 {
+  font-size: 1rem;
+  font-weight: normal;
+}
+
+input, select, label {
+  font-size: 16px;
+  font-family: "Open Sans", sans-serif;
+  vertical-align: middle;
+}
+
+label > span {
+  vertical-align: middle;
+}
+

@@ -5,11 +5,13 @@
   "main": "index.js",
   "engines": {
     "node": "10.x",
-    "yarn": "1.6.x"
+    "yarn": ">=1.6"
   },
   "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "postinstall": "npm run build",
+    "build": "webpack -p",
+    "start": "node src/index.js",
+    "dev": "webpack --progress --watch"
   },
   "keywords": [
     "sonoff"
@@ -17,14 +19,37 @@
   "author": "Demian Rodriguez",
   "license": "ISC",
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "body-parser": "^1.18.3",
+    "compression": "^1.7.2",
     "dotenv": "^5.0.1",
     "express": "^4.16.3",
+    "express-basic-auth": "^1.1.5",
     "feels": "^3.0.0",
+    "hbs": "^4.0.1",
     "mqtt": "^2.17.0",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
+    "redis": "^2.8.0",
     "request": "^2.85.0",
     "winston": "^2.4.2"
   },
   "devDependencies": {
-    "eslint": "^4.19.1"
+    "@types/react": "^16.3.16",
+    "@types/react-dom": "^16.0.6",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "copy-webpack-plugin": "^4.5.1",
+    "css-loader": "^0.28.11",
+    "eslint": "^4.19.1",
+    "eslint-plugin-react": "^7.8.2",
+    "mini-css-extract-plugin": "^0.4.0",
+    "style-loader": "^0.21.0",
+    "webpack": "^4.8.3",
+    "webpack-cli": "^2.1.3"
   }
 }
