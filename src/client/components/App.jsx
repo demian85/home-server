@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import { initMqttClient } from '../lib/mqtt';
+import { store, Provider } from '../lib/store';
+import { initMqttClient, topics } from '../lib/mqtt';
 
 import Home from './Home';
 import Config from './Config';
@@ -9,47 +10,62 @@ export default class App extends React.Component {
 
   constructor(props) {
     super(props);
-
-    this.state = {
-      loaded: false,
-      mqttClient: null,
-      config: null,
-      report: null,
-      auth: null,
-      status: {
-        'sonoff-lamp': 'on',
-        'sonoff-patio': 'off',
-        'sonoff-heater': 'off',
-      },
-    };
+    this.state = store;
   }
 
   async componentDidMount() {
     const res = await fetch('/init', { credentials: 'include' });
     const { report, config, auth } = await res.json();
+
     localStorage.apiKey = auth.apiKey;
     localStorage.mqttUrl = auth.mqttUrl;
-    const mqttClient = initMqttClient();
+
+    const mqttClient = initMqttClient({
+      'stat/sonoff-heater/POWER': this.buildStatusParser('heater'),
+      'stat/sonoff-lamp/POWER': this.buildStatusParser('lamp'),
+      'stat/sonoff-patio/POWER': this.buildStatusParser('patio'),
+      'stat/_report': (payload) => {
+        const report = JSON.parse(payload);
+        this.setState({ report });
+      }
+    });
 
     this.setState({
       loaded: true,
       mqttClient,
       report,
       config,
-      auth
+      auth,
+      cmnd(device, value) {
+        console.log('cmnd', device, value);
+        mqttClient.publish(`cmnd/${device}/power`, value);
+      }
     });
   }
 
   render() {
     return (
       <section>
-        {
-          !this.state.loaded && <div>Loading...</div>
-        }
-        <Route exact path="/" render={() => <Home report={this.state.report} status={this.state.status} />} />
-        <Route path="/config" render={() => <Config value={this.state.config} />} />
+        <Provider value={this.state}>
+          {
+            !this.state.loaded && <div>Loading...</div>
+          }
+          <Route exact path="/" render={() => <Home />} />
+          <Route path="/config" render={() => <Config />} />
+        </Provider>
       </section>
     );
+  }
+
+  buildStatusParser(deviceName) {
+    return (payload) => {
+      const status = String(payload).toLowerCase();
+      this.setState((state) => {
+        return {
+          status: Object.assign({}, state.status, { [deviceName]: status })
+        };
+      });
+    };
   }
 
 }

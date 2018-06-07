@@ -9,7 +9,12 @@ export default function Switcher(props) {
       <h3>{ props.title }</h3>
       <span>{ props.value } ˚C</span>
       <div>
-        <input type="checkbox" value={props.value} checked={checked} />
+        <input
+          type="checkbox"
+          value="on"
+          checked={checked}
+          onChange={(e) => props.onChange(String(e.target.checked ? 1 : 0))}
+          />
       </div>
     </div>
   );

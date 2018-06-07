@@ -1,6 +1,7 @@
 import mqtt from 'mqtt';
 
-const topics = {
+export const topics = {
+  report: 'stat/_report',
   heater: {
     stat: `stat/sonoff-heater/POWER`,
     cmnd: `cmnd/sonoff-heater/power`,
@@ -8,16 +9,7 @@ const topics = {
   }
 };
 
-const parsers = {
-
-  [topics.heater.stat]: async (payload) => {
-    const on = String(payload).toLowerCase() === 'on';
-    const lastChange = Date.now();
-    console.debug('state data:', { on, lastChange });
-  }
-};
-
-export function initMqttClient() {
+export function initMqttClient(parsers = {}) {
   console.info('initializing mqtt client...');
 
   const client = mqtt.connect(localStorage.mqttUrl);
@@ -26,7 +18,8 @@ export function initMqttClient() {
     console.info('mqtt client connected');
 
     client.subscribe([
-      topics.heater.stat,
+      topics.report,
+      'stat/#',
       topics.heater.sensor
     ]);
   });

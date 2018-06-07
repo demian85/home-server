@@ -1,5 +1,5 @@
 const topics = {
-  _report: 'report',
+  report: 'stat/_report',
   heater: {
     stat: `stat/sonoff-heater/POWER`,
     cmnd: `cmnd/sonoff-heater/power`,

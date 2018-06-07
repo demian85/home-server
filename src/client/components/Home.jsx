@@ -3,31 +3,41 @@ import React from 'react';
 import TemperatureMeter from './TemperatureMeter';
 import HumidityMeter from './HumidityMeter';
 import Switcher from './Switcher';
+import { Consumer } from '../lib/store';
 
 import styles from './Home.css';
 
-export default function Home(props) {
+export default function Home() {
   return (
-    <section className={styles.root}>
-      <h1>Hello Home!</h1>
-      <a href="/config">Config</a>
+    <Consumer>
       {
-        props.report &&
-        <section className={styles.dashboard}>
-          <Switcher title="Lámpara de sal" value={props.status.lamp} />
-          <Switcher title="Patio" value={props.status.patio} />
-          <Switcher title="Estufa" value={props.status.heater} />
-          <TemperatureMeter title="Temperatura" value={props.report.temperature} />
-          <TemperatureMeter title="Sensación térmica" value={props.report.realFeel} />
-          <HumidityMeter title="Humedad" value={props.report.humidity} />
-        </section>
+        (state) => (
+            <section className={styles.root}>
+              <div className={styles.header}>
+                <h1>Home Dashboard</h1>
+                <a href="/config">Config</a>
+              </div>
+              {
+                state.report &&
+                <section className={styles.dashboard}>
+                  <Switcher title="Lámpara de sal" value={state.status.lamp} onChange={(value) => state.cmnd('sonoff-lamp', value)} />
+                  <Switcher title="Patio" value={state.status.patio} onChange={(value) => state.cmnd('sonoff-patio', value)}  />
+                  <Switcher title="Estufa" value={state.status.heater} onChange={(value) => state.cmnd('sonoff-heater', value)}  />
+                  <TemperatureMeter title="Temperatura" value={state.report.temperature} />
+                  <TemperatureMeter title="Sensación térmica" value={state.report.realFeel} />
+                  <HumidityMeter title="Humedad" value={state.report.humidity} />
+                </section>
+              }
+              <pre>
+                { JSON.stringify(state.report, null, '  ') }
+              </pre>
+              <pre>
+                { JSON.stringify(state.config, null, '  ') }
+              </pre>
+            </section>
+          )
       }
-      <pre>
-        { JSON.stringify(props.report, null, '  ') }
-      </pre>
-      <pre>
-        { JSON.stringify(props.config, null, '  ') }
-      </pre>
-    </section>
+    </Consumer>
+
   );
 }

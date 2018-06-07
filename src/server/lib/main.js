@@ -62,7 +62,7 @@ async function updateHeaterState(mqttClient) {
   }
 }
 
-async function updateReport() {
+async function updateReport(mqttClient) {
   logger.debug(`updateCustomReport()`);
 
   const { temperature, humidity } = await db.getHeaterSensor();
@@ -91,6 +91,8 @@ async function updateReport() {
   }
 
   logger.info('custom report:', report);
+
+  mqttClient.publish(topics.report, JSON.stringify(report));
 
   await db.set('report', JSON.stringify(report));
 }

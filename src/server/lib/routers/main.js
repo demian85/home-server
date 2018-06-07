@@ -12,7 +12,7 @@ main.use(basicAuth({
 
 main.get('/init', async (req, res) => {
   const auth = {
-    apiKey: process.env.API_KEY,
+    apiKey: process.env.AUTH_KEY,
     mqttUrl: process.env.MQTT_WS_URL,
   };
 
