@@ -18,7 +18,10 @@ I currently own 3 Sonoff devices. 2 of them control light bulbs and a Sonoff TH1
 
 ## How it works
 Sonoff devices connect to the broker and report their state while also subscribing to a control topic, allowing you to switch them on/off.
+
 Server runs in the background and monitors the sensor topic for the Sonoff TH16. Some logic decides when to switch the heater on/off.
-The UI is built on React and consists of simple components that allows the user to switch the appliances on/off.
-Sensor and weather data is also visible.
+
+The UI is built on React and consists of simple components that allow the user to switch the appliances on/off and view sensor, weather and derived data, like the "real feel" temperature.
+
+The browser keeps a connection to the MQTT broker using Websockets.
 
