@@ -26,10 +26,14 @@ footer a:hover {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 100px 1fr;
-  grid-gap: 1em;
+  grid-gap: 0.5em;
 }
 
 .dashboard > div {
   border: 1px solid #666;
   border-radius: 6px;
+}
+
+.configEditor {
+  font-family: monospace;
 }

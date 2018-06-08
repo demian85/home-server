@@ -1,22 +1,18 @@
 import React from 'react';
+import Checkbox from './Checkbox';
 
 import styles from './Switcher.css';
 
 export default function Switcher(props) {
-  const checked = props.value === 'on';
+  const isOn = props.value === 'on';
   return (
     <div className={styles.root}>
       <h3>{ props.title }</h3>
-      <span>{ props.value }</span>
-      <div>
-        <input
-          type="checkbox"
-          value="on"
-          checked={checked}
-          className={styles.switch}
-          onChange={(e) => props.onChange(String(e.target.checked ? 1 : 0))}
-          />
-      </div>
+      <Checkbox
+        label={props.value.toUpperCase()}
+        value={isOn}
+        onChange={(value) => props.onChange(value ? 1 : 0)}
+      />
     </div>
   );
 }

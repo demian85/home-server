@@ -1,4 +1,6 @@
 .root {
+  display: flex;
+  flex-flow: column nowrap;
   flex: 0 0 auto;
   font-weight: bold;
   padding: 1em;
@@ -8,6 +10,7 @@
 }
 
 .range {
+  flex: 1 1 auto;
   width: 50px;
   height: 100px;
   margin: auto;
