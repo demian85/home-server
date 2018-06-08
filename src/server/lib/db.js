@@ -31,9 +31,7 @@ exports.getHeaterState = async () => {
 exports.getHeaterConfig = async () => {
   const value = await exports.get('heater.config');
   const obj = value && JSON.parse(value);
-  const config = Object.assign(defaultConfig, obj || {});
-  logger.debug('current config:', config);
-  return config;
+  return Object.assign(defaultConfig, obj || {});
 };
 
 exports.getReport = async () => {
