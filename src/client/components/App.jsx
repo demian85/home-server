@@ -31,6 +31,10 @@ export default class App extends React.Component {
         });
         const newConfig = await res.json();
         this.setState({ config: newConfig });
+      },
+      manualHeaterSwitch: async (value) => {
+        await this.state.cmnd('sonoff-heater', value ? '1' : '0');
+        await this.state.setConfig('autoMode', false);
       }
     });
   }
@@ -52,8 +56,11 @@ export default class App extends React.Component {
       }
     });
 
+    mqttClient.once('connect', () => {
+      this.setState({ loaded: true });
+    });
+
     this.setState({
-      loaded: true,
       mqttClient,
       report,
       config,

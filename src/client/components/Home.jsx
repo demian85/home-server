@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import TemperatureMeter from './TemperatureMeter';
 import HumidityMeter from './HumidityMeter';
@@ -16,7 +17,7 @@ export default function Home() {
             <section className={styles.root}>
               <div className={styles.header}>
                 <h1>Home Dashboard</h1>
-                <a href="/config">Config</a>
+                <Link to="/config">Config</Link>
               </div>
               {
                 state.report &&
@@ -33,7 +34,7 @@ export default function Home() {
                     title="Estufa"
                     switchValue={state.status.heater}
                     autoValue={state.config.autoMode}
-                    onChange={(value) => state.cmnd('sonoff-heater', value ? '1' : '0')}
+                    onChange={(value) => state.manualHeaterSwitch(value)}
                     onAutoChange={(value) => state.setConfig('autoMode', value)}
                   />
                   <TemperatureMeter title="Temperatura" value={state.report.temperature} />
