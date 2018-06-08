@@ -3,6 +3,7 @@ import React from 'react';
 import TemperatureMeter from './TemperatureMeter';
 import HumidityMeter from './HumidityMeter';
 import Switcher from './Switcher';
+import AutoSwitcher from './AutoSwitcher';
 import { Consumer } from '../lib/store';
 
 import styles from './Home.css';
@@ -20,9 +21,21 @@ export default function Home() {
               {
                 state.report &&
                 <section className={styles.dashboard}>
-                  <Switcher title="Lámpara de sal" value={state.status.lamp} onChange={(value) => state.cmnd('sonoff-lamp', value)} />
-                  <Switcher title="Patio" value={state.status.patio} onChange={(value) => state.cmnd('sonoff-patio', value)}  />
-                  <Switcher title="Estufa" value={state.status.heater} onChange={(value) => state.cmnd('sonoff-heater', value)}  />
+                  <Switcher
+                    title="Lámpara de sal"
+                    value={state.status.lamp}
+                    onChange={(value) => state.cmnd('sonoff-lamp', value)} />
+                  <Switcher
+                    title="Patio"
+                    value={state.status.patio}
+                    onChange={(value) => state.cmnd('sonoff-patio', value)} />
+                  <AutoSwitcher
+                    title="Estufa"
+                    switchValue={state.status.heater}
+                    autoValue={state.config.autoMode}
+                    onChange={(value) => state.cmnd('sonoff-heater', value ? '1' : '0')}
+                    onAutoChange={(value) => state.setConfig('autoMode', value)}
+                  />
                   <TemperatureMeter title="Temperatura" value={state.report.temperature} />
                   <TemperatureMeter title="Sensación térmica" value={state.report.realFeel} />
                   <HumidityMeter title="Humedad" value={state.report.humidity} />

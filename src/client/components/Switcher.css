@@ -4,9 +4,10 @@
 
 .root h3 {
   font-weight: bold;
+  margin-bottom: 0.5em;
 }
 
-.root input[type=checkbox] {
+.switch {
   width: 30px;
   height: 30px;
   vertical-align: middle;

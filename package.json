@@ -2,7 +2,7 @@
   "name": "sonoff-server",
   "version": "0.1.0",
   "description": "Sonoff server",
-  "main": "index.js",
+  "main": "src/index.js",
   "engines": {
     "node": "10.x",
     "yarn": ">=1.6"

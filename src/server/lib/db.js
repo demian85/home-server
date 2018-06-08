@@ -18,6 +18,8 @@ exports.mset = promisify(db.mset.bind(db));
 exports.get = promisify(db.get.bind(db));
 exports.mget = promisify(db.mget.bind(db));
 
+exports.end = promisify(db.end.bind(db));
+
 exports.getHeaterSensor = async () => {
   const value = await exports.get('heater.sensor');
   return value && JSON.parse(value);
@@ -30,8 +32,9 @@ exports.getHeaterState = async () => {
 
 exports.getHeaterConfig = async () => {
   const value = await exports.get('heater.config');
-  const obj = value && JSON.parse(value);
-  return Object.assign(defaultConfig, obj || {});
+  const config = value && JSON.parse(value);
+  if (!config) return defaultConfig;
+  return Object.assign({}, defaultConfig, config || {});
 };
 
 exports.getReport = async () => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import { store, Provider } from '../lib/store';
-import { initMqttClient, topics } from '../lib/mqtt';
+import { initMqttClient } from '../lib/mqtt';
 
 import Home from './Home';
 import Config from './Config';
@@ -10,7 +10,29 @@ export default class App extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = store;
+
+    this.state = Object.assign({}, store, {
+      cmnd: async (device, value) => {
+        console.log('cmnd', device, value);
+        this.state.mqttClient.publish(`cmnd/${device}/power`, value);
+      },
+      setConfig: async (key, value) => {
+        console.log('setConfig', key, value);
+        const newValues = key ? { [key]: value } : {};
+        const body = JSON.stringify(Object.assign({}, this.state.config, newValues));
+        const res = await fetch('/api/config', {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: this.state.auth.apiKey
+          },
+          body
+        });
+        const newConfig = await res.json();
+        this.setState({ config: newConfig });
+      }
+    });
   }
 
   async componentDidMount() {
@@ -35,11 +57,7 @@ export default class App extends React.Component {
       mqttClient,
       report,
       config,
-      auth,
-      cmnd(device, value) {
-        console.log('cmnd', device, value);
-        mqttClient.publish(`cmnd/${device}/power`, value);
-      }
+      auth
     });
   }
 
