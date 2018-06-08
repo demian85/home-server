@@ -6,14 +6,6 @@ const { updateHeaterState, updateReport } = require('../main');
 
 const parsers = {
 
-  'config/heater_auto': async (payload) => {
-    const autoMode = String(payload) === '1';
-    const defaultConfig = await db.getHeaterConfig();
-    const newConfig = Object.assign(defaultConfig, { autoMode });
-    logger.debug('config change:', newConfig);
-    await db.set('heater.config', JSON.stringify(newConfig));
-  },
-
   [topics.heater.stat]: async (payload) => {
     const on = String(payload).toLowerCase() === 'on';
     const lastChange = Date.now();
@@ -51,7 +43,6 @@ function initMqttClient() {
     logger.info('mqtt client connected');
 
     client.subscribe([
-      'config/heater_auto',
       topics.heater.stat,
       topics.heater.sensor
     ]);
