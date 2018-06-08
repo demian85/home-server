@@ -2,11 +2,15 @@
   display: flex;
   flex-flow: column nowrap;
   flex: 0 0 auto;
-  font-weight: bold;
-  padding: 1em;
-  background: url(/images/humidity.svg) no-repeat right center;
-  background-size: 32px;
+  padding: 0.5em;
   text-align: center;
+}
+
+.header {
+  padding-left: calc(0.5em + 24px);
+  background: url(/images/humidity.svg) no-repeat left center;
+  background-size: 24px;
+  font-weight: bold;
 }
 
 .range {
