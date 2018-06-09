@@ -14,7 +14,7 @@ export default class App extends React.Component {
     this.state = Object.assign({}, store, {
       cmnd: async (device, value) => {
         console.log('cmnd', device, value);
-        this.state.mqttClient.publish(`cmnd/${device}/power`, value);
+        this.state.mqttClient.publish(`cmnd/${device}/power`, String(value));
       },
       setConfig: async (key, value) => {
         console.log('setConfig', key, value);

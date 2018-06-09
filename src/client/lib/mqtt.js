@@ -18,7 +18,6 @@ export function initMqttClient(parsers = {}) {
     console.info('mqtt client connected');
 
     client.subscribe([
-      topics.report,
       'stat/#',
       topics.heater.sensor
     ]);
