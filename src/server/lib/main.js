@@ -4,9 +4,7 @@ const { getWeather } = require('./weather');
 const db = require('./db');
 const topics = require('./mqtt/topics');
 
-async function getRoomRealFeel() {
-  const { temperature, humidity } = await db.getHeaterSensor();
-
+function getRealFeel(temperature, humidity) {
   const feelsLike = new Feels({
     temp: temperature,
     humidity,
@@ -49,7 +47,7 @@ async function updateHeaterState(mqttClient) {
     return;
   }
 
-  const realFeel = await getRoomRealFeel();
+  const realFeel = sensor.realFeel;
 
   if (!state.on && realFeel < triggerTemp) {
     logger.info('turning device on...');
@@ -65,21 +63,18 @@ async function updateHeaterState(mqttClient) {
 async function updateReport(mqttClient) {
   logger.debug(`updateCustomReport()`);
 
-  const { temperature, humidity } = await db.getHeaterSensor();
-  const realFeel = await getRoomRealFeel();
+  const heaterSensor = await db.getHeaterSensor();
+  const loungeSensor = await db.getSensorData('wemos1');
 
-  let report = { temperature, humidity, realFeel };
+  let report = {
+    room: heaterSensor,
+    lounge: loungeSensor
+  };
 
   try {
     const weather = await getWeather();
-    const temperatureDiff = Math.round((temperature - weather.main.temp) * 10) / 10;
-    const humidityDiff = Math.round(humidity - weather.main.humidity);
-    const tempDiffStr = temperatureDiff > 0 ? `+${temperatureDiff}` : String(temperatureDiff);
-    const humDiffStr = humidityDiff > 0 ? `+${humidityDiff}` : String(humidityDiff);
 
     Object.assign(report, {
-      temperatureDiff: tempDiffStr,
-      humidityDiff: humDiffStr,
       weather: {
         temperature: weather.main.temp,
         humidity: weather.main.humidity,
@@ -99,3 +94,4 @@ async function updateReport(mqttClient) {
 
 exports.updateHeaterState = updateHeaterState;
 exports.updateReport = updateReport;
+exports.getRealFeel = getRealFeel;

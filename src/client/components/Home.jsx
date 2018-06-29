@@ -37,9 +37,13 @@ export default function Home() {
                     onChange={(value) => state.manualHeaterSwitch(value)}
                     onAutoChange={(value) => state.setConfig('autoMode', value)}
                   />
-                  <TemperatureMeter title="Temp" value={state.report.temperature} />
-                  <TemperatureMeter title="Real Feel" value={state.report.realFeel} />
-                  <HumidityMeter title="Hum" value={state.report.humidity} />
+                  <TemperatureMeter title="Temp" value={state.report.room.temperature} />
+                  <TemperatureMeter title="Real Feel" value={state.report.room.realFeel} />
+                  <HumidityMeter title="Hum" value={state.report.room.humidity} />
+
+                  <TemperatureMeter title="Living Temp." value={state.report.lounge.temperature} />
+                  <TemperatureMeter title="Living Real Feel" value={state.report.lounge.realFeel} />
+                  <HumidityMeter title="Living Hum." value={state.report.lounge.humidity} />
                 </section>
               }
               <pre>

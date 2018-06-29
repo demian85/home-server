@@ -2,7 +2,7 @@ const mqtt = require('mqtt');
 const logger = require('winston');
 const topics = require('./topics');
 const db = require('../db');
-const { updateHeaterState, updateReport } = require('../main');
+const { updateHeaterState, updateReport, getRealFeel } = require('../main');
 
 const parsers = {
 
@@ -17,16 +17,30 @@ const parsers = {
     const data = JSON.parse(payload);
     const temperature = parseFloat(data.SI7021.Temperature) || null; // can't be 0, sorry!
     const humidity = parseFloat(data.SI7021.Humidity) || null; // 0% humidity would be nice!
+    const realFeel = getRealFeel(temperature, humidity);
 
     const { autoMode } = await db.getHeaterConfig();
 
-    logger.debug('Saving sensor data:', { temperature, humidity });
+    logger.debug('Saving sensor data:', { temperature, humidity, realFeel });
 
-    await db.set('heater.sensor', JSON.stringify({ temperature, humidity }));
+    await db.set('heater.sensor', JSON.stringify({ temperature, humidity, realFeel }));
 
     if (autoMode) {
       await updateHeaterState(client);
     }
+
+    await updateReport(client);
+  },
+
+  [topics.wemos1.sensor]: async (payload) => {
+    const data = JSON.parse(payload);
+    const temperature = parseFloat(data.AM2301.Temperature) || null;
+    const humidity = parseFloat(data.AM2301.Humidity) || null;
+    const realFeel = getRealFeel(temperature, humidity);
+
+    logger.debug('Saving sensor data:', { temperature, humidity, realFeel });
+
+    await db.set('wemos1.sensor', JSON.stringify({ temperature, humidity, realFeel }));
 
     await updateReport(client);
   }
@@ -44,7 +58,9 @@ function initMqttClient() {
 
     client.subscribe([
       topics.heater.stat,
-      topics.heater.sensor
+      topics.heater.sensor,
+      topics.wemos1.cmnd,
+      topics.wemos1.sensor,
     ]);
   });
 
