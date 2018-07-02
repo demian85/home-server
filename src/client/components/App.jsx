@@ -77,7 +77,7 @@ export default class App extends React.Component {
             !this.state.loaded && <div>Loading...</div>
           }
           <Route exact path="/" render={() => <Home />} />
-          <Route path="/config" render={() => <Config />} />
+          <Route path="/config" render={() => <Config value={this.state.config} />} />
         </Provider>
       </section>
     );

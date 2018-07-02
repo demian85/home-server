@@ -1,3 +1,11 @@
+.root {
+  padding: 1em;
+}
+
 .item {
   margin: 1em 0;
+}
+
+.range {
+  height: 2em;
 }

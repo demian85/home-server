@@ -7,7 +7,14 @@ export default class Config extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = props.value || {};
+    this.state = Object.assign({}, props.value || {});
+
+    this.ranges = [
+      React.createRef(),
+      React.createRef(),
+      React.createRef(),
+      React.createRef(),
+    ];
   }
 
   async onChange() {
@@ -16,6 +23,7 @@ export default class Config extends React.Component {
         autoMode: this.state.autoMode,
         triggerTemp: this.state.triggerTemp,
         minStateDurationSecs: this.state.minStateDurationSecs,
+        tempGroups: this.state.tempGroups,
       }),
       method: 'POST',
       headers: {
@@ -27,27 +35,27 @@ export default class Config extends React.Component {
   }
 
   render() {
+    const groups = this.state.tempGroups.map((item, k) => {
+      return (
+        <div key={k}>
+          <label>{item.start} - {item.end}:</label>
+          <input
+            className={styles.range}
+            type="range"
+            min="10"
+            max="30"
+            step="0.5"
+            value={item.temp}
+            ref={this.ranges[k]}
+            onChange={() => this.onChange()}
+          />
+        </div>
+      );
+    });
     return (
       <section className={styles.root}>
         <div className={styles.item}>
-          <label>
-            <input type="checkbox" ref={(src) => this.autoMode = src} value="1" onChange={() => this.onChange()} />
-            <span> Auto mode</span>
-          </label>
-        </div>
-        <div className={styles.item}>
-          <label>
-            <span>Trigger temp: </span>
-            <input
-              type="number"
-              min="10"
-              max="30"
-              step="0.1"
-              ref={(src) => this.triggerTemp = src}
-              value={this.state.triggerTemp}
-              onChange={() => this.setState({ triggerTemp: this.value })}
-            />
-          </label>
+          {groups}
         </div>
       </section>
     );
