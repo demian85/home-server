@@ -49,6 +49,7 @@ export default class App extends React.Component {
     const mqttClient = initMqttClient({
       'stat/sonoff-heater/POWER': this.buildStatusParser('heater'),
       'stat/sonoff-lamp/POWER': this.buildStatusParser('lamp'),
+      'stat/sonoff-desk-lamp/POWER': this.buildStatusParser('desk-lamp'),
       'stat/sonoff-patio/POWER': this.buildStatusParser('patio'),
       'stat/_report': (payload) => {
         const report = JSON.parse(payload);

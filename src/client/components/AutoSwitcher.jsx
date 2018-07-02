@@ -11,7 +11,7 @@ export default function AutoSwitcher(props) {
       <div className={styles.main}>
         <div>
           <Checkbox
-            label={props.switchValue.toUpperCase()}
+            label={String(props.switchValue).toUpperCase()}
             value={isOn}
             onChange={(value) => props.onChange(value)}
           />

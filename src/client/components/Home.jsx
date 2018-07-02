@@ -20,16 +20,20 @@ export default function Home() {
                 <Link to="/config">Config</Link>
               </div>
               {
-                state.report &&
+                state.report && state.status &&
                 <section className={styles.dashboard}>
+                  <Switcher
+                    title="Luz Escritorio"
+                    value={state.status['desk-lamp']}
+                    onChange={(value) => state.cmnd('sonoff-desk-lamp', value)} />
+                  <Switcher
+                    title="Luz Patio"
+                    value={state.status.patio}
+                    onChange={(value) => state.cmnd('sonoff-patio', value)} />
                   <Switcher
                     title="Lámpara de sal"
                     value={state.status.lamp}
                     onChange={(value) => state.cmnd('sonoff-lamp', value)} />
-                  <Switcher
-                    title="Patio"
-                    value={state.status.patio}
-                    onChange={(value) => state.cmnd('sonoff-patio', value)} />
                   <AutoSwitcher
                     title="Estufa"
                     switchValue={state.status.heater}

@@ -6,11 +6,7 @@ export const store = {
   config: null,
   report: null,
   auth: null,
-  status: {
-    lamp: 'off',
-    patio: 'off',
-    heater: 'off',
-  }
+  status: null,
 };
 
 export const { Provider, Consumer } = React.createContext(store);

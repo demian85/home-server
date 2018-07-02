@@ -19,7 +19,7 @@ export function initMqttClient(parsers = {}) {
 
     client.subscribe([
       'stat/#',
-      topics.heater.sensor
+      'tele/+/SENSOR',
     ]);
   });
 

@@ -9,7 +9,7 @@ export default function Switcher(props) {
     <div className={styles.root}>
       <h3>{ props.title }</h3>
       <Checkbox
-        label={props.value.toUpperCase()}
+        label={String(props.value).toUpperCase()}
         value={isOn}
         onChange={(value) => props.onChange(value ? 1 : 0)}
       />
