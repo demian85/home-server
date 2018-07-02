@@ -49,7 +49,9 @@ const parsers = {
   [topics.wemos1.result]: async (payload) => {
     const data = JSON.parse(payload);
     const hexCode = data && data.IrReceived && data.IrReceived.Data || null;
-    await ir.receive(hexCode);
+    if (hexCode) {
+      ir.receive(hexCode);
+    }
   }
 };
 
