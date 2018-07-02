@@ -9,6 +9,7 @@ const topics = {
     stat: `stat/wemos/POWER`,
     cmnd: `cmnd/wemos/POWER`,
     sensor: `tele/wemos/SENSOR`,
+    result: `tele/wemos/RESULT`,
   }
 };
 

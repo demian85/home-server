@@ -3,6 +3,7 @@ const logger = require('winston');
 const topics = require('./topics');
 const db = require('../db');
 const { updateHeaterState, updateReport, getRealFeel } = require('../main');
+const ir = require('../ir');
 
 const parsers = {
 
@@ -43,6 +44,12 @@ const parsers = {
     await db.set('wemos1.sensor', JSON.stringify({ temperature, humidity, realFeel }));
 
     await updateReport(client);
+  },
+
+  [topics.wemos1.result]: async (payload) => {
+    const data = JSON.parse(payload);
+    const hexCode = data && data.IrReceived && data.IrReceived.Data || null;
+    await ir.receive(client, hexCode);
   }
 };
 
@@ -61,6 +68,7 @@ function initMqttClient() {
       topics.heater.sensor,
       topics.wemos1.cmnd,
       topics.wemos1.sensor,
+      topics.wemos1.result,
     ]);
   });
 
