@@ -6,6 +6,8 @@ const compression = require('compression');
 
 logger.level = process.env.LOG_LEVEL || 'info';
 
+require('./server/lib/mqtt/init');
+
 const main = require('./server/lib/routers/main');
 const api = require('./server/lib/routers/api');
 

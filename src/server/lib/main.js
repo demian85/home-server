@@ -3,6 +3,7 @@ const logger = require('winston');
 const { getWeather } = require('./weather');
 const db = require('./db');
 const topics = require('./mqtt/topics');
+const mqttClient = require('./mqtt/client');
 
 function getRealFeel(temperature, humidity) {
   const feelsLike = new Feels({
@@ -15,7 +16,7 @@ function getRealFeel(temperature, humidity) {
   return Math.round(feelsLike * 10) / 10;
 }
 
-async function updateHeaterState(mqttClient) {
+async function updateHeaterState() {
   logger.debug(`updateHeaterState()`);
 
   const sensor = await db.getHeaterSensor();
@@ -60,7 +61,7 @@ async function updateHeaterState(mqttClient) {
   }
 }
 
-async function updateReport(mqttClient) {
+async function updateReport() {
   logger.debug(`updateCustomReport()`);
 
   const heaterSensor = await db.getHeaterSensor();
