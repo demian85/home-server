@@ -1,9 +1,9 @@
 .root {
-  display: flex;
-  flex-flow: column nowrap;
-  flex: 0 0 auto;
   padding: 0.5em;
-  text-align: center;
+}
+
+.chart {
+  height: 150px;
 }
 
 .header {
@@ -11,17 +11,4 @@
   background: url(/images/thermometer.svg) no-repeat left center;
   background-size: 24px;
   font-weight: bold;
-}
-
-.range {
-  flex: 1 1 auto;
-  width: 50px;
-  height: 100px;
-  margin: auto;
-  background-repeat: no-repeat;
-}
-
-.cover {
-  width: 100%;
-  background: white;
 }
