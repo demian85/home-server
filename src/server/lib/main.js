@@ -77,7 +77,7 @@ async function updateReport() {
 
     Object.assign(report, {
       weather: {
-        temperature: weather.main.temp,
+        temperature: Math.round(weather.main.temp * 10) / 10,
         humidity: weather.main.humidity,
         windSpeedKmh: Math.round(weather.wind.speed / 1000 * 3600)
       }
