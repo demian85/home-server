@@ -15,10 +15,6 @@ export default function Home() {
       {
         (state) => (
             <section className={styles.root}>
-              <div className={styles.header}>
-                <h1>Home Dashboard</h1>
-                <Link to="/config">Config</Link>
-              </div>
               {
                 state.report && state.status &&
                 <section className={styles.dashboard}>
@@ -48,12 +44,15 @@ export default function Home() {
                   <TemperatureMeter title="Living Temp." value={state.report.lounge.temperature} />
                   <TemperatureMeter title="Living Real Feel" value={state.report.lounge.realFeel} />
                   <HumidityMeter title="Living Hum." value={state.report.lounge.humidity} />
+
+                  <TemperatureMeter title="Outside Temp." value={state.report.weather.temperature} />
+                  <HumidityMeter title="Outside Hum." value={state.report.weather.humidity} />
                 </section>
               }
-              <pre>
-                { JSON.stringify(state.report, null, '  ') }
-              </pre>
-              <pre>
+              <div className={styles.footer}>
+                <Link to="/config">Config</Link>
+              </div>
+              <pre className={styles.configJson}>
                 { JSON.stringify(state.config, null, '  ') }
               </pre>
             </section>

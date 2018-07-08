@@ -3,22 +3,9 @@
   flex-flow: column nowrap;
 }
 
-.header {
+.footer {
+  margin: 1em 0;
   text-align: center;
-}
-
-footer {
-  margin: 2em;
-  font-size: 1.5em;
-  text-align: center;
-}
-
-footer a {
-  color: #fff;
-}
-
-footer a:hover {
-  color: #e9e9e9;
 }
 
 .dashboard {
@@ -36,4 +23,9 @@ footer a:hover {
 
 .configEditor {
   font-family: monospace;
+}
+
+.configJson {
+  margin-top: 1em;
+  font-size: 0.75em;
 }
