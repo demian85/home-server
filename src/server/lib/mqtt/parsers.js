@@ -26,7 +26,7 @@ const parsers = {
 
     await db.set('heater.sensor', JSON.stringify({ temperature, humidity, realFeel }));
 
-    if (autoMode) {
+    if (autoMode && process.env.NODE_ENV !== 'development') {
       await updateHeaterState();
     }
 
