@@ -56,9 +56,6 @@ export default function Home() {
               <div className={styles.footer}>
                 <Link to="/config">Config</Link>
               </div>
-              <pre className={styles.configJson}>
-                { JSON.stringify(state.config, null, '  ') }
-              </pre>
             </section>
           )
       }

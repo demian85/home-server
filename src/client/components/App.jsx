@@ -5,6 +5,7 @@ import { initMqttClient } from '../lib/mqtt';
 
 import Home from './Home';
 import Config from './Config';
+import Loader from './Loader';
 
 export default class App extends React.Component {
 
@@ -73,7 +74,7 @@ export default class App extends React.Component {
     return (
       <Provider value={this.state}>
         {
-          !this.state.loaded && <div>Loading...</div>
+          !this.state.loaded && <Loader />
         }
         <Route exact path="/" render={() => <Home />} />
         <Route path="/config" render={() => <Config />} />
