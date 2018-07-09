@@ -1,3 +1,22 @@
 {
-
+  "name": "Sonoff Home Assistant",
+  "short_name": "sonoff-home-assistant",
+  "start_url": ".",
+  "lang": "en-us",
+  "display": "standalone",
+  "background_color": "#fff",
+  "description": "Smart Home manager",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "images/smartphone-128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "images/smartphone-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
 }
