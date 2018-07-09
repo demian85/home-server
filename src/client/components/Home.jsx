@@ -1,10 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 import TemperatureMeter from './TemperatureMeter';
 import HumidityMeter from './HumidityMeter';
 import Switcher from './Switcher';
 import AutoSwitcher from './AutoSwitcher';
+import Wind from './Wind';
+import Group from './Group';
 import { Consumer } from '../lib/store';
 
 import styles from './Home.css';
@@ -14,50 +16,55 @@ export default function Home() {
     <Consumer>
       {
         (state) => (
-            <section className={styles.root}>
-              {
-                state.report && state.status &&
-                <section className={styles.dashboard}>
+          <section className={styles.root}>
+            {
+              state.report && state.status &&
+              <section className={styles.dashboard}>
+
+                <Group place="bedroom">
                   <Switcher
-                    title="Escritorio"
-                    value={state.status['desk-lamp']}
-                    icon="desk-lamp.svg"
-                    onChange={(value) => state.cmnd('sonoff-desk-lamp', value)} />
-                  <Switcher
-                    title="Patio"
-                    value={state.status.patio}
-                    icon="patio-lamp.svg"
-                    onChange={(value) => state.cmnd('sonoff-patio', value)} />
-                  <Switcher
-                    title="Velador"
                     value={state.status.lamp}
                     icon="room-lamp.svg"
                     onChange={(value) => state.cmnd('sonoff-lamp', value)} />
                   <AutoSwitcher
-                    title="Estufa"
                     switchValue={state.status.heater}
                     autoValue={state.config.autoMode}
                     icon="heater.svg"
                     onChange={(value) => state.manualHeaterSwitch(value)}
                     onAutoChange={(value) => state.setConfig('autoMode', value)}
                   />
-                  <TemperatureMeter title="Temp" value={state.report.room.temperature} place="bedroom" />
-                  <TemperatureMeter title="Real Feel" value={state.report.room.realFeel} place="bedroom" />
-                  <HumidityMeter title="Hum" value={state.report.room.humidity} place="bedroom" />
+                  <TemperatureMeter title="Temp" value={state.report.room.temperature} />
+                  <TemperatureMeter title="Real Feel" value={state.report.room.realFeel} />
+                  <HumidityMeter title="Hum" value={state.report.room.humidity} />
+                </Group>
 
-                  <TemperatureMeter title="Temp" value={state.report.lounge.temperature} place="lounge" />
-                  <TemperatureMeter title="Real Feel" value={state.report.lounge.realFeel} place="lounge" />
-                  <HumidityMeter title="Hum" value={state.report.lounge.humidity} place="lounge" />
+                <Group place="lounge">
+                  <Switcher
+                    value={state.status['desk-lamp']}
+                    icon="desk-lamp.svg"
+                    onChange={(value) => state.cmnd('sonoff-desk-lamp', value)} />
+                  <TemperatureMeter title="Temp" value={state.report.lounge.temperature} />
+                  <TemperatureMeter title="Real Feel" value={state.report.lounge.realFeel} />
+                  <HumidityMeter title="Hum" value={state.report.lounge.humidity} />
+                </Group>
 
-                  <TemperatureMeter title="Temp" value={state.report.weather.temperature} place="outside" />
-                  <HumidityMeter title="Hum" value={state.report.weather.humidity} place="outside"/>
-                </section>
-              }
-              <div className={styles.footer}>
+                <Group place="outside">
+                  <Switcher
+                    value={state.status.patio}
+                    icon="patio-lamp.svg"
+                    onChange={(value) => state.cmnd('sonoff-patio', value)} />
+                  <TemperatureMeter title="Temp" value={state.report.weather.temperature} />
+                  <HumidityMeter title="Hum" value={state.report.weather.humidity} />
+                  <Wind value={state.report.weather.windSpeedKmh} />
+                </Group>
+
+              </section>
+            }
+            {/* <div className={styles.footer}>
                 <Link to="/config">Config</Link>
-              </div>
-            </section>
-          )
+              </div> */}
+          </section>
+        )
       }
     </Consumer>
 

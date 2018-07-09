@@ -6,20 +6,22 @@ import styles from './AutoSwitcher.css';
 export default function AutoSwitcher(props) {
   const isOn = props.switchValue === 'on';
   const backgroundImage = `url(/images/${props.icon})`;
+  const borderColor = props.borderColor;
   return (
-    <div className={styles.root} style={{ backgroundImage }}>
-      <h3>{ props.title }</h3>
+    <div className={styles.root} style={{ borderColor, backgroundImage }}>
+      { props.title && <h3>{props.title}</h3> }
       <div className={styles.main}>
         <div>
           <Checkbox
             label={String(props.switchValue).toUpperCase()}
             value={isOn}
+            width="26"
             onChange={(value) => props.onChange(value)}
           />
         </div>
-        <div>
+        <div style={{ marginTop: '5px' }}>
           <Checkbox
-            label="Auto"
+            label="AUTO"
             value={props.autoValue}
             onChange={(value) => props.onAutoChange(value)}
           />

@@ -1,4 +1,7 @@
 .root {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
   padding: 0.5em;
   padding-left: 38px;
   background-repeat: no-repeat;
@@ -14,6 +17,7 @@
 
 .main {
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: column nowrap;
   justify-content: space-around;
+  font-size: 0.9em;
 }
