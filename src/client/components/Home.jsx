@@ -21,17 +21,17 @@ export default function Home() {
                   <Switcher
                     title="Escritorio"
                     value={state.status['desk-lamp']}
-                    icon="illumination.svg"
+                    icon="desk-lamp.svg"
                     onChange={(value) => state.cmnd('sonoff-desk-lamp', value)} />
                   <Switcher
                     title="Patio"
                     value={state.status.patio}
-                    icon="illumination.svg"
+                    icon="patio-lamp.svg"
                     onChange={(value) => state.cmnd('sonoff-patio', value)} />
                   <Switcher
                     title="Velador"
                     value={state.status.lamp}
-                    icon="illumination.svg"
+                    icon="room-lamp.svg"
                     onChange={(value) => state.cmnd('sonoff-lamp', value)} />
                   <AutoSwitcher
                     title="Estufa"
@@ -49,8 +49,8 @@ export default function Home() {
                   <TemperatureMeter title="Real Feel" value={state.report.lounge.realFeel} place="lounge" />
                   <HumidityMeter title="Hum" value={state.report.lounge.humidity} place="lounge" />
 
-                  <TemperatureMeter title="Outside" value={state.report.weather.temperature} place="outside" />
-                  <HumidityMeter title="Outside" value={state.report.weather.humidity} place="outside"/>
+                  <TemperatureMeter title="Temp" value={state.report.weather.temperature} place="outside" />
+                  <HumidityMeter title="Hum" value={state.report.weather.humidity} place="outside"/>
                 </section>
               }
               <div className={styles.footer}>
