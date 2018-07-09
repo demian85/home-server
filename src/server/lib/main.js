@@ -19,7 +19,7 @@ function getRealFeel(temperature, humidity) {
 async function updateHeaterState() {
   logger.debug(`updateHeaterState()`);
 
-  const sensor = await db.getHeaterSensor();
+  const sensor = await db.getSensorData('heater');
   const state = await db.getHeaterState();
 
   if (!sensor || !state) {
@@ -62,9 +62,9 @@ async function updateHeaterState() {
 }
 
 async function updateReport() {
-  logger.debug(`updateCustomReport()`);
+  logger.debug(`updateReport()`);
 
-  const heaterSensor = await db.getHeaterSensor();
+  const heaterSensor = await db.getSensorData('heater');
   const loungeSensor = await db.getSensorData('wemos1');
 
   let report = {

@@ -20,11 +20,6 @@ exports.mget = promisify(db.mget.bind(db));
 
 exports.end = promisify(db.end.bind(db));
 
-exports.getHeaterSensor = async () => {
-  const value = await exports.get('heater.sensor');
-  return value && JSON.parse(value);
-};
-
 exports.getSensorData = async (deviceName) => {
   const value = await exports.get(`${deviceName}.sensor`);
   return value && JSON.parse(value);
