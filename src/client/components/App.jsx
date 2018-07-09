@@ -58,8 +58,12 @@ export default class App extends React.Component {
       }
     });
 
-    mqttClient.once('connect', () => {
+    mqttClient.on('connect', () => {
       this.setState({ loaded: true });
+    });
+
+    mqttClient.on('close', () => {
+      this.setState({ loaded: false });
     });
 
     this.setState({
