@@ -71,15 +71,13 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <section>
-        <Provider value={this.state}>
-          {
-            !this.state.loaded && <div>Loading...</div>
-          }
-          <Route exact path="/" render={() => <Home />} />
-          <Route path="/config" render={() => <Config />} />
-        </Provider>
-      </section>
+      <Provider value={this.state}>
+        {
+          !this.state.loaded && <div>Loading...</div>
+        }
+        <Route exact path="/" render={() => <Home />} />
+        <Route path="/config" render={() => <Config />} />
+      </Provider>
     );
   }
 

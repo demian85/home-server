@@ -19,34 +19,38 @@ export default function Home() {
                 state.report && state.status &&
                 <section className={styles.dashboard}>
                   <Switcher
-                    title="Luz Escritorio"
+                    title="Escritorio"
                     value={state.status['desk-lamp']}
+                    icon="illumination.svg"
                     onChange={(value) => state.cmnd('sonoff-desk-lamp', value)} />
                   <Switcher
-                    title="Luz Patio"
+                    title="Patio"
                     value={state.status.patio}
+                    icon="illumination.svg"
                     onChange={(value) => state.cmnd('sonoff-patio', value)} />
                   <Switcher
-                    title="Lámpara de sal"
+                    title="Velador"
                     value={state.status.lamp}
+                    icon="illumination.svg"
                     onChange={(value) => state.cmnd('sonoff-lamp', value)} />
                   <AutoSwitcher
                     title="Estufa"
                     switchValue={state.status.heater}
                     autoValue={state.config.autoMode}
+                    icon="heater.svg"
                     onChange={(value) => state.manualHeaterSwitch(value)}
                     onAutoChange={(value) => state.setConfig('autoMode', value)}
                   />
-                  <TemperatureMeter title="Temp" value={state.report.room.temperature} />
-                  <TemperatureMeter title="Real Feel" value={state.report.room.realFeel} />
-                  <HumidityMeter title="Hum" value={state.report.room.humidity} />
+                  <TemperatureMeter title="Temp" value={state.report.room.temperature} place="bedroom" />
+                  <TemperatureMeter title="Real Feel" value={state.report.room.realFeel} place="bedroom" />
+                  <HumidityMeter title="Hum" value={state.report.room.humidity} place="bedroom" />
 
-                  <TemperatureMeter title="Living Temp." value={state.report.lounge.temperature} />
-                  <TemperatureMeter title="Living Real Feel" value={state.report.lounge.realFeel} />
-                  <HumidityMeter title="Living Hum." value={state.report.lounge.humidity} />
+                  <TemperatureMeter title="Temp" value={state.report.lounge.temperature} place="lounge" />
+                  <TemperatureMeter title="Real Feel" value={state.report.lounge.realFeel} place="lounge" />
+                  <HumidityMeter title="Hum" value={state.report.lounge.humidity} place="lounge" />
 
-                  <TemperatureMeter title="Outside Temp." value={state.report.weather.temperature} />
-                  <HumidityMeter title="Outside Hum." value={state.report.weather.humidity} />
+                  <TemperatureMeter title="Outside" value={state.report.weather.temperature} place="outside" />
+                  <HumidityMeter title="Outside" value={state.report.weather.humidity} place="outside"/>
                 </section>
               }
               <div className={styles.footer}>

@@ -5,8 +5,9 @@ import styles from './AutoSwitcher.css';
 
 export default function AutoSwitcher(props) {
   const isOn = props.switchValue === 'on';
+  const backgroundImage = `url(/images/${props.icon})`;
   return (
-    <div className={styles.root}>
+    <div className={styles.root} style={{ backgroundImage }}>
       <h3>{ props.title }</h3>
       <div className={styles.main}>
         <div>
