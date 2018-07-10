@@ -1,5 +1,5 @@
 # sonoff-server
-A basic custom server implementation for managing appliances at home using [Sonoff](http://sonoff.itead.cc/en/) devices.
+A custom server for managing appliances at home using ESP8266-based devices like [Sonoff](http://sonoff.itead.cc/en/) and [Wemos D1 Mini](https://wiki.wemos.cc/products:d1:d1_mini)
 
 ## Motivation
 I bought a bunch of Sonoff devices and decided to upgrade their firmware to [Sonoff-Tasmota](https://github.com/arendst/Sonoff-Tasmota).
@@ -21,16 +21,16 @@ I currently own 4 Sonoff devices, which are connected to the following appliance
 - Room heater (this one also reports values from its SI7021 temperature and humidity sensor).
 
 I also have a bunch of sensors connected to a Wemos D1 Mini (flashed with the same firmware above) in my living room:
-- AM2302 temperature and humidity sensor
+- AM2301 temperature and humidity sensor
 - HC SR501 PIR Motion Sensor
 - Infrared receiver and remote control
 
 Those devices report their values, but do not have a specific purpose yet.
 
 ## How it works
-Sonoff devices connect to the MQTT broker and report their state while also subscribing to a control topic, allowing you to switch them on/off.
+All devices establish a connection to the MQTT broker and report their state while also subscribing to a control topic, allowing you to switch them on/off.
 
-Server runs in the background and subscribes to all sensor topics. Some logic decides when to switch the room heater on/off.
+Server runs as a daemon and subscribes to all sensor topics. Some logic decides when to switch the room heater on/off.
 
 The UI is built on React and consists of simple components that allow the user to switch the appliances on/off and view sensor, weather and derived data, like the "real feel" temperature.
 
