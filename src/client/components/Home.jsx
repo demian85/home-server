@@ -54,6 +54,7 @@ export default function Home() {
                     icon="patio-lamp.svg"
                     onChange={(value) => state.cmnd('sonoff-patio', value)} />
                   <TemperatureMeter title="Temp" value={state.report.weather.temperature} />
+                  <TemperatureMeter title="Real Feel" value={state.report.weather.realFeel} />
                   <HumidityMeter title="Hum" value={state.report.weather.humidity} />
                   <Wind value={state.report.weather.windSpeedKmh} />
                 </Group>

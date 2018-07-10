@@ -5,11 +5,11 @@ const db = require('./db');
 const topics = require('./mqtt/topics');
 const mqttClient = require('./mqtt/client');
 
-function getRealFeel(temperature, humidity) {
+function getRealFeel(temperature, humidity, speed = 0) {
   const feelsLike = new Feels({
     temp: temperature,
     humidity,
-    speed: 0
+    speed
   }).like();
 
   // Round to one decimal
@@ -79,6 +79,7 @@ async function updateReport() {
       weather: {
         temperature: Math.round(weather.main.temp * 10) / 10,
         humidity: weather.main.humidity,
+        realFeel: getRealFeel(weather.main.temp, weather.main.humidity, weather.wind.speed),
         windSpeedKmh: Math.round(weather.wind.speed / 1000 * 3600)
       }
     });
