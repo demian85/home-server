@@ -11,8 +11,8 @@ After using [MQTT Dash](https://play.google.com/store/apps/details?id=net.routix
 
 ## Setup
 Server runs on a local Raspberry PI model 3 B+ which has the following services:
-- Mosquitto MQTT Broker
-- Redis server
+- [Mosquitto MQTT Broker](https://mosquitto.org/)
+- [Redis server](https://redis.io/)
 
 I currently own 4 Sonoff devices, which are connected to the following appliances:
 - Patio lamp
@@ -21,8 +21,8 @@ I currently own 4 Sonoff devices, which are connected to the following appliance
 - Room heater (this one also reports values from its SI7021 temperature and humidity sensor).
 
 I also have a bunch of sensors connected to a Wemos D1 Mini (flashed with the same firmware above) in my living room:
-- AM2301 temperature and humidity sensor
-- HC SR501 PIR Motion Sensor
+- [DHT22/AM2301](https://www.sparkfun.com/datasheets/Sensors/Temperature/DHT22.pdf) temperature and humidity sensor
+- [HC SR501 PIR Motion Sensor](https://components101.com/hc-sr501-pir-sensor)
 - Infrared receiver and remote control
 
 Those devices report their values, but do not have a specific purpose yet.
