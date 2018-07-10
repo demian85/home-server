@@ -19,6 +19,7 @@ export function initMqttClient(parsers = {}) {
 
     client.subscribe([
       'stat/#',
+      'cmnd/#',
       'tele/+/SENSOR',
     ]);
   });

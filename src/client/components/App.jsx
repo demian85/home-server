@@ -52,6 +52,7 @@ export default class App extends React.Component {
       'stat/sonoff-lamp/POWER': this.buildStatusParser('lamp'),
       'stat/sonoff-desk-lamp/POWER': this.buildStatusParser('desk-lamp'),
       'stat/sonoff-patio/POWER': this.buildStatusParser('patio'),
+      'cmnd/wemos/POWER': this.buildStatusParser('wemos'),
       'stat/_report': (payload) => {
         const report = JSON.parse(payload);
         this.setState({ report });

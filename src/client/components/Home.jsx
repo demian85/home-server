@@ -7,6 +7,7 @@ import Switcher from './Switcher';
 import AutoSwitcher from './AutoSwitcher';
 import Wind from './Wind';
 import Group from './Group';
+import MotionSensor from './MotionSensor';
 import { Consumer } from '../lib/store';
 
 import styles from './Home.css';
@@ -46,6 +47,7 @@ export default function Home() {
                   <TemperatureMeter title="Temp" value={state.report.lounge.temperature} />
                   <TemperatureMeter title="Real Feel" value={state.report.lounge.realFeel} />
                   <HumidityMeter title="Hum" value={state.report.lounge.humidity} />
+                  <MotionSensor value={state.status.wemos} />
                 </Group>
 
                 <Group place="outside">
