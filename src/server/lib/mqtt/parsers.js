@@ -2,7 +2,7 @@ const logger = require('winston');
 
 const topics = require('./topics');
 const db = require('../db');
-const { updateHeaterState, updateReport, getRealFeel } = require('../main');
+const { updateHeaterState, updateReport, getRealFeel, getSensorReadings } = require('../main');
 const ir = require('../ir');
 
 const parsers = {
@@ -16,15 +16,17 @@ const parsers = {
 
   [topics.heater.sensor]: async (payload) => {
     const data = JSON.parse(payload);
-    const temperature = parseFloat(data.SI7021.Temperature) || null; // can't be 0, sorry!
-    const humidity = parseFloat(data.SI7021.Humidity) || null; // 0% humidity would be nice!
-    const realFeel = getRealFeel(temperature, humidity);
+    const readings = getSensorReadings(data, 'SI7021');
+
+    if (!readings) {
+      return logger.error('Sensor SI7021 not found!');
+    }
+
+    logger.debug('Saving heater sensor data:', readings);
+
+    await db.set('heater.sensor', JSON.stringify(readings));
 
     const { autoMode } = await db.getHeaterConfig();
-
-    logger.debug('Saving sensor data:', { temperature, humidity, realFeel });
-
-    await db.set('heater.sensor', JSON.stringify({ temperature, humidity, realFeel }));
 
     if (autoMode && process.env.NODE_ENV !== 'development') {
       await updateHeaterState();
@@ -35,13 +37,16 @@ const parsers = {
 
   [topics.wemos1.sensor]: async (payload) => {
     const data = JSON.parse(payload);
-    const temperature = parseFloat(data.AM2301.Temperature) || null;
-    const humidity = parseFloat(data.AM2301.Humidity) || null;
-    const realFeel = getRealFeel(temperature, humidity);
 
-    logger.debug('Saving sensor data:', { temperature, humidity, realFeel });
+    const readings = getSensorReadings(data, 'AM2301');
 
-    await db.set('wemos1.sensor', JSON.stringify({ temperature, humidity, realFeel }));
+    if (!readings) {
+      return logger.error('Sensor AM2301 not found!');
+    }
+
+    logger.debug('Saving wemos1 sensor data:', readings);
+
+    await db.set('wemos1.sensor', JSON.stringify(readings));
 
     await updateReport();
   },

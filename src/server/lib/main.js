@@ -16,6 +16,18 @@ function getRealFeel(temperature, humidity, speed = 0) {
   return Math.round(feelsLike * 10) / 10;
 }
 
+function getSensorReadings(data, sensorName) {
+  const sensor = data && data[sensorName];
+
+  if (!sensor) return null;
+
+  const temperature = parseFloat(sensor.Temperature) || null; // can't be 0, sorry!
+  const humidity = parseFloat(sensor.Humidity) || null; // 0% humidity would be nice!
+  const realFeel = getRealFeel(temperature, humidity);
+
+  return { temperature, humidity, realFeel };
+}
+
 async function updateHeaterState() {
   logger.debug(`updateHeaterState()`);
 
@@ -97,3 +109,4 @@ async function updateReport() {
 exports.updateHeaterState = updateHeaterState;
 exports.updateReport = updateReport;
 exports.getRealFeel = getRealFeel;
+exports.getSensorReadings = getSensorReadings;
