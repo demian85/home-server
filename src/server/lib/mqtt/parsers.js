@@ -2,7 +2,7 @@ const logger = require('winston');
 
 const topics = require('./topics');
 const db = require('../db');
-const { updateHeaterState, updateReport, getRealFeel, getSensorReadings } = require('../main');
+const { updateHeaterState, updateReport, getSensorReadings } = require('../main');
 const ir = require('../ir');
 
 const parsers = {
