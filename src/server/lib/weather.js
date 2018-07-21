@@ -21,7 +21,7 @@ async function getWeather() {
   }
 
   weatherPromise = new Promise((resolve, reject) => {
-    const url = 'http://api.openweathermap.org/data/2.5/weather?id=3433955&appid=dcce4d34ff71a6bae228fc73e8980c8b&units=metric';
+    const url = `http://api.openweathermap.org/data/2.5/weather?id=3433955&appid=${process.env.OPENWEATHER_APP_ID}&units=metric`;
 
     logger.info('requesting weather...', url);
 
