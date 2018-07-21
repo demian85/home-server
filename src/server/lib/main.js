@@ -63,13 +63,20 @@ async function updateHeaterState() {
   const realFeel = sensor.realFeel;
 
   if (!state.on && realFeel < triggerTemp) {
-    logger.info('turning device on...');
+    logger.info('turning heater1 on...');
     mqttClient.publish(topics.heater.cmnd, '1');
+    logger.info('turning heater2 on...');
+    mqttClient.publish(topics.heater2.cmnd, '1');
   }
 
-  if (state.on && realFeel >= (triggerTemp + 0.5)) {
-    logger.info('turning device off...');
-    mqttClient.publish(topics.heater.cmnd, '0');
+  if (state.on && realFeel >= triggerTemp) {
+    logger.info('turning heater2 off...');
+    mqttClient.publish(topics.heater2.cmnd, '0');
+
+    if (realFeel >= (triggerTemp + 0.5)) {
+      logger.info('turning heater1 off...');
+      mqttClient.publish(topics.heater.cmnd, '0');
+    }
   }
 }
 

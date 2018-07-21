@@ -1,6 +1,5 @@
 const logger = require('winston');
 
-const topics = require('./topics');
 const client = require('./client');
 const parsers = require('./parsers');
 
@@ -10,11 +9,10 @@ client.on('connect', () => {
   logger.info('mqtt client connected');
 
   client.subscribe([
-    topics.heater.stat,
-    topics.heater.sensor,
-    topics.wemos1.cmnd,
-    topics.wemos1.sensor,
-    topics.wemos1.result,
+    'stat/+/POWER',
+    'cmnd/+/POWER',
+    'tele/+/SENSOR',
+    'tele/+/RESULT',
   ]);
 });
 
