@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const basicAuth = require('express-basic-auth');
-const logger = require('winston');
+const logger = require('../logger');
 const db = require('../db');
 
 const main = new Router();

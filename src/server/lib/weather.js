@@ -1,5 +1,5 @@
 const request = require('request');
-const logger = require('winston');
+const logger = require('./logger');
 const db = require('./db');
 
 const expireTimeoutSecs = 60 * 15; // 15 minutes

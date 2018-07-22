@@ -1,10 +1,7 @@
 require('dotenv/config');
 
-const logger = require('winston');
 const express = require('express');
 const compression = require('compression');
-
-logger.level = process.env.LOG_LEVEL || 'info';
 
 require('./server/lib/mqtt/init');
 

@@ -1,5 +1,4 @@
-const logger = require('winston');
-
+const logger = require('../logger');
 const client = require('./client');
 const parsers = require('./parsers');
 

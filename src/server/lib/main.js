@@ -1,5 +1,5 @@
 const Feels = require('feels');
-const logger = require('winston');
+const logger = require('./logger');
 const { getWeather } = require('./weather');
 const db = require('./db');
 const topics = require('./mqtt/topics');
@@ -29,7 +29,7 @@ function getSensorReadings(data, sensorName) {
 }
 
 async function turnOnDevice(deviceName, on) {
-  logger.debug(`turnOnDevice()`, { on });
+  logger.debug(`turnOnDevice(): %j`, { on });
 
   const state = await db.getDeviceState(deviceName);
   const stateStr = on ? 'on' : 'off';
@@ -82,7 +82,7 @@ async function updateHeaterState() {
   const currentTempGroup = tempGroups.find(entry => currentHour >= entry.start && currentHour < entry.end);
   const triggerTemp = currentTempGroup ? currentTempGroup.temp : defaultTriggerTemp;
 
-  logger.debug('trigger temp:', triggerTemp);
+  logger.debug('trigger temp: %d', triggerTemp);
 
   if (realFeel < triggerTemp) {
     turnOnDevice('heater1', true);
@@ -126,7 +126,7 @@ async function updateReport() {
     logger.error('error parsing weather report');
   }
 
-  logger.info('custom report:', report);
+  logger.info('custom report: %j', report);
 
   mqttClient.publish(topics.report, JSON.stringify(report), { retain: true });
 

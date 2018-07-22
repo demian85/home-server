@@ -1,5 +1,5 @@
 const redis = require('redis');
-const logger = require('winston');
+const logger = require('./logger');
 const { promisify } = require('util');
 const defaultConfig = require('../config');
 
