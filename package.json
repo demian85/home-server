@@ -10,7 +10,8 @@
     "postinstall": "npm run build",
     "build": "webpack -p",
     "start": "node src/index.js",
-    "dev": "webpack --progress --watch"
+    "dev": "webpack --progress --watch",
+    "init:config": "node src/server/init.js"
   },
   "keywords": [
     "sonoff"

@@ -1,7 +1,7 @@
 module.exports = {
   defaultTriggerTemp: 23,
-  minStateDurationSecs: 60 * 15,
-  autoMode: false,
+  minStateDurationSecs: 60 * 5,
+  autoMode: true,
   tempGroups: [
     { start: 0, end: 4, temp: 24.1 },
     { start: 4, end: 9, temp: 24.3 },
