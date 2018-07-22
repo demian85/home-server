@@ -10,6 +10,7 @@ export default function AutoSwitcher(props) {
   return (
     <div className={styles.root} style={{ borderColor, backgroundImage }}>
       { props.title && <h3>{props.title}</h3> }
+      <div className={styles.triggerTemp}>~{props.triggerTemp} ˚C</div>
       <div className={styles.main}>
         <div>
           <Checkbox

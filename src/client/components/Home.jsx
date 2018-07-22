@@ -30,8 +30,17 @@ export default function Home() {
                   <AutoSwitcher
                     switchValue={state.status.heater}
                     autoValue={state.config.autoMode}
+                    triggerTemp={state.report.config.triggerTemp}
                     icon="heater.svg"
-                    onChange={(value) => state.manualHeaterSwitch(value)}
+                    onChange={(value) => state.manualHeaterSwitch(1, value)}
+                    onAutoChange={(value) => state.setConfig('autoMode', value)}
+                  />
+                  <AutoSwitcher
+                    switchValue={state.status.heater2}
+                    autoValue={state.config.autoMode}
+                    triggerTemp={state.report.config.triggerTemp}
+                    icon="heater2.svg"
+                    onChange={(value) => state.manualHeaterSwitch(2, value)}
                     onAutoChange={(value) => state.setConfig('autoMode', value)}
                   />
                   <TemperatureMeter title="Temp" value={state.report.room.temperature} />

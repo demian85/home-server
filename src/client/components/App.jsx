@@ -33,8 +33,8 @@ export default class App extends React.Component {
         const newConfig = await res.json();
         this.setState({ config: newConfig });
       },
-      manualHeaterSwitch: async (value) => {
-        await this.state.cmnd('sonoff-heater', value ? '1' : '0');
+      manualHeaterSwitch: async (n, value) => {
+        await this.state.cmnd(`sonoff-heater${n}`, value ? '1' : '0');
         await this.state.setConfig('autoMode', false);
       }
     });
@@ -49,6 +49,7 @@ export default class App extends React.Component {
 
     const mqttClient = initMqttClient({
       'stat/sonoff-heater/POWER': this.buildStatusParser('heater'),
+      'stat/sonoff-heater2/POWER': this.buildStatusParser('heater2'),
       'stat/sonoff-lamp/POWER': this.buildStatusParser('lamp'),
       'stat/sonoff-desk-lamp/POWER': this.buildStatusParser('desk-lamp'),
       'stat/sonoff-patio/POWER': this.buildStatusParser('patio'),

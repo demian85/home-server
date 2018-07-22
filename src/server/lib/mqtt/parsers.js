@@ -43,7 +43,6 @@ const parsers = {
 
   [topics.wemos1.sensor]: async (payload) => {
     const data = JSON.parse(payload);
-
     const readings = getSensorReadings(data, 'AM2301');
 
     if (!readings) {

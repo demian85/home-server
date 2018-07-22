@@ -64,6 +64,16 @@ async function turnOnDevice(deviceName, on) {
   }
 }
 
+async function getRoomTriggerTemp() {
+  const heaterConfig = await db.getHeaterConfig();
+  const { defaultTriggerTemp, tempGroups } = heaterConfig;
+  const currentHour = new Date().getHours();
+  const currentTempGroup = tempGroups.find(entry => currentHour >= entry.start && currentHour < entry.end);
+  const triggerTemp = currentTempGroup ? currentTempGroup.temp : defaultTriggerTemp;
+
+  return triggerTemp;
+}
+
 async function updateHeaterState() {
   logger.debug(`updateHeaterState()`);
 
@@ -75,12 +85,7 @@ async function updateHeaterState() {
   }
 
   const realFeel = sensor.realFeel;
-  const heaterConfig = await db.getHeaterConfig();
-  const { defaultTriggerTemp, tempGroups } = heaterConfig;
-
-  const currentHour = new Date().getHours();
-  const currentTempGroup = tempGroups.find(entry => currentHour >= entry.start && currentHour < entry.end);
-  const triggerTemp = currentTempGroup ? currentTempGroup.temp : defaultTriggerTemp;
+  const triggerTemp = await getRoomTriggerTemp();
 
   logger.debug('trigger temp: %d', triggerTemp);
 
@@ -103,10 +108,12 @@ async function updateHeaterState() {
 async function updateReport() {
   logger.debug(`updateReport()`);
 
+  const triggerTemp = await getRoomTriggerTemp();
   const heaterSensor = await db.getSensorData('heater1');
   const loungeSensor = await db.getSensorData('wemos1');
 
   let report = {
+    config: { triggerTemp },
     room: heaterSensor,
     lounge: loungeSensor
   };

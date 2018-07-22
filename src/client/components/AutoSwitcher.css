@@ -1,4 +1,5 @@
 .root {
+  position: relative;
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
@@ -20,4 +21,11 @@
   flex-flow: column nowrap;
   justify-content: space-around;
   font-size: 0.9em;
+}
+
+.triggerTemp {
+  position: absolute;
+  top: 0.5em;
+  left: 0.5em;
+  font-size: 0.8em;
 }
