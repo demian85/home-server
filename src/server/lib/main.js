@@ -62,14 +62,14 @@ async function updateHeaterState() {
 
   const realFeel = sensor.realFeel;
 
-  if (!state.on && realFeel < triggerTemp) {
+  if (realFeel < triggerTemp) {
     logger.info('turning heater1 on...');
     mqttClient.publish(topics.heater.cmnd, '1');
     logger.info('turning heater2 on...');
     mqttClient.publish(topics.heater2.cmnd, '1');
   }
 
-  if (state.on && realFeel >= triggerTemp) {
+  if (realFeel >= (triggerTemp + 0.1)) {
     logger.info('turning heater2 off...');
     mqttClient.publish(topics.heater2.cmnd, '0');
 
