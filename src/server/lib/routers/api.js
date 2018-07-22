@@ -21,7 +21,7 @@ api.use((req, res, next) => {
 api.get('/event/on', (req, res) => {
   const { device } = req.query;
 
-  logger.debug('/event/on device:', device);
+  logger.debug('/event/on device: %s', device);
   client.publish(`cmnd/${device}/POWER`, '1');
 
   res.end();
@@ -30,7 +30,7 @@ api.get('/event/on', (req, res) => {
 api.get('/event/off', (req, res) => {
   const { device } = req.query;
 
-  logger.debug('/event/off device:', device);
+  logger.debug('/event/off device: %s', device);
   client.publish(`cmnd/${device}/POWER`, '0');
 
   res.end();
@@ -66,7 +66,7 @@ api.get('/config', async (req, res) => {
 api.post('/config', async (req, res) => {
   const config = req.body || {};
 
-  logger.debug('POST /config', config);
+  logger.debug('POST /config %o', config);
 
   const validKeys = ['defaultTriggerTemp', 'minStateDurationSecs', 'autoMode', 'tempGroups'];
   const newConfig = {};

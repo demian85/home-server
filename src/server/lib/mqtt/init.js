@@ -16,7 +16,7 @@ client.on('connect', () => {
 });
 
 client.on('message', async (topic, payload) => {
-  logger.debug(`message for topic "${topic}":`, payload.toString());
+  logger.debug(`message for topic "${topic}": %s`, payload.toString());
 
   const parser = parsers[topic];
 
@@ -24,7 +24,7 @@ client.on('message', async (topic, payload) => {
     try {
       await parser(payload);
     } catch (err) {
-      logger.error('unexpected error parsing payload for topic', topic);
+      logger.error('unexpected error parsing payload for topic %s', topic);
       throw err;
     }
   }
@@ -35,7 +35,7 @@ client.on('close', () => {
 });
 
 client.on('error', (err) => {
-  logger.error('mqtt client error:', err);
+  logger.error('mqtt client error: %o', err);
 });
 
 return client;
