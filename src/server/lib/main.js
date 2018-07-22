@@ -28,54 +28,74 @@ function getSensorReadings(data, sensorName) {
   return { temperature, humidity, realFeel };
 }
 
-async function updateHeaterState() {
-  logger.debug(`updateHeaterState()`);
+async function turnOnDevice(deviceName, on) {
+  logger.debug(`turnOnDevice()`, { on });
 
-  const sensor = await db.getSensorData('heater');
-  const state = await db.getHeaterState();
+  const state = await db.getDeviceState(deviceName);
+  const stateStr = on ? 'on' : 'off';
 
-  if (!sensor || !state) {
-    logger.error(`not enough data! skipping...`);
+  if (!state) {
+    logger.error(`${deviceName}: not enough data! skipping...`);
+    return;
+  }
+
+  if (state.on === on) {
+    logger.debug(`${deviceName}: already ${stateStr}! skipping...`);
     return;
   }
 
   const heaterConfig = await db.getHeaterConfig();
-  const { defaultTriggerTemp, tempGroups, minStateDurationSecs } = heaterConfig;
-
-  const currentHour = new Date().getHours();
-  const currentTempGroup = tempGroups.find(entry => currentHour >= entry.start && currentHour < entry.end);
-
-  const triggerTemp = currentTempGroup ? currentTempGroup.temp : defaultTriggerTemp;
-
-  logger.debug('trigger temp:', triggerTemp);
 
   // calculate how long the device has been in this state
-  const stateDurationSecs = Math.round((Date.now() - state.lastChange) / 1000);
+  const stateDuration = Math.round((Date.now() - state.lastChange) / 1000);
 
-  logger.info(`last state change was ${stateDurationSecs} seconds ago`);
+  logger.info(`${deviceName}: last state change was ${stateDuration} seconds ago`);
 
-  // keep the same state for at least 15 minutes
-  if (stateDurationSecs < minStateDurationSecs) {
+  // keep the same state for at least X minutes
+  if (stateDuration < heaterConfig.minStateDurationSecs) {
     logger.info(`skipping...`);
     return;
   }
 
+  logger.info(`${deviceName}: turning ${stateStr}...`);
+
+  if (process.env.NODE_ENV !== 'development') {
+    mqttClient.publish(topics[deviceName].cmnd, on ? '1' : '0');
+  }
+}
+
+async function updateHeaterState() {
+  logger.debug(`updateHeaterState()`);
+
+  const sensor = await db.getSensorData('heater1');
+
+  if (!sensor) {
+    logger.error(`not enough data! skipping...`);
+    return;
+  }
+
   const realFeel = sensor.realFeel;
+  const heaterConfig = await db.getHeaterConfig();
+  const { defaultTriggerTemp, tempGroups } = heaterConfig;
+
+  const currentHour = new Date().getHours();
+  const currentTempGroup = tempGroups.find(entry => currentHour >= entry.start && currentHour < entry.end);
+  const triggerTemp = currentTempGroup ? currentTempGroup.temp : defaultTriggerTemp;
+
+  logger.debug('trigger temp:', triggerTemp);
 
   if (realFeel < triggerTemp) {
-    logger.info('turning heater1 on...');
-    mqttClient.publish(topics.heater.cmnd, '1');
-    logger.info('turning heater2 on...');
-    mqttClient.publish(topics.heater2.cmnd, '1');
+    turnOnDevice('heater1', true);
+    turnOnDevice('heater2', true);
   }
 
   if (realFeel >= (triggerTemp + 0.1)) {
-    logger.info('turning heater2 off...');
-    mqttClient.publish(topics.heater2.cmnd, '0');
+    // turn off heater2 when realFeel exceeds .1 threshold
+    turnOnDevice('heater2', false);
 
+    // turn off heater1 when realFeel exceeds .5 threshold
     if (realFeel >= (triggerTemp + 0.5)) {
-      logger.info('turning heater1 off...');
-      mqttClient.publish(topics.heater.cmnd, '0');
+      turnOnDevice('heater1', false);
     }
   }
 }
@@ -83,7 +103,7 @@ async function updateHeaterState() {
 async function updateReport() {
   logger.debug(`updateReport()`);
 
-  const heaterSensor = await db.getSensorData('heater');
+  const heaterSensor = await db.getSensorData('heater1');
   const loungeSensor = await db.getSensorData('wemos1');
 
   let report = {

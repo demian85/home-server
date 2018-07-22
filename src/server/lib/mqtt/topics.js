@@ -1,6 +1,6 @@
 const topics = {
   report: 'stat/_report',
-  heater: {
+  heater1: {
     stat: `stat/sonoff-heater/POWER`,
     cmnd: `cmnd/sonoff-heater/power`,
     sensor: `tele/sonoff-heater/SENSOR`,

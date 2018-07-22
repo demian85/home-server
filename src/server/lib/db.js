@@ -25,8 +25,8 @@ exports.getSensorData = async (deviceName) => {
   return value && JSON.parse(value);
 };
 
-exports.getHeaterState = async () => {
-  const value = await exports.get('heater.state');
+exports.getDeviceState = async (deviceName) => {
+  const value = await exports.get(`${deviceName}.state`);
   return value && JSON.parse(value);
 };
 

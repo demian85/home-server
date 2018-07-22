@@ -7,14 +7,21 @@ const ir = require('../ir');
 
 const parsers = {
 
-  [topics.heater.stat]: async (payload) => {
+  [topics.heater1.stat]: async (payload) => {
     const on = String(payload).toLowerCase() === 'on';
     const lastChange = Date.now();
-    logger.debug('Saving state data:', { on, lastChange });
-    await db.set('heater.state', JSON.stringify({ on, lastChange }));
+    logger.debug('Saving heater1 state data:', { on, lastChange });
+    await db.set('heater1.state', JSON.stringify({ on, lastChange }));
   },
 
-  [topics.heater.sensor]: async (payload) => {
+  [topics.heater2.stat]: async (payload) => {
+    const on = String(payload).toLowerCase() === 'on';
+    const lastChange = Date.now();
+    logger.debug('Saving heater2 state data:', { on, lastChange });
+    await db.set('heater2.state', JSON.stringify({ on, lastChange }));
+  },
+
+  [topics.heater1.sensor]: async (payload) => {
     const data = JSON.parse(payload);
     const readings = getSensorReadings(data, 'SI7021');
 
@@ -24,11 +31,11 @@ const parsers = {
 
     logger.debug('Saving heater sensor data:', readings);
 
-    await db.set('heater.sensor', JSON.stringify(readings));
+    await db.set('heater1.sensor', JSON.stringify(readings));
 
     const { autoMode } = await db.getHeaterConfig();
 
-    if (autoMode && process.env.NODE_ENV !== 'development') {
+    if (autoMode) {
       await updateHeaterState();
     }
 
