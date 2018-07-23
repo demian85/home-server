@@ -9,6 +9,10 @@
   text-align: center;
 }
 
+.footer a {
+  font-size: 1.25em;
+}
+
 .dashboard {
   height: 100%;
   display: grid;
