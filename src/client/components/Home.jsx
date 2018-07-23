@@ -1,5 +1,5 @@
 import React from 'react';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import TemperatureMeter from './TemperatureMeter';
 import HumidityMeter from './HumidityMeter';
@@ -72,9 +72,9 @@ export default function Home() {
 
               </section>
             }
-            {/* <div className={styles.footer}>
-                <Link to="/config">Config</Link>
-              </div> */}
+            <div className={styles.footer}>
+              <Link to="/config">Config</Link>
+            </div>
           </section>
         )
       }

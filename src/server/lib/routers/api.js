@@ -1,22 +1,28 @@
 const bodyParser = require('body-parser');
 const { Router } = require('express');
+const basicAuth = require('express-basic-auth');
 const logger = require('../logger');
 const db = require('../db');
 const client = require('../mqtt/client');
-const { updateHeaterState } = require('../main');
+const { updateHeaterState, updateReport } = require('../main');
 
 const api = new Router();
 
+api.use(basicAuth({
+  users: { 'admin': process.env.ADMIN_PASSWD },
+  challenge: true,
+}));
+
 api.use(bodyParser.json());
 
-api.use((req, res, next) => {
-  const key = process.env.AUTH_KEY;
-  if (req.query.key !== key && req.headers.authorization !== key) {
-    res.status(401).end('Invalid auth key!');
-    return;
-  }
-  next();
-});
+// api.use((req, res, next) => {
+//   const key = process.env.AUTH_KEY;
+//   if (req.query.key !== key && req.headers.authorization !== key) {
+//     res.status(401).end('Invalid auth key!');
+//     return;
+//   }
+//   next();
+// });
 
 api.get('/event/on', (req, res) => {
   const { device } = req.query;
@@ -91,7 +97,8 @@ api.post('/config', async (req, res) => {
 
   try {
     await db.set('heater.config', JSON.stringify({ defaultTriggerTemp, minStateDurationSecs, autoMode, tempGroups }));
-    await updateHeaterState(client);
+    await updateHeaterState();
+    await updateReport();
     res.json(await db.getHeaterConfig());
   } catch (err) {
     logger.error(err);

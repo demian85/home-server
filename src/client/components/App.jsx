@@ -25,8 +25,7 @@ export default class App extends React.Component {
           method: 'POST',
           credentials: 'include',
           headers: {
-            'Content-Type': 'application/json',
-            Authorization: this.state.auth.apiKey
+            'Content-Type': 'application/json'
           },
           body
         });
@@ -68,22 +67,17 @@ export default class App extends React.Component {
       this.setState({ loaded: false });
     });
 
-    this.setState({
-      mqttClient,
-      report,
-      config,
-      auth
-    });
+    this.setState({ mqttClient, report, config, auth });
   }
 
   render() {
+    if (!this.state.loaded) {
+      return <Loader />;
+    }
     return (
       <Provider value={this.state}>
-        {
-          !this.state.loaded && <Loader />
-        }
         <Route exact path="/" render={() => <Home />} />
-        <Route path="/config" render={() => <Config />} />
+        <Route path="/config" render={() => <Config value={this.state.config} />} />
       </Provider>
     );
   }

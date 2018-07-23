@@ -26,7 +26,7 @@ main.get('/init', async (req, res) => {
   }
 });
 
-main.get('/', (req, res) => {
+main.get('/*', (req, res) => {
   res.render('index');
 });
 
