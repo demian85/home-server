@@ -40,7 +40,7 @@ async function turnOnDevice(deviceName, on) {
   }
 
   if (state.on === on) {
-    logger.debug(`${deviceName}: already ${stateStr}! skipping...`);
+    logger.info(`${deviceName}: already ${stateStr}! skipping...`);
     return;
   }
 
@@ -87,7 +87,7 @@ async function updateHeaterState() {
   const realFeel = sensor.realFeel;
   const triggerTemp = await getRoomTriggerTemp();
 
-  logger.debug('trigger temp: %d', triggerTemp);
+  logger.info('trigger temp: %d', triggerTemp);
 
   if (realFeel < triggerTemp) {
     turnOnDevice('heater1', true);
