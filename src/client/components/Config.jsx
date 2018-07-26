@@ -1,4 +1,5 @@
 import React from 'react';
+import * as _ from 'lodash';
 
 import styles from './Config.css';
 
@@ -6,7 +7,7 @@ export default class Config extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = props.value || {};
+    this.state = _.cloneDeep(props.value);
   }
 
   render() {
@@ -61,8 +62,8 @@ export default class Config extends React.Component {
 
   handleTempChange(key, value) {
     this.setState((prevState) => {
-      const tempGroups = Array.from(prevState.tempGroups);
-      tempGroups[key].temp = Number(value);
+      const tempGroups = prevState.tempGroups;
+      prevState.tempGroups[key].temp = Number(value);
       return { tempGroups };
     });
   }
