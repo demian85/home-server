@@ -33,7 +33,8 @@ export default class App extends React.Component {
         this.setState({ config: newConfig });
       },
       manualHeaterSwitch: async (n, value) => {
-        await this.state.cmnd(`sonoff-heater${n}`, value ? '1' : '0');
+        const deviceSuffix = n > 1 ? n : '';
+        await this.state.cmnd(`sonoff-heater${deviceSuffix}`, value ? '1' : '0');
         await this.state.setConfig('autoMode', false);
       }
     });
