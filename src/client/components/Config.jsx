@@ -3,6 +3,22 @@ import * as _ from 'lodash';
 
 import styles from './Config.css';
 
+const presets = {
+  'simple': [
+    { start: 0, end: 24, temp: 23 },
+  ],
+  'default': [
+    { start: 0, end: 9, temp: 23.4 },
+    { start: 9, end: 18, temp: 22 },
+    { start: 18, end: 24, temp: 23.4 },
+  ],
+  'sleep': [
+    { start: 0, end: 10, temp: 23.4 },
+    { start: 10, end: 20, temp: 22 },
+    { start: 20, end: 24, temp: 23.4 },
+  ]
+};
+
 export default class Config extends React.Component {
 
   constructor(props) {
@@ -18,7 +34,7 @@ export default class Config extends React.Component {
     const tempGroups = this.state.tempGroups.map((item, key) => {
       return (
         <div className={styles.tempGroup} key={key}>
-          <span>{item.start} - {item.end} hs.</span>
+          <div>{item.start} - {item.end} hs.</div>
           <input
             type="number"
             min="10"
@@ -33,9 +49,28 @@ export default class Config extends React.Component {
 
     return (
       <section className={styles.root}>
-        <p>Set desired real feel temperature for each time frame:</p>
         <div className={styles.content}>
-          {tempGroups}
+          <p>Set desired real feel temperature for each time frame:</p>
+          <div className={styles.presets}>
+            <label>Presets: </label>
+            <button className={styles.presetBtn} onClick={() => this.onPresetClick('default')}>Default</button>
+            <button className={styles.presetBtn} onClick={() => this.onPresetClick('simple')}>Simple</button>
+            <button className={styles.presetBtn} onClick={() => this.onPresetClick('sleep')}>Sleep</button>
+          </div>
+          <div className={styles.tempGroups}>
+            {tempGroups}
+          </div>
+        </div>
+        <div className={styles.content}>
+          <label>Heaters on/off state minimum persistence in minutes: </label>
+          <input
+            type="number"
+            min="2"
+            max="30"
+            step="1"
+            value={this.state.minStateDurationSecs / 60}
+            onChange={(e) => this.setState({ minStateDurationSecs: e.target.value * 60 })}
+          />
         </div>
         <div className={styles.controls}>
           <button className={styles.saveBtn} onClick={() => this.save()}>Save</button>
@@ -46,18 +81,14 @@ export default class Config extends React.Component {
   }
 
   async save() {
-    await fetch('/api/config', {
-      body: JSON.stringify({
-        autoMode: this.state.autoMode,
-        defaultTriggerTemp: this.state.defaultTriggerTemp,
-        minStateDurationSecs: this.state.minStateDurationSecs,
-        tempGroups: this.state.tempGroups
-      }),
-      method: 'POST',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-    });
+    await this.props.onSave(this.state);
     history.back();
+  }
+
+  onPresetClick(name) {
+    this.setState({
+      tempGroups: _.cloneDeep(presets[name])
+    });
   }
 
   handleTempChange(key, value) {

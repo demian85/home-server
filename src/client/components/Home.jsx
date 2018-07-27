@@ -33,7 +33,7 @@ export default function Home() {
                     triggerTemp={state.report.config.triggerTemp}
                     icon="heater.svg"
                     onChange={(value) => state.manualHeaterSwitch(1, value)}
-                    onAutoChange={(value) => state.setConfig('autoMode', value)}
+                    onAutoChange={(autoMode) => state.setConfig({ autoMode })}
                   />
                   <AutoSwitcher
                     switchValue={state.status.heater2}
@@ -41,7 +41,7 @@ export default function Home() {
                     triggerTemp={state.report.config.triggerTemp}
                     icon="heater2.svg"
                     onChange={(value) => state.manualHeaterSwitch(2, value)}
-                    onAutoChange={(value) => state.setConfig('autoMode', value)}
+                    onAutoChange={(autoMode) => state.setConfig({ autoMode })}
                   />
                   <TemperatureMeter title="Temp" value={state.report.room.temperature} />
                   <TemperatureMeter title="Real Feel" value={state.report.room.realFeel} />

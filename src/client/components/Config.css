@@ -2,10 +2,35 @@
   padding: 1em;
 }
 
+.root p {
+  margin-bottom: 1em;
+}
+
 .content {
+  margin-bottom: 1em;
+  padding-bottom: 1em;
+  border-bottom: 1px solid #ccc;
+}
+
+.content label {
+  margin-right: 1em;
+}
+
+.tempGroups {
+  margin-top: 1em;
   display: flex;
   flex-flow: row nowrap;
-  margin-top: 1em;
+  justify-content: space-evenly;
+}
+
+.presets {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+}
+
+.presets button {
+  margin-right: 1em;
 }
 
 .tempGroup {
@@ -14,11 +39,17 @@
   text-align: center;
 }
 
-.tempGroup input,
-.controls button {
+.root input {
   font-size: 1.25em;
-  border: 1px solid #ccc;
-  padding: 0.5em;
+  border: 1px solid #ccc;;
+  padding: 0.2em 0.5em;
+  border-radius: 3px;
+}
+
+.root button {
+  font-size: 1.25em;
+  border: 0;
+  padding: 0.2em 0.5em;
   border-radius: 3px;
 }
 
@@ -29,9 +60,10 @@
 
 .saveBtn {
   margin-right: 1em;
-  font-size: 1.25em;
+  background-color: #1a9cf3;
+  color: #fff;
 }
 
-.cancelBtn {
-  font-size: 1.25em;
+.root .presetBtn {
+  font-size: 1em;
 }

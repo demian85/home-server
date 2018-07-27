@@ -17,16 +17,13 @@ export default class App extends React.Component {
         console.log('cmnd', device, value);
         this.state.mqttClient.publish(`cmnd/${device}/power`, String(value));
       },
-      setConfig: async (key, value) => {
-        console.log('setConfig', key, value);
-        const newValues = key ? { [key]: value } : {};
-        const body = JSON.stringify(Object.assign({}, this.state.config, newValues));
+      setConfig: async (values) => {
+        console.log('setConfig', values);
+        const body = JSON.stringify(Object.assign({}, this.state.config, values));
         const res = await fetch('/api/config', {
           method: 'POST',
           credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json'
-          },
+          headers: { 'Content-Type': 'application/json' },
           body
         });
         const newConfig = await res.json();
@@ -35,7 +32,7 @@ export default class App extends React.Component {
       manualHeaterSwitch: async (n, value) => {
         const deviceSuffix = n > 1 ? n : '';
         await this.state.cmnd(`sonoff-heater${deviceSuffix}`, value ? '1' : '0');
-        await this.state.setConfig('autoMode', false);
+        await this.state.setConfig({ autoMode: false });
       }
     });
   }
@@ -78,7 +75,7 @@ export default class App extends React.Component {
     return (
       <Provider value={this.state}>
         <Route exact path="/" render={() => <Home />} />
-        <Route path="/config" render={() => <Config value={this.state.config} />} />
+        <Route path="/config" render={() => <Config value={this.state.config} onSave={(config) => this.state.setConfig(config)} />} />
       </Provider>
     );
   }
