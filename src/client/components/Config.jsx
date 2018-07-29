@@ -3,27 +3,28 @@ import * as _ from 'lodash';
 
 import styles from './Config.css';
 
-const presets = {
-  'simple': [
-    { start: 0, end: 24, temp: 23 },
-  ],
-  'default': [
-    { start: 0, end: 9, temp: 23.4 },
-    { start: 9, end: 18, temp: 22 },
-    { start: 18, end: 24, temp: 23.4 },
-  ],
-  'sleep': [
-    { start: 0, end: 10, temp: 23.4 },
-    { start: 10, end: 20, temp: 22 },
-    { start: 20, end: 24, temp: 23.4 },
-  ]
-};
-
 export default class Config extends React.Component {
 
   constructor(props) {
     super(props);
+
     this.state = _.cloneDeep(props.value);
+    this.presets = {
+      'simple': [
+        { start: 0, end: 24, temp: 23.5 },
+      ],
+      'default': [
+        { start: 0, end: 9, temp: 23.8 },
+        { start: 9, end: 18, temp: 22 },
+        { start: 18, end: 24, temp: 23.5 },
+      ],
+      'sleep': [
+        { start: 0, end: 4, temp: 23.8 },
+        { start: 4, end: 9, temp: 23.9 },
+        { start: 9, end: 21, temp: 23.5 },
+        { start: 21, end: 24, temp: 23.8 },
+      ]
+    };
   }
 
   render() {
@@ -87,7 +88,7 @@ export default class Config extends React.Component {
 
   onPresetClick(name) {
     this.setState({
-      tempGroups: _.cloneDeep(presets[name])
+      tempGroups: _.cloneDeep(this.presets[name])
     });
   }
 
