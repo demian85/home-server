@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import TemperatureMeter from './TemperatureMeter';
 import HumidityMeter from './HumidityMeter';
 import Switcher from './Switcher';
-import AutoSwitcher from './AutoSwitcher';
 import Wind from './Wind';
 import Group from './Group';
 import MotionSensor from './MotionSensor';
@@ -23,51 +22,48 @@ export default function Home() {
               <section className={styles.dashboard}>
 
                 <Group place="bedroom">
+                  <TemperatureMeter title="Temp" value={state.report.room.temperature} />
+                  <HumidityMeter title="Hum" value={state.report.room.humidity} />
+                  <TemperatureMeter title="Feel" value={state.report.room.realFeel} />
+                  <Switcher
+                    title={`${state.report.config.triggerTemp} ˚C`}
+                    value={state.config.autoMode}
+                    icon="auto-mode.svg"
+                    onChange={(value) => state.setConfig({ autoMode: !!value })} />
                   <Switcher
                     value={state.status.lamp}
                     icon="room-lamp.svg"
                     onChange={(value) => state.cmnd('sonoff-lamp', value)} />
-                  <AutoSwitcher
-                    switchValue={state.status.heater}
-                    autoValue={state.config.autoMode}
-                    triggerTemp={state.report.config.triggerTemp}
+                  <Switcher
+                    value={state.status.heater}
                     icon="heater.svg"
-                    onChange={(value) => state.manualHeaterSwitch(1, value)}
-                    onAutoChange={(autoMode) => state.setConfig({ autoMode })}
-                  />
-                  <AutoSwitcher
-                    switchValue={state.status.heater2}
-                    autoValue={state.config.autoMode}
-                    triggerTemp={state.report.config.triggerTemp}
+                    onChange={(value) => state.manualHeaterSwitch(1, value)} />
+                  <Switcher
+                    value={state.status.heater2}
                     icon="heater2.svg"
-                    onChange={(value) => state.manualHeaterSwitch(2, value)}
-                    onAutoChange={(autoMode) => state.setConfig({ autoMode })}
-                  />
-                  <TemperatureMeter title="Temp" value={state.report.room.temperature} />
-                  <TemperatureMeter title="Real Feel" value={state.report.room.realFeel} />
-                  <HumidityMeter title="Hum" value={state.report.room.humidity} />
+                    onChange={(value) => state.manualHeaterSwitch(2, value)} />
                 </Group>
 
                 <Group place="lounge">
+                  <TemperatureMeter title="Temp" value={state.report.lounge.temperature} />
+                  <HumidityMeter title="Hum" value={state.report.lounge.humidity} />
+                  <TemperatureMeter title="Feel" value={state.report.lounge.realFeel} />
                   <Switcher
                     value={state.status['desk-lamp']}
                     icon="desk-lamp.svg"
                     onChange={(value) => state.cmnd('sonoff-desk-lamp', value)} />
-                  <TemperatureMeter title="Temp" value={state.report.lounge.temperature} />
-                  <TemperatureMeter title="Real Feel" value={state.report.lounge.realFeel} />
-                  <HumidityMeter title="Hum" value={state.report.lounge.humidity} />
                   <MotionSensor value={state.status.wemos} />
                 </Group>
 
                 <Group place="outside">
+                  <TemperatureMeter title="Temp" value={state.report.weather.temperature} />
+                  <HumidityMeter title="Hum" value={state.report.weather.humidity} />
+                  <TemperatureMeter title="Feel" value={state.report.weather.realFeel} />
+                  <Wind value={state.report.weather.windSpeedKmh} />
                   <Switcher
                     value={state.status.patio}
                     icon="patio-lamp.svg"
                     onChange={(value) => state.cmnd('sonoff-patio', value)} />
-                  <TemperatureMeter title="Temp" value={state.report.weather.temperature} />
-                  <TemperatureMeter title="Real Feel" value={state.report.weather.realFeel} />
-                  <HumidityMeter title="Hum" value={state.report.weather.humidity} />
-                  <Wind value={state.report.weather.windSpeedKmh} />
                 </Group>
 
               </section>

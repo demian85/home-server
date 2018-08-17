@@ -16,21 +16,7 @@
 .dashboard {
   height: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr;
   grid-template-rows: repeat(auto-fit, minmax(max-content, 120px));
   grid-gap: 0.5em;
-}
-
-.dashboard > div {
-  border: 2px solid #666;
-  border-radius: 6px;
-}
-
-.configEditor {
-  font-family: monospace;
-}
-
-.configJson {
-  margin-top: 1em;
-  font-size: 0.75em;
 }

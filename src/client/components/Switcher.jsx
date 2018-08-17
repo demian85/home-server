@@ -6,12 +6,11 @@ import styles from './Switcher.css';
 export default function Switcher(props) {
   const isOn = props.value === 'on';
   const backgroundImage = `url(/images/${props.icon})`;
-  const borderColor = props.borderColor;
   return (
-    <div className={styles.root} style={{ borderColor, backgroundImage }}>
+    <div className={styles.root} style={{ backgroundImage }}>
       { props.title && <h3>{props.title}</h3> }
       <Checkbox
-        label={String(props.value).toUpperCase()}
+        label=""
         value={isOn}
         onChange={(value) => props.onChange(value ? 1 : 0)}
       />

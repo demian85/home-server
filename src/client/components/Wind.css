@@ -5,7 +5,8 @@
   padding: 0.5em;
   padding-left: 32px;
   background: no-repeat;
-  background-position: 3px 25%, 2px calc(0.5em + 60%);
+  background-position: left top;
+  background-image: url(/images/wind.svg);
   background-size: 24px;
   text-align: center;
 }
@@ -17,16 +18,4 @@
 .value {
   font-size: 1.25em;
   font-weight: bold;
-}
-
-.bedroom {
-  background-image: url(/images/bed.svg), url(/images/wind.svg);
-}
-
-.lounge {
-  background-image: url(/images/lounge.svg), url(/images/wind.svg);
-}
-
-.outside {
-  background-image: url(/images/outside.svg), url(/images/wind.svg);
 }

@@ -1,12 +1,13 @@
 .root {
   display: flex;
   flex-flow: column nowrap;
-  justify-content: center;
   padding: 0.5em;
   padding-left: 32px;
+  border: 1px solid #eee;
   background: no-repeat;
-  background-position: 3px 25%, 2px calc(0.5em + 60%);
+  background-position: left top 0.5em;
   background-size: 24px;
+  background-image: url(/images/temperature.svg);
   text-align: center;
 }
 
@@ -15,18 +16,7 @@
 }
 
 .value {
-  font-size: 1.25em;
+  font-size: 1.1em;
   font-weight: bold;
-}
-
-.bedroom {
-  background-image: url(/images/bed.svg), url(/images/temperature.svg);
-}
-
-.lounge {
-  background-image: url(/images/lounge.svg), url(/images/temperature.svg);
-}
-
-.outside {
-  background-image: url(/images/outside.svg), url(/images/temperature.svg);
+  white-space: nowrap;
 }

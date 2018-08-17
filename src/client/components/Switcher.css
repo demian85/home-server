@@ -2,11 +2,12 @@
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
+  border: 1px solid #eee;
   padding: 0.5em;
-  padding-left: 32px;
+  padding-left: 30px;
   background-repeat: no-repeat;
   background-position: left center;
-  background-size: 32px;
+  background-size: 24px;
 }
 
 .root h3 {
