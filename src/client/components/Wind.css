@@ -5,7 +5,7 @@
   padding: 0.5em;
   padding-left: 32px;
   background: no-repeat;
-  background-position: left top;
+  background-position: left 0.5em center;
   background-image: url(/images/wind.svg);
   background-size: 24px;
   text-align: center;

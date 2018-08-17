@@ -6,7 +6,7 @@
   padding-left: 32px;
   background-image: url(/images/motion-sensor.svg);
   background-repeat: no-repeat;
-  background-position: left center;
+  background-position: left 0.5em center;
   background-size: 24px;
   text-align: center;
 }

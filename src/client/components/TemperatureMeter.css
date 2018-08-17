@@ -1,18 +1,20 @@
 .root {
   display: flex;
   flex-flow: column nowrap;
+  justify-content: center;
   padding: 0.5em;
-  padding-left: 32px;
   border: 1px solid #eee;
-  background: no-repeat;
-  background-position: left top 0.5em;
-  background-size: 24px;
-  background-image: url(/images/temperature.svg);
   text-align: center;
 }
 
 .root h3 {
+  min-height: 24px;
   margin-bottom: 0.5em;
+  padding-left: 28px;
+  background: no-repeat;
+  background-position: left top;
+  background-size: 24px;
+  background-image: url(/images/temperature.svg);
 }
 
 .value {

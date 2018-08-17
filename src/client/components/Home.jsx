@@ -26,7 +26,7 @@ export default function Home() {
                   <HumidityMeter title="Hum" value={state.report.room.humidity} />
                   <TemperatureMeter title="Feel" value={state.report.room.realFeel} />
                   <Switcher
-                    title={`${state.report.config.triggerTemp} ˚C`}
+                    title={`~${state.report.config.triggerTemp} ˚C`}
                     value={state.config.autoMode}
                     icon="auto-mode.svg"
                     onChange={(value) => state.setConfig({ autoMode: !!value })} />
@@ -59,11 +59,11 @@ export default function Home() {
                   <TemperatureMeter title="Temp" value={state.report.weather.temperature} />
                   <HumidityMeter title="Hum" value={state.report.weather.humidity} />
                   <TemperatureMeter title="Feel" value={state.report.weather.realFeel} />
-                  <Wind value={state.report.weather.windSpeedKmh} />
                   <Switcher
                     value={state.status.patio}
                     icon="patio-lamp.svg"
                     onChange={(value) => state.cmnd('sonoff-patio', value)} />
+                  <Wind value={state.report.weather.windSpeedKmh} />
                 </Group>
 
               </section>

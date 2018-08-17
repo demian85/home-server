@@ -17,6 +17,6 @@
   height: 100%;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: repeat(auto-fit, minmax(max-content, 120px));
+  grid-template-rows: repeat(auto-fit, minmax(150px, auto));
   grid-gap: 0.5em;
 }
