@@ -1,6 +1,6 @@
 {
   "name": "sonoff-server",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Sonoff server",
   "main": "src/index.js",
   "engines": {
