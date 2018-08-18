@@ -2,7 +2,9 @@
 A custom server for managing appliances at home using ESP8266-based devices like [Sonoff](http://sonoff.itead.cc/en/) and [Wemos D1 Mini](https://wiki.wemos.cc/products:d1:d1_mini)
 
 *Current UI:*
-![Screenshot](https://github.com/demian85/sonoff-server/blob/master/screenshot1.png)
+![Dashboard](https://github.com/demian85/sonoff-server/blob/master/screenshot1.png)
+
+![Config](https://github.com/demian85/sonoff-server/blob/master/screenshot2.png)
 
 ## Motivation
 I bought a bunch of Sonoff devices and decided to upgrade their firmware to [Sonoff-Tasmota](https://github.com/arendst/Sonoff-Tasmota).
