@@ -21,8 +21,8 @@ export default class Config extends React.Component {
       'sleep': [
         { start: 0, end: 4, temp: 21 },
         { start: 4, end: 9, temp: 21.2 },
-        { start: 9, end: 21, temp: 19 },
-        { start: 21, end: 24, temp: 20.5 },
+        { start: 9, end: 20, temp: 19 },
+        { start: 20, end: 24, temp: 20.5 },
       ]
     };
   }
