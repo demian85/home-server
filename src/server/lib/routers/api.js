@@ -61,7 +61,7 @@ api.post('/config', async (req, res) => {
 
   logger.debug('POST /config %o', config);
 
-  const validKeys = ['defaultTriggerTemp', 'minStateDurationSecs', 'autoMode', 'tempGroups'];
+  const validKeys = ['defaultSetPoint', 'minStateDurationSecs', 'autoMode', 'tempGroups', 'trigger'];
   const newConfig = {};
 
   Object.keys(config).forEach((key) => {
@@ -70,20 +70,30 @@ api.post('/config', async (req, res) => {
     }
   });
 
-  if (isNaN(newConfig.defaultTriggerTemp)) {
+  if (isNaN(newConfig.defaultSetPoint)) {
     res.status(400).end();
   }
   if (isNaN(newConfig.minStateDurationSecs)) {
     res.status(400).end();
   }
+  if (!['temp', 'feel'].includes(newConfig.trigger)) {
+    res.status(400).end();
+  }
 
-  const defaultTriggerTemp = Number(newConfig.defaultTriggerTemp);
+  const defaultSetPoint = Number(newConfig.defaultSetPoint);
   const minStateDurationSecs = Number(newConfig.minStateDurationSecs);
   const autoMode = Boolean(newConfig.autoMode);
   const tempGroups = newConfig.tempGroups || [];
+  const trigger = newConfig.trigger;
 
   try {
-    await db.set('heater.config', JSON.stringify({ defaultTriggerTemp, minStateDurationSecs, autoMode, tempGroups }));
+    await db.set('heater.config', JSON.stringify({
+      defaultSetPoint,
+      minStateDurationSecs,
+      autoMode,
+      tempGroups,
+      trigger
+    }));
     const newConfig = await db.getHeaterConfig();
     if (autoMode) {
       await updateHeaterState();

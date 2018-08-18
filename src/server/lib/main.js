@@ -64,14 +64,13 @@ async function turnOnDevice(deviceName, on) {
   }
 }
 
-async function getRoomTriggerTemp() {
+async function getRoomSetPoint() {
   const heaterConfig = await db.getHeaterConfig();
-  const { defaultTriggerTemp, tempGroups } = heaterConfig;
+  const { defaultSetPoint, tempGroups } = heaterConfig;
   const currentHour = new Date().getHours();
   const currentTempGroup = tempGroups.find(entry => currentHour >= entry.start && currentHour < entry.end);
-  const triggerTemp = currentTempGroup ? currentTempGroup.temp : defaultTriggerTemp;
-
-  return triggerTemp;
+  const setPoint = currentTempGroup ? currentTempGroup.temp : defaultSetPoint;
+  return setPoint;
 }
 
 async function updateHeaterState() {
@@ -84,22 +83,24 @@ async function updateHeaterState() {
     return;
   }
 
-  const realFeel = sensor.realFeel;
-  const triggerTemp = await getRoomTriggerTemp();
+  const { trigger } = await db.getHeaterConfig();
+  const triggerTemp = trigger === 'temp' ? sensor.temperature : sensor.realFeel;
+  const setPoint = await getRoomSetPoint();
 
+  logger.info('set point: %d', setPoint);
   logger.info('trigger temp: %d', triggerTemp);
 
-  if (realFeel < triggerTemp) {
+  if (triggerTemp < setPoint) {
     turnOnDevice('heater1', true);
     turnOnDevice('heater2', true);
   }
 
-  if (realFeel >= (triggerTemp + 0.1)) {
-    // turn off heater2 when realFeel exceeds .1 threshold
+  if (triggerTemp >= (setPoint + 0.1)) {
+    // turn off heater2 when setPoint exceeds .1 threshold
     turnOnDevice('heater2', false);
 
-    // turn off heater1 when realFeel exceeds .5 threshold
-    if (realFeel >= (triggerTemp + 0.5)) {
+    // turn off heater1 when setPoint exceeds .5 threshold
+    if (triggerTemp >= (setPoint + 0.5)) {
       turnOnDevice('heater1', false);
     }
   }
@@ -108,12 +109,12 @@ async function updateHeaterState() {
 async function updateReport() {
   logger.debug(`updateReport()`);
 
-  const triggerTemp = await getRoomTriggerTemp();
+  const setPoint = await getRoomSetPoint();
   const heaterSensor = await db.getSensorData('heater1');
   const loungeSensor = await db.getSensorData('wemos1');
 
   let report = {
-    config: { triggerTemp },
+    config: { setPoint },
     room: heaterSensor,
     lounge: loungeSensor
   };

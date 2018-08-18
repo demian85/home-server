@@ -26,7 +26,7 @@ export default function Home() {
                   <HumidityMeter title="Hum" value={state.report.room.humidity} />
                   <TemperatureMeter title="Feel" value={state.report.room.realFeel} />
                   <Switcher
-                    title={`~${state.report.config.triggerTemp} ˚C`}
+                    title={`~${state.report.config.setPoint} ˚C`}
                     value={state.config.autoMode}
                     icon="auto-mode.svg"
                     onChange={(value) => state.setConfig({ autoMode: !!value })} />

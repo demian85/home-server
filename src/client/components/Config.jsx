@@ -11,18 +11,18 @@ export default class Config extends React.Component {
     this.state = _.cloneDeep(props.value);
     this.presets = {
       'simple': [
-        { start: 0, end: 24, temp: 23.5 },
+        { start: 0, end: 24, temp: 21 },
       ],
       'default': [
-        { start: 0, end: 9, temp: 23.8 },
-        { start: 9, end: 18, temp: 22 },
-        { start: 18, end: 24, temp: 23.5 },
+        { start: 0, end: 9, temp: 21 },
+        { start: 9, end: 18, temp: 19 },
+        { start: 18, end: 24, temp: 20.5 },
       ],
       'sleep': [
-        { start: 0, end: 4, temp: 23.8 },
-        { start: 4, end: 9, temp: 23.9 },
-        { start: 9, end: 21, temp: 23.5 },
-        { start: 21, end: 24, temp: 23.8 },
+        { start: 0, end: 4, temp: 21 },
+        { start: 4, end: 9, temp: 21.2 },
+        { start: 9, end: 21, temp: 19 },
+        { start: 21, end: 24, temp: 20.5 },
       ]
     };
   }
@@ -51,7 +51,7 @@ export default class Config extends React.Component {
     return (
       <section className={styles.root}>
         <div className={styles.content}>
-          <p>Set desired real feel temperature for each time frame:</p>
+          <p>Set desired set point for each time frame:</p>
           <div className={styles.presets}>
             <label>Presets: </label>
             <button className={styles.presetBtn} onClick={() => this.onPresetClick('default')}>Default</button>
@@ -61,6 +61,13 @@ export default class Config extends React.Component {
           <div className={styles.tempGroups}>
             {tempGroups}
           </div>
+        </div>
+        <div className={styles.content}>
+          <label>Trigger: </label>
+          <select value={this.state.trigger} onChange={(e) => this.setState({ trigger: e.target.value })}>
+            <option value="temp">Temperature</option>
+            <option value="feel">Real feel</option>
+          </select>
         </div>
         <div className={styles.content}>
           <label>Heaters on/off state minimum persistence in minutes: </label>
