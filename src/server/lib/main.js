@@ -136,8 +136,6 @@ async function updateReport() {
   logger.info('custom report: %j', report);
 
   mqttClient.publish(topics.report, JSON.stringify(report), { retain: true });
-
-  await db.set('report', JSON.stringify(report));
 }
 
 exports.updateHeaterState = updateHeaterState;

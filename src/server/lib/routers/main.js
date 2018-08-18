@@ -17,9 +17,8 @@ main.get('/init', async (req, res) => {
   };
 
   try {
-    const report = await db.getReport();
     const config = await db.getHeaterConfig();
-    res.json({ auth, report, config });
+    res.json({ auth, config });
   } catch (err) {
     logger.error(err);
     res.status(500);

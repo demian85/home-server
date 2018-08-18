@@ -20,14 +20,12 @@ export default class App extends React.Component {
       setConfig: async (values) => {
         console.log('setConfig', values);
         const body = JSON.stringify(Object.assign({}, this.state.config, values));
-        const res = await fetch('/api/config', {
+        await fetch('/api/config', {
           method: 'POST',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
           body
         });
-        const newConfig = await res.json();
-        this.setState({ config: newConfig });
       },
       manualHeaterSwitch: async (n, value) => {
         const deviceSuffix = n > 1 ? n : '';
@@ -39,7 +37,7 @@ export default class App extends React.Component {
 
   async componentDidMount() {
     const res = await fetch('/init', { credentials: 'include' });
-    const { report, config, auth } = await res.json();
+    const { config, auth } = await res.json();
 
     localStorage.apiKey = auth.apiKey;
     localStorage.mqttUrl = auth.mqttUrl;
@@ -54,6 +52,10 @@ export default class App extends React.Component {
       'stat/_report': (payload) => {
         const report = JSON.parse(payload);
         this.setState({ report });
+      },
+      'stat/_config': (payload) => {
+        const config = JSON.parse(payload);
+        this.setState({ config });
       }
     });
 
@@ -65,7 +67,7 @@ export default class App extends React.Component {
       this.setState({ loaded: false });
     });
 
-    this.setState({ mqttClient, report, config, auth });
+    this.setState({ mqttClient, config, auth });
   }
 
   render() {

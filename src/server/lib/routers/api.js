@@ -97,9 +97,13 @@ api.post('/config', async (req, res) => {
 
   try {
     await db.set('heater.config', JSON.stringify({ defaultTriggerTemp, minStateDurationSecs, autoMode, tempGroups }));
-    await updateHeaterState();
+    const newConfig = await db.getHeaterConfig();
+    if (autoMode) {
+      await updateHeaterState();
+    }
     await updateReport();
-    res.json(await db.getHeaterConfig());
+    client.publish('stat/_config', JSON.stringify(newConfig));
+    res.json(newConfig);
   } catch (err) {
     logger.error(err);
     res.status(500);
