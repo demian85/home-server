@@ -42,19 +42,6 @@ api.get('/event/off', (req, res) => {
   res.end();
 });
 
-api.get('/report', async (req, res) => {
-  logger.debug('/report');
-  try {
-    const report = await db.getReport();
-    res.json(report);
-  } catch (err) {
-    logger.error(err);
-    res.status(500);
-  }
-
-  res.end();
-});
-
 api.get('/config', async (req, res) => {
   logger.debug('GET /config');
 
