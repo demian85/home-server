@@ -11,7 +11,7 @@ export default class Config extends React.Component {
     this.state = _.cloneDeep(props.value);
     this.presets = {
       'simple': [
-        { start: 0, end: 24, temp: 21 },
+        { start: 0, end: 24, temp: 20.5 },
       ],
       'default': [
         { start: 0, end: 9, temp: 21 },
@@ -19,10 +19,10 @@ export default class Config extends React.Component {
         { start: 18, end: 24, temp: 20.5 },
       ],
       'sleep': [
-        { start: 0, end: 4, temp: 21 },
-        { start: 4, end: 9, temp: 21.2 },
-        { start: 9, end: 20, temp: 19 },
-        { start: 20, end: 24, temp: 20.5 },
+        { start: 0, end: 4, temp: 20.7 },
+        { start: 4, end: 10, temp: 20.9 },
+        { start: 10, end: 19, temp: 19 },
+        { start: 19, end: 24, temp: 20.5 },
       ]
     };
   }
