@@ -1,4 +1,5 @@
 const request = require('request');
+const { throttle } = require('lodash');
 const logger = require('./logger');
 const db = require('./db');
 
@@ -34,4 +35,4 @@ async function getWeather() {
   });
 }
 
-exports.getWeather = getWeather;
+exports.getWeather = throttle(getWeather, 1000);

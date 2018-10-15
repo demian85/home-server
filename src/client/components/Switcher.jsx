@@ -4,7 +4,7 @@ import Checkbox from './Checkbox';
 import styles from './Switcher.css';
 
 export default function Switcher(props) {
-  const isOn = props.value === 'on' || props.value === true;
+  const isOn = props.value === 'on' || props.value === true || props.value == 1;
   const backgroundImage = `url(/images/${props.icon})`;
   return (
     <div className={styles.root} style={{ backgroundImage }}>

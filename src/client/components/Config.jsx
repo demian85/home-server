@@ -1,5 +1,6 @@
 import React from 'react';
 import * as _ from 'lodash';
+import Switcher from './Switcher';
 
 import styles from './Config.css';
 
@@ -20,9 +21,9 @@ export default class Config extends React.Component {
       ],
       'sleep': [
         { start: 0, end: 4, temp: 20.7 },
-        { start: 4, end: 10, temp: 20.9 },
-        { start: 10, end: 19, temp: 19 },
-        { start: 19, end: 24, temp: 20.5 },
+        { start: 4, end: 10, temp: 20.8 },
+        { start: 10, end: 19, temp: 10 },
+        { start: 19, end: 24, temp: 20.6 },
       ]
     };
   }
@@ -80,6 +81,31 @@ export default class Config extends React.Component {
             onChange={(e) => this.setState({ minStateDurationSecs: e.target.value * 60 })}
           />
         </div>
+        <div className={styles.content}>
+          <label>Turn on leds at night: </label>
+          <div className={styles.grid}>
+            <Switcher
+              value={this.state.autoLedPower.heater1}
+              title="Room heater 1"
+              icon="led.svg"
+              onChange={(value) => this.onSwitchToggle('heater1', value)} />
+            <Switcher
+              value={this.state.autoLedPower.heater2}
+              title="Room heater 2"
+              icon="led.svg"
+              onChange={(value) => this.onSwitchToggle('heater2', value)} />
+            <Switcher
+              value={this.state.autoLedPower.roomLamp}
+              title="Room lamp"
+              icon="led.svg"
+              onChange={(value) => this.onSwitchToggle('roomLamp', value)} />
+            <Switcher
+              value={this.state.autoLedPower.deskLamp}
+              title="Desk lamp"
+              icon="led.svg"
+              onChange={(value) => this.onSwitchToggle('deskLamp', value)} />
+          </div>
+        </div>
         <div className={styles.controls}>
           <button className={styles.saveBtn} onClick={() => this.save()}>Save</button>
           <button className={styles.cancelBtn} onClick={() => history.back()}>Back</button>
@@ -97,6 +123,13 @@ export default class Config extends React.Component {
     this.setState({
       tempGroups: _.cloneDeep(this.presets[name])
     });
+  }
+
+  onSwitchToggle(device, value) {
+    const autoLedPower = Object.assign({}, this.state.autoLedPower, {
+      [device]: value,
+    });
+    this.setState({ autoLedPower });
   }
 
   handleTempChange(key, value) {

@@ -2,8 +2,12 @@ require('dotenv/config');
 
 const express = require('express');
 const compression = require('compression');
+const { runScheduledActions } = require('./server/lib/main');
 
 require('./server/lib/mqtt/init');
+
+setInterval(runScheduledActions, 60000);
+runScheduledActions();
 
 const main = require('./server/lib/routers/main');
 const api = require('./server/lib/routers/api');

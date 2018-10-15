@@ -9,6 +9,7 @@ client.on('connect', () => {
 
   client.subscribe([
     'stat/+/POWER',
+    'stat/+/RESULT',
     'cmnd/+/POWER',
     'tele/+/SENSOR',
     'tele/+/RESULT',

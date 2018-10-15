@@ -28,6 +28,22 @@ function getSensorReadings(data, sensorName) {
   return { temperature, humidity, realFeel };
 }
 
+async function updateDeviceState(deviceName, payload) {
+  const on = String(payload).toLowerCase() === 'on';
+  const lastChange = Date.now();
+  logger.debug(`Saving ${deviceName} state data: %j`, { on, lastChange });
+  await db.set(`${deviceName}.state`, JSON.stringify({ on, lastChange }));
+}
+
+async function updateDeviceLedPower(deviceName, payload) {
+  const data = JSON.parse(payload);
+  if (data.LedPower) {
+    const ledPower = String(data.LedPower).toLowerCase();
+    logger.debug(`Saving ${deviceName} led power state: %s`, ledPower);
+    await db.set(`${deviceName}.ledPower`, ledPower);
+  }
+}
+
 async function turnOnDevice(deviceName, on) {
   logger.debug(`turnOnDevice(): %j`, { on });
 
@@ -60,7 +76,7 @@ async function turnOnDevice(deviceName, on) {
   logger.info(`${deviceName}: turning ${stateStr}...`);
 
   if (process.env.NODE_ENV !== 'development') {
-    mqttClient.publish(topics[deviceName].cmnd, on ? '1' : '0');
+    mqttClient.publish(topics[deviceName].cmnd('power'), on ? '1' : '0');
   }
 }
 
@@ -139,7 +155,34 @@ async function updateReport() {
   mqttClient.publish(topics.report, JSON.stringify(report), { retain: true });
 }
 
+async function runScheduledActions() {
+  logger.debug(`runScheduledActions()`);
+
+  const { autoLedPower } = await db.getHeaterConfig();
+  const currentHour = new Date().getHours();
+
+  Object.keys(autoLedPower).forEach(async (deviceName) => {
+    if (autoLedPower[deviceName]) {
+      const ledPower = await db.get(`${deviceName}.ledPower`) || null;
+      if (currentHour >= 19 && (!ledPower || ledPower === 'off')) {
+        // night mode
+        logger.info(`switching led on for device ${deviceName}`);
+        mqttClient.publish(topics[deviceName].cmnd('LedPower'), '1');
+      } else if (currentHour >= 7 && currentHour < 19 && (!ledPower || ledPower === 'on')) {
+        // day mode
+        logger.info(`switching led off for device ${deviceName}`);
+        mqttClient.publish(topics[deviceName].cmnd('LedPower'), '0');
+        mqttClient.publish(topics[deviceName].cmnd('LedState'), '1');
+      }
+    }
+  });
+
+}
+
+exports.updateDeviceState = updateDeviceState;
 exports.updateHeaterState = updateHeaterState;
 exports.updateReport = updateReport;
 exports.getRealFeel = getRealFeel;
 exports.getSensorReadings = getSensorReadings;
+exports.runScheduledActions = runScheduledActions;
+exports.updateDeviceLedPower = updateDeviceLedPower;

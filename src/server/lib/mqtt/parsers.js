@@ -1,23 +1,21 @@
 const logger = require('../logger');
 const topics = require('./topics');
 const db = require('../db');
-const { updateHeaterState, updateReport, getSensorReadings } = require('../main');
+const { updateDeviceState, updateDeviceLedPower, updateHeaterState, updateReport, getSensorReadings } = require('../main');
 const ir = require('../ir');
 
 const parsers = {
 
   [topics.heater1.stat]: async (payload) => {
-    const on = String(payload).toLowerCase() === 'on';
-    const lastChange = Date.now();
-    logger.debug('Saving heater1 state data: %j', { on, lastChange });
-    await db.set('heater1.state', JSON.stringify({ on, lastChange }));
+    await updateDeviceState('heater1', payload);
   },
 
   [topics.heater2.stat]: async (payload) => {
-    const on = String(payload).toLowerCase() === 'on';
-    const lastChange = Date.now();
-    logger.debug('Saving heater2 state data: %j', { on, lastChange });
-    await db.set('heater2.state', JSON.stringify({ on, lastChange }));
+    await updateDeviceState('heater2', payload);
+  },
+
+  [topics.deskLamp.stat]: async (payload) => {
+    await updateDeviceState('deskLamp', payload);
   },
 
   [topics.heater1.sensor]: async (payload) => {
@@ -31,13 +29,10 @@ const parsers = {
     logger.debug('Saving heater sensor data: %j', readings);
 
     await db.set('heater1.sensor', JSON.stringify(readings));
-
     const { autoMode } = await db.getHeaterConfig();
-
     if (autoMode) {
       await updateHeaterState();
     }
-
     await updateReport();
   },
 
@@ -52,7 +47,6 @@ const parsers = {
     logger.debug('Saving wemos1 sensor data: %j', readings);
 
     await db.set('wemos1.sensor', JSON.stringify(readings));
-
     await updateReport();
   },
 
@@ -62,6 +56,14 @@ const parsers = {
     if (hexCode) {
       ir.receive(hexCode);
     }
+  },
+
+  [topics.deskLamp.statResult]: async (payload) => {
+    await updateDeviceLedPower('deskLamp', payload);
+  },
+
+  [topics.roomLamp.statResult]: async (payload) => {
+    await updateDeviceLedPower('roomLamp', payload);
   }
 };
 
