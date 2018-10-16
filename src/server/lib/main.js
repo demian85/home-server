@@ -164,7 +164,7 @@ async function runScheduledActions() {
   Object.keys(autoLedPower).forEach(async (deviceName) => {
     if (autoLedPower[deviceName]) {
       const ledPower = await db.get(`${deviceName}.ledPower`) || null;
-      if (currentHour >= 19 && (!ledPower || ledPower === 'off')) {
+      if ((currentHour >= 19 || currentHour < 7) && (!ledPower || ledPower === 'off')) {
         // night mode
         logger.info(`switching led on for device ${deviceName}`);
         mqttClient.publish(topics[deviceName].cmnd('LedPower'), '1');
