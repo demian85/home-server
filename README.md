@@ -1,7 +1,8 @@
 # sonoff-server
 A custom server for managing appliances at home using ESP8266-based devices like [Sonoff](http://sonoff.itead.cc/en/) and [Wemos D1 Mini](https://wiki.wemos.cc/products:d1:d1_mini)
 
-*Current UI:*
+*Screenshots*
+
 ![Dashboard](https://github.com/demian85/sonoff-server/blob/master/screenshot1.png)
 
 ![Config](https://github.com/demian85/sonoff-server/blob/master/screenshot2.png)
