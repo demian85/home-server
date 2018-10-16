@@ -58,6 +58,14 @@ const parsers = {
     }
   },
 
+  [topics.heater1.statResult]: async (payload) => {
+    await updateDeviceLedPower('heater1', payload);
+  },
+
+  [topics.heater2.statResult]: async (payload) => {
+    await updateDeviceLedPower('heater2', payload);
+  },
+
   [topics.deskLamp.statResult]: async (payload) => {
     await updateDeviceLedPower('deskLamp', payload);
   },
@@ -65,10 +73,6 @@ const parsers = {
   [topics.roomLamp.statResult]: async (payload) => {
     await updateDeviceLedPower('roomLamp', payload);
   },
-
-  [topics.heater1.statResult]: async (payload) => {
-    await updateDeviceLedPower('heater1', payload);
-  }
 };
 
 module.exports = parsers;

@@ -156,19 +156,21 @@ async function updateReport() {
 }
 
 async function runScheduledActions() {
-  logger.debug(`runScheduledActions()`);
-
-  const { autoLedPower } = await db.getHeaterConfig();
   const currentHour = new Date().getHours();
+  const isNightMode = currentHour >= 19 || currentHour < 7;
+  const isDayMode = currentHour >= 7 && currentHour < 19;
+  const { autoLedPower } = await db.getHeaterConfig();
+
+  logger.debug(`runScheduledActions(): %j`, { autoLedPower, currentHour, isNightMode, isDayMode });
 
   Object.keys(autoLedPower).forEach(async (deviceName) => {
     if (autoLedPower[deviceName]) {
       const ledPower = await db.get(`${deviceName}.ledPower`) || null;
-      if ((currentHour >= 19 || currentHour < 7) && (!ledPower || ledPower === 'off')) {
+      if (isNightMode && (!ledPower || ledPower === 'off')) {
         // night mode
         logger.info(`switching led on for device ${deviceName}`);
         mqttClient.publish(topics[deviceName].cmnd('LedPower'), '1');
-      } else if (currentHour >= 7 && currentHour < 19 && (!ledPower || ledPower === 'on')) {
+      } else if (isDayMode && (!ledPower || ledPower === 'on')) {
         // day mode
         logger.info(`switching led off for device ${deviceName}`);
         mqttClient.publish(topics[deviceName].cmnd('LedPower'), '0');
