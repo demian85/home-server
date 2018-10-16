@@ -64,6 +64,10 @@ const parsers = {
 
   [topics.roomLamp.statResult]: async (payload) => {
     await updateDeviceLedPower('roomLamp', payload);
+  },
+
+  [topics.heater1.statResult]: async (payload) => {
+    await updateDeviceLedPower('heater1', payload);
   }
 };
 
