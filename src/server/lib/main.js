@@ -180,14 +180,14 @@ async function runScheduledActions() {
   // turn on/off led power for specific devices
   Object.keys(autoLedPower).forEach(async (deviceName) => {
     const shouldTurnOn = !!autoLedPower[deviceName];
+    const ledPower = await db.get(`${deviceName}.ledPower`) || null;
 
-    if (!shouldTurnOn) {
+    if (!shouldTurnOn && (!ledPower || ledPower === 'on')) {
       // set led off by default
       turnOnDeviceLed(deviceName, false);
       return;
     }
 
-    const ledPower = await db.get(`${deviceName}.ledPower`) || null;
     if (isNightMode && (!ledPower || ledPower === 'off')) {
       turnOnDeviceLed(deviceName, true);
     } else if (isDayMode && (!ledPower || ledPower === 'on')) {
