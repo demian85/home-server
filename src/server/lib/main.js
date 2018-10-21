@@ -171,10 +171,11 @@ async function updateReport() {
 async function runScheduledActions() {
   const currentHour = new Date().getHours();
   const isNightMode = currentHour >= 19 || currentHour < 7;
+  const isBedTime = currentHour >= 23 || currentHour < 7;
   const isDayMode = currentHour >= 7 && currentHour < 19;
   const { autoLedPower } = await db.getHeaterConfig();
 
-  logger.debug(`runScheduledActions(): %j`, { autoLedPower, currentHour, isNightMode, isDayMode });
+  logger.debug(`runScheduledActions(): %j`, { autoLedPower, currentHour, isNightMode, isDayMode, isBedTime });
 
   // turn on/off led power for specific devices
   Object.keys(autoLedPower).forEach(async (deviceName) => {
@@ -193,6 +194,16 @@ async function runScheduledActions() {
       turnOnDeviceLed(deviceName, false);
     }
   });
+
+  // turn on/off desk lamp after 15 min of inactivity
+  const motionSensorState = await db.getDeviceState('wemos1');
+  if (motionSensorState) {
+    const motionSensorLastStateChangeDiff = Date.now() - motionSensorState.lastChange;
+    if (isBedTime && motionSensorState.on === false && motionSensorLastStateChangeDiff > (1000 * 60 * 15)) {
+      logger.info('switching off device: deskLamp');
+      mqttClient.publish(topics.deskLamp.cmnd(), '0');
+    }
+  }
 }
 
 exports.updateDeviceState = updateDeviceState;
