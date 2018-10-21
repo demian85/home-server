@@ -185,13 +185,12 @@ async function runScheduledActions() {
     if (!shouldTurnOn && (!ledPower || ledPower === 'on')) {
       // set led off by default
       turnOnDeviceLed(deviceName, false);
-      return;
-    }
-
-    if (isNightMode && (!ledPower || ledPower === 'off')) {
-      turnOnDeviceLed(deviceName, true);
-    } else if (isDayMode && (!ledPower || ledPower === 'on')) {
-      turnOnDeviceLed(deviceName, false);
+    } else if (shouldTurnOn) {
+      if (isNightMode && (!ledPower || ledPower === 'off')) {
+        turnOnDeviceLed(deviceName, true);
+      } else if (isDayMode && (!ledPower || ledPower === 'on')) {
+        turnOnDeviceLed(deviceName, false);
+      }
     }
   });
 
