@@ -45,7 +45,7 @@ async function updateDeviceLedPower(deviceName, payload) {
 }
 
 async function turnOnDevice(deviceName, on) {
-  logger.debug(`turnOnDevice(): %j`, { on });
+  logger.debug(`turnOnDevice(): %j`, { deviceName, on });
 
   const state = await db.getDeviceState(deviceName);
   const stateStr = on ? 'on' : 'off';
@@ -77,6 +77,19 @@ async function turnOnDevice(deviceName, on) {
 
   if (process.env.NODE_ENV !== 'development') {
     mqttClient.publish(topics[deviceName].cmnd('power'), on ? '1' : '0');
+  }
+}
+
+function turnOnDeviceLed(deviceName, on) {
+  logger.debug(`turnOnDeviceLed(): %j`, { deviceName, on });
+
+  if (on) {
+    logger.info(`switching led on for device: ${deviceName}`);
+    mqttClient.publish(topics[deviceName].cmnd('LedPower'), '1');
+  } else {
+    logger.info(`switching led off for device: ${deviceName}`);
+    mqttClient.publish(topics[deviceName].cmnd('LedPower'), '0');
+    mqttClient.publish(topics[deviceName].cmnd('LedState'), '1');
   }
 }
 
@@ -164,19 +177,21 @@ async function runScheduledActions() {
 
   logger.debug(`runScheduledActions(): %j`, { autoLedPower, currentHour, isNightMode, isDayMode, isBedTime });
 
+  // turn on/off led power for specific devices
   Object.keys(autoLedPower).forEach(async (deviceName) => {
-    if (autoLedPower[deviceName]) {
-      const ledPower = await db.get(`${deviceName}.ledPower`) || null;
-      if (isNightMode && (!ledPower || ledPower === 'off')) {
-        // night mode
-        logger.info(`switching led on for device ${deviceName}`);
-        mqttClient.publish(topics[deviceName].cmnd('LedPower'), '1');
-      } else if (isDayMode && (!ledPower || ledPower === 'on')) {
-        // day mode
-        logger.info(`switching led off for device ${deviceName}`);
-        mqttClient.publish(topics[deviceName].cmnd('LedPower'), '0');
-        mqttClient.publish(topics[deviceName].cmnd('LedState'), '1');
-      }
+    const shouldTurnOn = !!autoLedPower[deviceName];
+
+    if (!shouldTurnOn) {
+      // set led off by default
+      turnOnDeviceLed(deviceName, false);
+      return;
+    }
+
+    const ledPower = await db.get(`${deviceName}.ledPower`) || null;
+    if (isNightMode && (!ledPower || ledPower === 'off')) {
+      turnOnDeviceLed(deviceName, true);
+    } else if (isDayMode && (!ledPower || ledPower === 'on')) {
+      turnOnDeviceLed(deviceName, false);
     }
   });
 
