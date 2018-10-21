@@ -58,6 +58,10 @@ const parsers = {
     }
   },
 
+  [topics.wemos1.cmnd()]: async (payload) => {
+    await updateDeviceState('wemos1', payload);
+  },
+
   [topics.heater1.statResult]: async (payload) => {
     await updateDeviceLedPower('heater1', payload);
   },
