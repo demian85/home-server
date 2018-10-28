@@ -6,13 +6,15 @@ import { initMqttClient } from '../lib/mqtt';
 import Home from './Home';
 import Config from './Config';
 import Loader from './Loader';
+import Log from './Log';
 
 export default class App extends React.Component {
 
   constructor(props) {
     super(props);
 
-    this.state = Object.assign({}, store, {
+    this.state = {
+      ...store,
       cmnd: async (device, value) => {
         console.log('cmnd', device, value);
         this.state.mqttClient.publish(`cmnd/${device}/power`, String(value));
@@ -32,7 +34,7 @@ export default class App extends React.Component {
         await this.state.cmnd(`sonoff-heater${deviceSuffix}`, value ? '1' : '0');
         await this.state.setConfig({ autoMode: false });
       }
-    });
+    };
   }
 
   async componentDidMount() {
@@ -56,7 +58,14 @@ export default class App extends React.Component {
       'stat/_config': (payload) => {
         const config = JSON.parse(payload);
         this.setState({ config });
-      }
+      },
+      'stat/_logs': (payload) => {
+        const data = JSON.parse(String(payload));
+        this.setState((prevState) => {
+          const logs = [...prevState.logs, data].slice(-500);
+          return { logs };
+        });
+      },
     });
 
     mqttClient.on('connect', () => {
@@ -78,6 +87,7 @@ export default class App extends React.Component {
       <Provider value={this.state}>
         <Route exact path="/" render={() => <Home />} />
         <Route path="/config" render={() => <Config value={this.state.config} onSave={(config) => this.state.setConfig(config)} />} />
+        <Route path="/logs" render={() => <Log />} />
       </Provider>
     );
   }

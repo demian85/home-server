@@ -7,6 +7,11 @@ export const store = {
   report: null,
   auth: null,
   status: null,
+  logs: [],
 };
 
-export const { Provider, Consumer } = React.createContext(store);
+const StoreProvider = React.createContext(store);
+
+export const { Provider, Consumer } = StoreProvider;
+export default StoreProvider;
+

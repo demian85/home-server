@@ -1,0 +1,7 @@
+.root {
+  height: 100%;
+  white-space: pre;
+  overflow: auto;
+  font-family: monospace;
+  font-size: 11px;
+}
