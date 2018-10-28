@@ -194,11 +194,11 @@ async function runScheduledActions() {
     }
   });
 
-  // turn on/off desk lamp after 15 min of inactivity
+  // turn on/off desk lamp after 5 min of inactivity
   const motionSensorState = await db.getDeviceState('wemos1');
   if (motionSensorState) {
     const motionSensorLastStateChangeDiff = Date.now() - motionSensorState.lastChange;
-    if (isBedTime && motionSensorState.on === false && motionSensorLastStateChangeDiff > (1000 * 60 * 15)) {
+    if (isBedTime && motionSensorState.on === false && motionSensorLastStateChangeDiff > (1000 * 60 * 5)) {
       logger.info('switching off device: deskLamp');
       mqttClient.publish(topics.deskLamp.cmnd(), '0');
     }
