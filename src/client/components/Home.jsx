@@ -53,6 +53,13 @@ export default class Home extends React.Component {
               <MotionSensor value={state.status.wemos} />
             </Group>
 
+            <Group place="hall">
+              <Switcher
+                value={state.status['socket1']}
+                icon="no-mosquito.svg"
+                onChange={(value) => state.cmnd('sonoff-socket1', value)} />
+            </Group>
+
             <Group place="outside">
               <TemperatureMeter title="Temp" value={state.report.weather.temperature} />
               <HumidityMeter title="Hum" value={state.report.weather.humidity} />

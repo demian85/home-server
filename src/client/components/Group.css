@@ -60,3 +60,8 @@
   background-image: url(/images/outside.svg);
   border-color: #25a84a;
 }
+
+.hall {
+  background-image: url(/images/crib.svg);
+  border-color: #bb8a20;
+}
