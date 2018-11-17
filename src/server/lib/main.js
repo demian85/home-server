@@ -1,20 +1,10 @@
-const Feels = require('feels');
 const logger = require('./logger');
 const { getWeather } = require('./weather');
 const db = require('./db');
 const topics = require('./mqtt/topics');
 const mqttClient = require('./mqtt/client');
-
-function getRealFeel(temperature, humidity, speed = 0) {
-  const feelsLike = new Feels({
-    temp: temperature,
-    humidity,
-    speed
-  }).like();
-
-  // Round to one decimal
-  return Math.round(feelsLike * 10) / 10;
-}
+const { getRealFeel } = require('./utils');
+const { toggleDeskLamp, toggleLedPower } = require('./actions');
 
 function getSensorReadings(data, sensorName) {
   const sensor = data && data[sensorName];
@@ -77,19 +67,6 @@ async function turnOnDevice(deviceName, on) {
 
   if (process.env.NODE_ENV !== 'development') {
     mqttClient.publish(topics[deviceName].cmnd('power'), on ? '1' : '0');
-  }
-}
-
-function turnOnDeviceLed(deviceName, on) {
-  logger.debug(`turnOnDeviceLed(): %j`, { deviceName, on });
-
-  if (on) {
-    logger.info(`switching led on for device: ${deviceName}`);
-    mqttClient.publish(topics[deviceName].cmnd('LedPower'), '1');
-  } else {
-    logger.info(`switching led off for device: ${deviceName}`);
-    mqttClient.publish(topics[deviceName].cmnd('LedPower'), '0');
-    mqttClient.publish(topics[deviceName].cmnd('LedState'), '1');
   }
 }
 
@@ -169,40 +146,10 @@ async function updateReport() {
 }
 
 async function runScheduledActions() {
-  const currentHour = new Date().getHours();
-  const isNightMode = currentHour >= 19 || currentHour < 7;
-  const isBedTime = currentHour >= 23 || currentHour < 7;
-  const isDayMode = currentHour >= 7 && currentHour < 19;
-  const { autoLedPower } = await db.getHeaterConfig();
+  logger.debug(`runScheduledActions()`);
 
-  logger.debug(`runScheduledActions(): %j`, { autoLedPower, currentHour, isNightMode, isDayMode, isBedTime });
-
-  // turn on/off led power for specific devices
-  Object.keys(autoLedPower).forEach(async (deviceName) => {
-    const shouldTurnOn = !!autoLedPower[deviceName];
-    const ledPower = await db.get(`${deviceName}.ledPower`) || null;
-
-    if (!shouldTurnOn && (!ledPower || ledPower === 'on')) {
-      // set led off by default
-      turnOnDeviceLed(deviceName, false);
-    } else if (shouldTurnOn) {
-      if (isNightMode && (!ledPower || ledPower === 'off')) {
-        turnOnDeviceLed(deviceName, true);
-      } else if (isDayMode && (!ledPower || ledPower === 'on')) {
-        turnOnDeviceLed(deviceName, false);
-      }
-    }
-  });
-
-  // turn on/off desk lamp after 5 min of inactivity
-  const motionSensorState = await db.getDeviceState('wemos1');
-  if (motionSensorState) {
-    const motionSensorLastStateChangeDiff = Date.now() - motionSensorState.lastChange;
-    if (isBedTime && motionSensorState.on === false && motionSensorLastStateChangeDiff > (1000 * 60 * 5)) {
-      logger.info('switching off device: deskLamp');
-      mqttClient.publish(topics.deskLamp.cmnd(), '0');
-    }
-  }
+  toggleLedPower();
+  toggleDeskLamp();
 }
 
 exports.updateDeviceState = updateDeviceState;
