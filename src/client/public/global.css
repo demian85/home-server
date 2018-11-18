@@ -16,8 +16,6 @@ body {
   font-size: 14px;
   font-family: "Open Sans", sans-serif;
   cursor: default;
-  user-select: none;
-  -webkit-user-select: none
 }
 
 #root {

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { store, Provider } from '../lib/store';
 import { initMqttClient } from '../lib/mqtt';
 
@@ -85,11 +86,13 @@ export default class App extends React.Component {
       return <Loader />;
     }
     return (
-      <Provider value={this.state}>
-        <Route exact path="/" render={() => <Home />} />
-        <Route path="/config" render={() => <Config value={this.state.config} onSave={(config) => this.state.setConfig(config)} />} />
-        <Route path="/logs" render={() => <Log />} />
-      </Provider>
+      <BrowserRouter>
+        <Provider value={this.state}>
+          <Route exact path="/" render={() => <Home />} />
+          <Route path="/config" render={() => <Config value={this.state.config} onSave={(config) => this.state.setConfig(config)} />} />
+          <Route path="/logs" render={() => <Log />} />
+        </Provider>
+      </BrowserRouter>
     );
   }
 
@@ -103,5 +106,4 @@ export default class App extends React.Component {
       });
     };
   }
-
 }

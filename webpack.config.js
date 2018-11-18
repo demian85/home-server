@@ -6,7 +6,7 @@ const dev = process.env.NODE_ENV === 'development';
 
 const config = {
   mode: process.env.NODE_ENV || 'development',
-  entry: './src/client/index.js',
+  entry: './src/client/index.jsx',
   devtool: dev ? 'cheap-module-eval-source-map' : 'source-map',
   output: {
     path: path.resolve(__dirname, 'dist/client/public'),
