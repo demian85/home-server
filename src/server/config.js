@@ -14,5 +14,5 @@ module.exports = {
     heater2: 0,
     roomLamp: 0,
     deskLamp: 0,
-  }
+  },
 };

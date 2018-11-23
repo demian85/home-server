@@ -30,14 +30,17 @@ export default class Home extends React.Component {
                 onChange={(value) => state.setConfig({ autoMode: !!value })} />
               <Switcher
                 value={state.status.lamp}
+                online={state.onlineStatus.lamp}
                 icon="room-lamp.svg"
                 onChange={(value) => state.cmnd('sonoff-lamp', value)} />
               <Switcher
                 value={state.status.heater}
+                online={state.onlineStatus.heater}
                 icon="heater.svg"
                 onChange={(value) => state.manualHeaterSwitch(1, value)} />
               <Switcher
                 value={state.status.heater2}
+                online={state.onlineStatus.heater2}
                 icon="heater2.svg"
                 onChange={(value) => state.manualHeaterSwitch(2, value)} />
             </Group>
@@ -48,6 +51,7 @@ export default class Home extends React.Component {
               <TemperatureMeter title="Feel" value={state.report.lounge.realFeel} />
               <Switcher
                 value={state.status['desk-lamp']}
+                online={state.onlineStatus['desk-lamp']}
                 icon="desk-lamp.svg"
                 onChange={(value) => state.cmnd('sonoff-desk-lamp', value)} />
               <MotionSensor value={state.status.wemos} />
@@ -55,7 +59,8 @@ export default class Home extends React.Component {
 
             <Group place="hall">
               <Switcher
-                value={state.status['socket1']}
+                value={state.status.socket1}
+                online={state.onlineStatus.socket1}
                 icon="no-mosquito.svg"
                 onChange={(value) => state.cmnd('sonoff-socket1', value)} />
             </Group>
@@ -66,6 +71,7 @@ export default class Home extends React.Component {
               <TemperatureMeter title="Feel" value={state.report.weather.realFeel} />
               <Switcher
                 value={state.status.patio}
+                online={state.onlineStatus.patio}
                 icon="patio-lamp.svg"
                 onChange={(value) => state.cmnd('sonoff-patio', value)} />
               <Wind value={state.report.weather.windSpeedKmh} />

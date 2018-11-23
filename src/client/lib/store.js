@@ -6,7 +6,8 @@ export const store = {
   config: null,
   report: null,
   auth: null,
-  status: null,
+  status: {},
+  onlineStatus: {},
   logs: [],
 };
 

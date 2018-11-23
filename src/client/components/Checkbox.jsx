@@ -12,6 +12,7 @@ export default function Checkbox(props) {
       <input
         type="checkbox"
         checked={checked}
+        disabled={props.disabled}
         className={styles.switch}
         style={{ width, height }}
         onChange={(e) => props.onChange(e.target.checked)}

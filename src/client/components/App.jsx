@@ -9,6 +9,10 @@ import Config from './Config';
 import Loader from './Loader';
 import Log from './Log';
 
+const devices = [
+  'heater', 'heater2', 'lamp', 'desk-lamp', 'patio', 'socket1'
+];
+
 export default class App extends React.Component {
 
   constructor(props) {
@@ -45,14 +49,16 @@ export default class App extends React.Component {
     localStorage.apiKey = auth.apiKey;
     localStorage.mqttUrl = auth.mqttUrl;
 
+    const parsers = {};
+    devices.forEach((name) => {
+      parsers[`stat/sonoff-${name}/POWER`] = this.buildStatusParser(name);
+      parsers[`tele/sonoff-${name}/LWT`] = this.buildOnlineStatusParser(name);
+    });
+
     const mqttClient = initMqttClient({
-      'stat/sonoff-heater/POWER': this.buildStatusParser('heater'),
-      'stat/sonoff-heater2/POWER': this.buildStatusParser('heater2'),
-      'stat/sonoff-lamp/POWER': this.buildStatusParser('lamp'),
-      'stat/sonoff-desk-lamp/POWER': this.buildStatusParser('desk-lamp'),
-      'stat/sonoff-patio/POWER': this.buildStatusParser('patio'),
-      'stat/sonoff-socket1/POWER': this.buildStatusParser('socket1'),
+      ...parsers,
       'cmnd/wemos/POWER': this.buildStatusParser('wemos'),
+      'tele/wemos/LWT': this.buildOnlineStatusParser('wemos'),
       'stat/_report': (payload) => {
         const report = JSON.parse(payload);
         this.setState({ report });
@@ -101,7 +107,24 @@ export default class App extends React.Component {
       const status = String(payload).toLowerCase();
       this.setState((state) => {
         return {
-          status: Object.assign({}, state.status, { [deviceName]: status })
+          status: {
+            ...state.status,
+            [deviceName]: status
+          },
+        };
+      });
+    };
+  }
+
+  buildOnlineStatusParser(deviceName) {
+    return (payload) => {
+      const online = String(payload).toLowerCase() === 'online';
+      this.setState((state) => {
+        return {
+          onlineStatus: {
+            ...state.onlineStatus,
+            [deviceName]: online
+          },
         };
       });
     };
