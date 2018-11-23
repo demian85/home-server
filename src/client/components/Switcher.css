@@ -4,8 +4,7 @@
   flex-flow: column nowrap;
   justify-content: center;
   border: 1px solid #eee;
-  padding: 0.5em;
-  padding-left: 30px;
+  padding: 0.5em 1em 0.5em 30px;
   background-repeat: no-repeat;
   background-position: left 0.5em center;
   background-size: 24px;
@@ -23,13 +22,6 @@
   position: absolute;
   top: 5px;
   right: 5px;
-}
-
-@media (min-width: 1024px) {
-  .onlineStatus {
-    width: 16px;
-    height: 16px;
-  }
 }
 
 .onlineStatus.online {
