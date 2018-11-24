@@ -122,7 +122,7 @@ async function updateReport() {
   let report = {
     config: { setPoint },
     room: heaterSensor,
-    lounge: loungeSensor
+    lounge: loungeSensor,
   };
 
   try {
@@ -145,11 +145,13 @@ async function updateReport() {
   mqttClient.publish(topics.report, JSON.stringify(report), { retain: true });
 }
 
-async function runScheduledActions() {
+function runScheduledActions() {
   logger.debug(`runScheduledActions()`);
 
   toggleLedPower();
   toggleDeskLamp();
+
+  setTimeout(runScheduledActions, 60000);
 }
 
 exports.updateDeviceState = updateDeviceState;
