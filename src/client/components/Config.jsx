@@ -82,7 +82,7 @@ export default class Config extends React.Component {
           />
         </div>
         <div className={styles.content}>
-          <label>Turn on leds at night (20hs - 7hs): </label>
+          <label>Turn on leds at night (sunset - sunrise): </label>
           <div className={styles.grid}>
             <Switcher
               value={this.state.autoLedPower.heater1}
