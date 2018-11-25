@@ -1,6 +1,7 @@
 import React from 'react';
 import * as _ from 'lodash';
 import Switcher from './Switcher';
+import Checkbox from './Checkbox';
 
 import styles from './Config.css';
 
@@ -105,6 +106,17 @@ export default class Config extends React.Component {
               icon="led.svg"
               onChange={(value) => this.onSwitchToggle('deskLamp', value)} />
           </div>
+        </div>
+        <div className={styles.content}>
+          <label>
+            <input
+              type="checkbox"
+              checked={!!this.state.autoTurnOffDeskLamp}
+              style={{ marginRight: '5px'}}
+              onChange={(e) => this.setState({ autoTurnOffDeskLamp: e.target.checked })}
+            />
+            Turn off desk lamp automatically 10min after motion sensor went off (night mode)
+          </label>
         </div>
         <div className={styles.controls}>
           <button className={styles.saveBtn} onClick={() => this.save()}>Save</button>

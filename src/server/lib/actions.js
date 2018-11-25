@@ -6,11 +6,12 @@ const { isDayTime, isNightTime, isBedTime } = require('./utils');
 
 // turn on/off desk lamp after 10 min of inactivity
 exports.toggleDeskLamp = async function() {
+  const { autoTurnOffDeskLamp } = await db.getHeaterConfig();
   const motionSensorState = await db.getDeviceState('wemos1');
 
-  logger.debug(`toggleDeskLamp(): %j`, { motionSensorState, isBedTime: isBedTime() });
+  logger.debug(`toggleDeskLamp(): %j`, { autoTurnOffDeskLamp, motionSensorState, isBedTime: isBedTime() });
 
-  if (motionSensorState) {
+  if (autoTurnOffDeskLamp && motionSensorState) {
     const motionSensorLastStateChangeDiff = Date.now() - motionSensorState.lastChange;
     if (isBedTime() && motionSensorState.on === false && motionSensorLastStateChangeDiff > (1000 * 60 * 10)) {
       logger.info('switching off device: deskLamp');

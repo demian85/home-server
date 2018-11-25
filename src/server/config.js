@@ -15,4 +15,5 @@ module.exports = {
     roomLamp: 0,
     deskLamp: 0,
   },
+  autoTurnOffDeskLamp: false,
 };

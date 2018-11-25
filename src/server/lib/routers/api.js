@@ -61,7 +61,9 @@ api.post('/config', async (req, res) => {
 
   logger.debug('POST /config %o', config);
 
-  const validKeys = ['defaultSetPoint', 'minStateDurationSecs', 'autoMode', 'tempGroups', 'trigger', 'autoLedPower'];
+  const validKeys = [
+    'defaultSetPoint', 'minStateDurationSecs', 'autoMode', 'tempGroups', 'trigger', 'autoLedPower', 'autoTurnOffDeskLamp'
+  ];
   const newConfig = {};
 
   Object.keys(config).forEach((key) => {
@@ -86,6 +88,7 @@ api.post('/config', async (req, res) => {
   const tempGroups = newConfig.tempGroups || [];
   const trigger = newConfig.trigger;
   const autoLedPower = newConfig.autoLedPower;
+  const autoTurnOffDeskLamp = !!newConfig.autoTurnOffDeskLamp;
 
   try {
     await db.set('heater.config', JSON.stringify({
@@ -94,7 +97,8 @@ api.post('/config', async (req, res) => {
       autoMode,
       tempGroups,
       trigger,
-      autoLedPower
+      autoLedPower,
+      autoTurnOffDeskLamp,
     }));
     const newConfig = await db.getHeaterConfig();
     if (autoMode) {

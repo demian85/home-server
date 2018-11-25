@@ -13,7 +13,7 @@ export default function Checkbox(props) {
         disabled={props.disabled}
         className={styles.switch}
         onChange={(e) => props.onChange(e.target.checked)}
-        />
+      />
     </div>
   );
 }
