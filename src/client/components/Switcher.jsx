@@ -3,7 +3,7 @@ import Checkbox from './Checkbox';
 
 import styles from './Switcher.css';
 
-export default function Switcher(props) {
+export default React.memo(function Switcher(props) {
   const isOn = props.value === 'on' || props.value === true || props.value == 1;
   const backgroundImage = `url(/images/${props.icon})`;
   const disabled = props.online === false;
@@ -22,4 +22,4 @@ export default function Switcher(props) {
       }
     </div>
   );
-}
+});

@@ -4,7 +4,7 @@ import TimeAgo from './TimeAgo';
 
 import styles from './TemperatureMeter.css';
 
-export default function TemperatureMeter(props) {
+export default React.memo(function TemperatureMeter(props) {
   return (
     <div className={styles.root}>
       { props.title && <h3>{props.title}</h3> }
@@ -12,4 +12,4 @@ export default function TemperatureMeter(props) {
       <TimeAgo date={props.lastUpdate} />
     </div>
   );
-}
+});

@@ -4,7 +4,7 @@ import TimeAgo from './TimeAgo';
 
 import styles from './MotionSensor.css';
 
-export default function MotionSensor(props) {
+export default React.memo(function MotionSensor(props) {
   const label = props.value ? String(props.value).toUpperCase() : '-';
   return (
     <div className={styles.root} style={{ borderColor: props.borderColor }}>
@@ -13,4 +13,4 @@ export default function MotionSensor(props) {
       <TimeAgo date={props.lastUpdate} />
     </div>
   );
-}
+});

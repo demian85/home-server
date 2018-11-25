@@ -4,7 +4,7 @@ import TimeAgo from './TimeAgo';
 
 import styles from './HumidityMeter.css';
 
-export default function HumidityMeter(props) {
+export default React.memo(function HumidityMeter(props) {
   return (
     <div className={styles.root}>
       { props.title && <h3>{props.title}</h3> }
@@ -12,4 +12,4 @@ export default function HumidityMeter(props) {
       <TimeAgo date={props.lastUpdate} />
     </div>
   );
-}
+});
