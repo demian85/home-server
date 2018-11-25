@@ -15,6 +15,10 @@ const devices = [
 
 export default class App extends React.Component {
 
+  static getDerivedStateFromError(error) {
+    return { error };
+  }
+
   constructor(props) {
     super(props);
 
@@ -91,6 +95,13 @@ export default class App extends React.Component {
     if (!this.state.loaded) {
       return <Loader />;
     }
+
+    if (this.state.error) {
+      return (
+        <div className="error">An error occurred <pre>{this.state.error.toString()}</pre></div>
+      );
+    }
+
     return (
       <BrowserRouter>
         <Provider value={this.state}>
