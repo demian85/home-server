@@ -8,17 +8,32 @@
 }
 
 .root h3 {
-  min-height: 24px;
+  min-height: 20px;
   margin-bottom: 0.5em;
-  padding-left: 28px;
+  padding-left: 24px;
   background: no-repeat;
   background-position: left top;
-  background-size: 24px;
+  background-size: 20px;
   background-image: url(/images/temperature.svg);
 }
 
 .value {
-  font-size: 1.25em;
+  font-size: 1.1em;
   font-weight: bold;
   white-space: nowrap;
+  margin-bottom: 0.5em;
 }
+
+@media (min-height: 640px) {
+
+  .root h3 {
+    min-height: 24px;
+    padding-left: 28px;
+    background-size: 24px;
+  }
+
+  .value {
+    font-size: 1.25em;
+  }
+}
+

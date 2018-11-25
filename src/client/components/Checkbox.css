@@ -5,5 +5,14 @@
 }
 
 .switch {
+  width: 20px;
+  height: 20px;
   vertical-align: middle;
+}
+
+@media (min-height: 640px) {
+  .switch {
+    width: 30px;
+    height: 30px;
+  }
 }
