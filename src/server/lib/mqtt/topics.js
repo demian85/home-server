@@ -22,7 +22,7 @@ const topics = {
     statResult: 'stat/sonoff-desk-lamp/RESULT',
   },
   wemos1: {
-    cmnd: (cmnd = 'power') => `cmnd/wemos/${cmnd}`,
+    cmnd: (cmnd = 'POWER') => `cmnd/wemos/${cmnd}`,
     stat: `stat/wemos/POWER`,
     sensor: `tele/wemos/SENSOR`,
     result: `tele/wemos/RESULT`,
