@@ -60,6 +60,7 @@ const parsers = {
 
   [topics.wemos1.cmnd()]: async (payload) => {
     await updateDeviceState('wemos1', payload);
+    await updateReport();
   },
 
   [topics.heater1.statResult]: async (payload) => {

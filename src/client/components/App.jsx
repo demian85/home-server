@@ -1,17 +1,14 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import { BrowserRouter } from 'react-router-dom';
-import { store, Provider } from '../lib/store';
+
+import { store, sonoffDevices, Provider } from '../lib/store';
 import { initMqttClient } from '../lib/mqtt';
 
 import Home from './Home';
 import Config from './Config';
 import Loader from './Loader';
 import Log from './Log';
-
-const devices = [
-  'heater', 'heater2', 'lamp', 'desk-lamp', 'patio', 'socket1'
-];
 
 export default class App extends React.Component {
 
@@ -25,11 +22,11 @@ export default class App extends React.Component {
     this.state = {
       ...store,
       cmnd: async (device, value) => {
-        console.log('cmnd', device, value);
+        console.debug('cmnd', device, value);
         this.state.mqttClient.publish(`cmnd/${device}/power`, String(value));
       },
       setConfig: async (values) => {
-        console.log('setConfig', values);
+        console.debug('setConfig', values);
         const body = JSON.stringify(Object.assign({}, this.state.config, values));
         await fetch('/api/config', {
           method: 'POST',
@@ -53,16 +50,9 @@ export default class App extends React.Component {
     localStorage.apiKey = auth.apiKey;
     localStorage.mqttUrl = auth.mqttUrl;
 
-    const parsers = {};
-    devices.forEach((name) => {
-      parsers[`stat/sonoff-${name}/POWER`] = this.buildStatusParser(name);
-      parsers[`tele/sonoff-${name}/LWT`] = this.buildOnlineStatusParser(name);
-    });
-
-    const mqttClient = initMqttClient({
-      ...parsers,
-      'cmnd/wemos/POWER': this.buildStatusParser('wemos'),
-      'tele/wemos/LWT': this.buildOnlineStatusParser('wemos'),
+    const parsers = {
+      'cmnd/wemos/POWER': this.buildStatusParser('wemos1'),
+      'tele/wemos/LWT': this.buildOnlineStatusParser('wemos1'),
       'stat/_report': (payload) => {
         const report = JSON.parse(payload);
         this.setState({ report });
@@ -78,7 +68,13 @@ export default class App extends React.Component {
           return { logs };
         });
       },
+    };
+    sonoffDevices.forEach((name) => {
+      parsers[`stat/sonoff-${name}/POWER`] = this.buildStatusParser(name);
+      parsers[`tele/sonoff-${name}/LWT`] = this.buildOnlineStatusParser(name);
     });
+
+    const mqttClient = initMqttClient(parsers);
 
     mqttClient.on('connect', () => {
       this.setState({ loaded: true });
@@ -115,12 +111,12 @@ export default class App extends React.Component {
 
   buildStatusParser(deviceName) {
     return (payload) => {
-      const status = String(payload).toLowerCase();
+      const value = String(payload).toLowerCase();
       this.setState((state) => {
         return {
-          status: {
-            ...state.status,
-            [deviceName]: status
+          powerStatus: {
+            ...state.powerStatus,
+            [deviceName]: value
           },
         };
       });
@@ -129,12 +125,12 @@ export default class App extends React.Component {
 
   buildOnlineStatusParser(deviceName) {
     return (payload) => {
-      const online = String(payload).toLowerCase() === 'online';
+      const value = String(payload).toLowerCase() === 'online';
       this.setState((state) => {
         return {
           onlineStatus: {
             ...state.onlineStatus,
-            [deviceName]: online
+            [deviceName]: value,
           },
         };
       });

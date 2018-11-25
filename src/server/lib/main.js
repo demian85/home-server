@@ -15,7 +15,7 @@ function getSensorReadings(data, sensorName) {
   const humidity = parseFloat(sensor.Humidity) || null; // 0% humidity would be nice!
   const realFeel = getRealFeel(temperature, humidity);
 
-  return { temperature, humidity, realFeel };
+  return { temperature, humidity, realFeel, lastUpdate: Date.now() };
 }
 
 async function updateDeviceState(deviceName, payload) {
@@ -118,11 +118,13 @@ async function updateReport() {
   const setPoint = await getRoomSetPoint();
   const heaterSensor = await db.getSensorData('heater1');
   const loungeSensor = await db.getSensorData('wemos1');
+  const motionSensor = await db.getDeviceState('wemos1');
 
   let report = {
     config: { setPoint },
     room: heaterSensor,
     lounge: loungeSensor,
+    motionSensor,
   };
 
   try {
@@ -133,7 +135,8 @@ async function updateReport() {
         temperature: Math.round(weather.main.temp * 10) / 10,
         humidity: weather.main.humidity,
         realFeel: getRealFeel(weather.main.temp, weather.main.humidity, weather.wind.speed),
-        windSpeedKmh: Math.round(weather.wind.speed / 1000 * 3600)
+        windSpeedKmh: Math.round(weather.wind.speed / 1000 * 3600),
+        lastUpdate: weather.dt ? weather.dt * 1000 : null,
       }
     });
   } catch (err) {

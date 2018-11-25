@@ -17,60 +17,106 @@ export default class Home extends React.Component {
     return (
       <section className={styles.root} >
         {
-          state.report && state.status &&
+          state.report && state.powerStatus &&
           <section className={styles.dashboard}>
+
             <Group place="bedroom">
-              <TemperatureMeter title="Temp" value={state.report.room.temperature} />
-              <HumidityMeter title="Hum" value={state.report.room.humidity} />
-              <TemperatureMeter title="Feel" value={state.report.room.realFeel} />
+              <TemperatureMeter
+                title="Temp"
+                value={state.report.room.temperature}
+                lastUpdate={state.report.room.lastUpdate}
+              />
+              <HumidityMeter
+                title="Hum"
+                value={state.report.room.humidity}
+                lastUpdate={state.report.room.lastUpdate}
+              />
+              <TemperatureMeter
+                title="Feel"
+                value={state.report.room.realFeel}
+                lastUpdate={state.report.room.lastUpdate}
+              />
               <Switcher
                 title={`~${state.report.config.setPoint} ˚C`}
                 value={state.config.autoMode}
                 icon="auto-mode.svg"
-                onChange={(value) => state.setConfig({ autoMode: !!value })} />
+                onChange={(value) => state.setConfig({ autoMode: !!value })}
+              />
               <Switcher
-                value={state.status.lamp}
+                value={state.powerStatus.lamp}
                 online={state.onlineStatus.lamp}
                 icon="room-lamp.svg"
-                onChange={(value) => state.cmnd('sonoff-lamp', value)} />
+                onChange={(value) => state.cmnd('sonoff-lamp', value)}
+              />
               <Switcher
-                value={state.status.heater}
+                value={state.powerStatus.heater}
                 online={state.onlineStatus.heater}
                 icon="heater.svg"
-                onChange={(value) => state.manualHeaterSwitch(1, value)} />
+                onChange={(value) => state.manualHeaterSwitch(1, value)}
+              />
               <Switcher
-                value={state.status.heater2}
+                value={state.powerStatus.heater2}
                 online={state.onlineStatus.heater2}
                 icon="heater2.svg"
-                onChange={(value) => state.manualHeaterSwitch(2, value)} />
+                onChange={(value) => state.manualHeaterSwitch(2, value)}
+              />
             </Group>
 
             <Group place="lounge">
-              <TemperatureMeter title="Temp" value={state.report.lounge.temperature} />
-              <HumidityMeter title="Hum" value={state.report.lounge.humidity} />
-              <TemperatureMeter title="Feel" value={state.report.lounge.realFeel} />
+              <TemperatureMeter
+                title="Temp"
+                value={state.report.lounge.temperature}
+                lastUpdate={state.report.lounge.lastUpdate}
+              />
+              <HumidityMeter
+                title="Hum"
+                value={state.report.lounge.humidity}
+                lastUpdate={state.report.lounge.lastUpdate}
+              />
+              <TemperatureMeter
+                title="Feel"
+                value={state.report.lounge.realFeel}
+                lastUpdate={state.report.lounge.lastUpdate}
+              />
               <Switcher
-                value={state.status['desk-lamp']}
+                value={state.powerStatus['desk-lamp']}
                 online={state.onlineStatus['desk-lamp']}
                 icon="desk-lamp.svg"
-                onChange={(value) => state.cmnd('sonoff-desk-lamp', value)} />
-              <MotionSensor value={state.status.wemos} />
+                onChange={(value) => state.cmnd('sonoff-desk-lamp', value)}
+              />
+              <MotionSensor
+                value={state.powerStatus.wemos1}
+                lastUpdate={state.report.motionSensor && state.report.motionSensor.lastChange}
+              />
             </Group>
 
             <Group place="hall">
               <Switcher
-                value={state.status.socket1}
+                value={state.powerStatus.socket1}
                 online={state.onlineStatus.socket1}
                 icon="no-mosquito.svg"
-                onChange={(value) => state.cmnd('sonoff-socket1', value)} />
+                onChange={(value) => state.cmnd('sonoff-socket1', value)}
+              />
             </Group>
 
             <Group place="outside">
-              <TemperatureMeter title="Temp" value={state.report.weather.temperature} />
-              <HumidityMeter title="Hum" value={state.report.weather.humidity} />
-              <TemperatureMeter title="Feel" value={state.report.weather.realFeel} />
+              <TemperatureMeter
+                title="Temp"
+                value={state.report.weather.temperature}
+                lastUpdate={state.report.weather.lastUpdate}
+              />
+              <HumidityMeter
+                title="Hum"
+                value={state.report.weather.humidity}
+                lastUpdate={state.report.weather.lastUpdate}
+              />
+              <TemperatureMeter
+                title="Feel"
+                value={state.report.weather.realFeel}
+                lastUpdate={state.report.weather.lastUpdate}
+              />
               <Switcher
-                value={state.status.patio}
+                value={state.powerStatus.patio}
                 online={state.onlineStatus.patio}
                 icon="patio-lamp.svg"
                 onChange={(value) => state.cmnd('sonoff-patio', value)} />

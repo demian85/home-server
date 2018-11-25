@@ -24,7 +24,7 @@
   margin-bottom: 0.5em;
 }
 
-@media (min-height: 640px) {
+@media (min-height: 700px) {
 
   .root h3 {
     min-height: 24px;
