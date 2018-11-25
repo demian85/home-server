@@ -4,7 +4,7 @@ const mqttClient = require('./mqtt/client');
 const topics = require('./mqtt/topics');
 const { isDayTime, isNightTime, isBedTime } = require('./utils');
 
-// turn on/off desk lamp after 5 min of inactivity
+// turn on/off desk lamp after 10 min of inactivity
 exports.toggleDeskLamp = async function() {
   const motionSensorState = await db.getDeviceState('wemos1');
 
@@ -12,7 +12,7 @@ exports.toggleDeskLamp = async function() {
 
   if (motionSensorState) {
     const motionSensorLastStateChangeDiff = Date.now() - motionSensorState.lastChange;
-    if (isBedTime() && motionSensorState.on === false && motionSensorLastStateChangeDiff > (1000 * 60 * 5)) {
+    if (isBedTime() && motionSensorState.on === false && motionSensorLastStateChangeDiff > (1000 * 60 * 10)) {
       logger.info('switching off device: deskLamp');
       mqttClient.publish(topics.deskLamp.cmnd(), '0');
     }
