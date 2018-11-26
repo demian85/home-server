@@ -19,7 +19,7 @@ const parsers = {
   },
 
   [topics.heater1.sensor]: async (payload) => {
-    const data = JSON.parse(payload);
+    const data = JSON.parse(payload.toString());
     const readings = getSensorReadings(data, 'SI7021');
 
     if (!readings) {
@@ -37,7 +37,7 @@ const parsers = {
   },
 
   [topics.wemos1.sensor]: async (payload) => {
-    const data = JSON.parse(payload);
+    const data = JSON.parse(payload.toString());
     const readings = getSensorReadings(data, 'AM2301');
 
     if (!readings) {
@@ -51,7 +51,7 @@ const parsers = {
   },
 
   [topics.wemos1.result]: async (payload) => {
-    const data = JSON.parse(payload);
+    const data = JSON.parse(payload.toString());
     const hexCode = data && data.IrReceived && data.IrReceived.Data || null;
     if (hexCode) {
       ir.receive(hexCode);
