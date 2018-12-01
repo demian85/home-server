@@ -51,7 +51,7 @@ export default class App extends React.Component {
     localStorage.mqttUrl = auth.mqttUrl;
 
     const parsers = {
-      'cmnd/wemos/POWER': this.buildStatusParser('wemos1'),
+      'stat/wemos/POWER': this.buildStatusParser('wemos1'),
       'tele/wemos/LWT': this.buildOnlineStatusParser('wemos1'),
       'stat/_report': (payload) => {
         const report = JSON.parse(payload);

@@ -58,7 +58,7 @@ const parsers = {
     }
   },
 
-  [topics.wemos1.cmnd()]: async (payload) => {
+  [topics.wemos1.stat]: async (payload) => {
     await updateDeviceState('wemos1', payload);
     await updateReport();
   },
