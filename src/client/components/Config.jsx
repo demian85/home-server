@@ -115,7 +115,7 @@ export default class Config extends React.Component {
               style={{ marginRight: '5px'}}
               onChange={(e) => this.setState({ autoTurnOffDeskLamp: e.target.checked })}
             />
-            Turn off desk lamp automatically 10min after motion sensor went off (night mode)
+            Turn off desk lamp automatically at bed time (10min after motion sensor went off)
           </label>
         </div>
         <div className={styles.controls}>
