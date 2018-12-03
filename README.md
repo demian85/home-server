@@ -1,4 +1,4 @@
-# sonoff-server
+# home-server
 A custom server for managing appliances at home using ESP8266-based devices like [Sonoff](http://sonoff.itead.cc/en/) and [Wemos D1 Mini](https://wiki.wemos.cc/products:d1:d1_mini)
 
 *Screenshots*
@@ -20,11 +20,13 @@ Server runs on a local Raspberry PI model 3 B+ which has the following services:
 - [Mosquitto MQTT Broker](https://mosquitto.org/)
 - [Redis server](https://redis.io/)
 
-I currently own 4 Sonoff devices, which are connected to the following appliances:
+I currently own 6 Sonoff devices, which are connected to the following appliances:
 - Patio lamp
 - Desk lamp
 - Room lamp
-- Room heater (this one also reports values from its SI7021 temperature and humidity sensor).
+- Room heater 1 (this one also reports values from its SI7021 temperature and humidity sensor).
+- Room heater 2
+- Wall socket
 
 I also have a bunch of sensors connected to a Wemos D1 Mini (flashed with the same firmware above) in my living room:
 - [DHT22/AM2301](https://www.sparkfun.com/datasheets/Sensors/Temperature/DHT22.pdf) temperature and humidity sensor
