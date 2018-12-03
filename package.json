@@ -1,7 +1,7 @@
 {
-  "name": "sonoff-server",
-  "version": "1.1.0",
-  "description": "Sonoff server",
+  "name": "home-server",
+  "version": "1.2.0",
+  "description": "Smart Home server",
   "main": "src/index.js",
   "engines": {
     "node": "10.x"
@@ -14,7 +14,7 @@
     "init:config": "node src/server/init.js"
   },
   "keywords": [
-    "sonoff"
+    "sonoff", "smart", "home", "server", "esp8266", "wemos", "domotics", "automation"
   ],
   "author": "Demian Rodriguez",
   "license": "ISC",
@@ -28,7 +28,7 @@
     "feels": "^3.0.0",
     "hbs": "^4.0.1",
     "lodash": "^4.17.11",
-    "luxon": "^1.7.1",
+    "luxon": "^1.8.2",
     "mqtt": "^2.18.8",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
@@ -43,17 +43,17 @@
     "@babel/core": "^7.1.6",
     "@babel/preset-env": "^7.1.6",
     "@babel/preset-react": "^7.0.0",
-    "@types/react": "^16.7.6",
-    "@types/react-dom": "^16.0.9",
+    "@types/react": "^16.7.11",
+    "@types/react-dom": "^16.0.11",
     "@types/react-router-dom": "^4.3.1",
     "babel-loader": "^8.0.0",
     "copy-webpack-plugin": "^4.6.0",
     "css-loader": "^0.28.11",
     "eslint": "^4.19.1",
     "eslint-plugin-react": "^7.11.1",
-    "mini-css-extract-plugin": "^0.4.4",
+    "mini-css-extract-plugin": "^0.4.5",
     "style-loader": "^0.21.0",
-    "webpack": "^4.25.1",
+    "webpack": "^4.26.1",
     "webpack-cli": "^3.1.2"
   }
 }
