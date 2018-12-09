@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import TemperatureMeter from './TemperatureMeter';
 import HumidityMeter from './HumidityMeter';
 import Switcher from './Switcher';
-import Wind from './Wind';
 import Group from './Group';
 import MotionSensor from './MotionSensor';
 import SensorMeter from './SensorMeter';
