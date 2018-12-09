@@ -4,10 +4,10 @@
   grid-template-columns: repeat(6, 1fr);
   grid-template-rows: repeat(auto-fit, minmax(50px, auto));
   padding: var(--spacing-compact);
-  padding-left: 50px;
+  padding-left: 34px;
   background-repeat: no-repeat;
   background-position: left 3px center;
-  background-size: 32px;
+  background-size: 24px;
   border: 2px solid;
   border-radius: 6px;
 }
@@ -70,10 +70,13 @@
 }
 
 @media (min-width: 400px) {
+
   .root {
     grid-gap: var(--spacing-normal);
     padding: var(--spacing-normal);
     padding-left: 50px;
+    background-size: 32px;
+    padding-left: 42px;
   }
 }
 
