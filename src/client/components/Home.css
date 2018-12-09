@@ -1,6 +1,5 @@
 .root {
-  height: 100%;
-  padding: 1em;
+  padding: var(--spacing-normal);
   box-sizing: border-box;
   user-select: none;
   -webkit-user-select: none;
@@ -20,5 +19,16 @@
   height: 100%;
   display: grid;
   grid-template-columns: 1fr;
-  grid-gap: 0.5em;
+  grid-gap: var(--spacing-compact);
+}
+
+@media (min-width: 400px) {
+
+  .root {
+    padding: calc(var(--spacing-normal) * 2);
+  }
+
+  .dashboard {
+    grid-gap: var(--spacing-normal);
+  }
 }

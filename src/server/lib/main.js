@@ -3,7 +3,7 @@ const { getWeather } = require('./weather');
 const db = require('./db');
 const topics = require('./mqtt/topics');
 const mqttClient = require('./mqtt/client');
-const { getRealFeel } = require('./utils');
+const { getRealFeel, getSolarCalc } = require('./utils');
 const { toggleDeskLamp, toggleLedPower } = require('./actions');
 
 function getSensorReadings(data, sensorName) {
@@ -128,12 +128,17 @@ async function updateReport() {
   const heaterSensor = await db.getSensorData('heater1');
   const loungeSensor = await db.getSensorData('wemos1');
   const motionSensor = await db.getDeviceState('wemos1');
+  const { sunrise, sunset } = getSolarCalc();
 
   let report = {
     config: { setPoint },
     room: heaterSensor,
     lounge: loungeSensor,
     motionSensor,
+    data: {
+      sunrise: sunrise.toISOString(),
+      sunset: sunset.toISOString(),
+    },
   };
 
   try {

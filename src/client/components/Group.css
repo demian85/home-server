@@ -1,9 +1,9 @@
 .root {
   display: grid;
-  grid-gap: 0.5em;
+  grid-gap: var(--spacing-compact);
   grid-template-columns: repeat(6, 1fr);
   grid-template-rows: repeat(auto-fit, minmax(50px, auto));
-  padding: 0.5em;
+  padding: var(--spacing-compact);
   padding-left: 50px;
   background-repeat: no-repeat;
   background-position: left 3px center;
@@ -68,3 +68,12 @@
   background-image: url(/images/outside.svg);
   border-color: #25a84a;
 }
+
+@media (min-width: 400px) {
+  .root {
+    grid-gap: var(--spacing-normal);
+    padding: var(--spacing-normal);
+    padding-left: 50px;
+  }
+}
+

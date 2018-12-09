@@ -16,6 +16,13 @@ function getRealFeel(temperature, humidity, speed = 0) {
   return Math.round(feelsLike * 10) / 10;
 }
 
+function getSolarCalc() {
+  const calc = new SolarCalc(new Date(), LATITUDE, LONGITUDE);
+  return {
+    sunrise: calc.sunrise,
+    sunset: calc.sunset,
+  }
+}
 
 function isDayTime() {
   const calc = new SolarCalc(new Date(), LATITUDE, LONGITUDE);
@@ -39,3 +46,4 @@ exports.getRealFeel = getRealFeel;
 exports.isDayTime = isDayTime;
 exports.isNightTime = isNightTime;
 exports.isBedTime = isBedTime;
+exports.getSolarCalc = getSolarCalc;

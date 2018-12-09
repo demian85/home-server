@@ -8,6 +8,7 @@ import Wind from './Wind';
 import Group from './Group';
 import MotionSensor from './MotionSensor';
 import SensorMeter from './SensorMeter';
+import Sun from './Sun';
 import StoreProvider from '../lib/store';
 
 import styles from './Home.css';
@@ -127,15 +128,17 @@ export default class Home extends React.Component {
                 online={state.onlineStatus.patio}
                 icon="patio-lamp.svg"
                 onChange={(value) => state.cmnd('sonoff-patio', value)} />
-              <Wind value={state.report.weather.windSpeedKmh} />
+              <SensorMeter
+                icon="/images/wind.svg"
+                value={`${state.report.weather.windSpeedKmh} km/h`}
+              />
+              <Sun data={state.report.data} />
             </Group>
 
           </section>
         }
         <div className={styles.footer} >
-          <Link to="/config">Config</Link>
-          |
-          <Link to="/logs">Logs</Link>
+          <Link to="/config">Config</Link> | <Link to="/logs">Logs</Link>
         </div>
       </section >
     );
