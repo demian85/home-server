@@ -7,6 +7,7 @@ import Switcher from './Switcher';
 import Wind from './Wind';
 import Group from './Group';
 import MotionSensor from './MotionSensor';
+import SensorMeter from './SensorMeter';
 import StoreProvider from '../lib/store';
 
 import styles from './Home.css';
@@ -65,18 +66,18 @@ export default class Home extends React.Component {
             <Group place="lounge">
               <TemperatureMeter
                 title="Temp"
-                value={state.report.lounge.temperature}
-                lastUpdate={state.report.lounge.lastUpdate}
+                value={state.report.lounge.AM2301.temperature}
+                lastUpdate={state.report.lounge.AM2301.lastUpdate}
               />
               <HumidityMeter
                 title="Hum"
-                value={state.report.lounge.humidity}
-                lastUpdate={state.report.lounge.lastUpdate}
+                value={state.report.lounge.AM2301.humidity}
+                lastUpdate={state.report.lounge.AM2301.lastUpdate}
               />
               <TemperatureMeter
                 title="Feel"
-                value={state.report.lounge.realFeel}
-                lastUpdate={state.report.lounge.lastUpdate}
+                value={state.report.lounge.AM2301.realFeel}
+                lastUpdate={state.report.lounge.AM2301.lastUpdate}
               />
               <Switcher
                 value={state.powerStatus['desk-lamp']}
@@ -87,6 +88,12 @@ export default class Home extends React.Component {
               <MotionSensor
                 value={state.powerStatus.wemos1}
                 lastUpdate={state.report.motionSensor && state.report.motionSensor.lastChange}
+              />
+              <SensorMeter
+                title="Pressure"
+                value={`${state.report.lounge.BMP280.pressure} hPa`}
+                lastUpdate={state.report.lounge.BMP280.lastUpdate}
+                icon="images/gauge.svg"
               />
             </Group>
 

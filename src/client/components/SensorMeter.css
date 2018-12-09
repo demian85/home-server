@@ -1,0 +1,38 @@
+.root {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  padding: 0.5em;
+  border: 1px solid #eee;
+  text-align: center;
+}
+
+.root h3 {
+  min-height: 20px;
+  margin-bottom: 0.5em;
+  padding-left: 24px;
+  background: no-repeat;
+  background-position: left top;
+  background-size: 20px;
+}
+
+.value {
+  font-size: 1.1em;
+  font-weight: bold;
+  white-space: nowrap;
+  margin-bottom: 0.5em;
+}
+
+@media (min-height: 700px) {
+
+  .root h3 {
+    min-height: 24px;
+    padding-left: 28px;
+    background-size: 24px;
+  }
+
+  .value {
+    font-size: 1.25em;
+  }
+}
+

@@ -39,11 +39,14 @@
   grid-area: 3 / 4 / 3 / 7;
 }
 
-.lounge .root > div:nth-child(4) {
-  grid-area: 2 / 1 / 2 / 4;
+.lounge.root > div:nth-child(4) {
+  grid-area: 2 / 1 / 2 / 3;
 }
-.lounge .root > div:nth-child(5) {
-  grid-area: 2 / 4 / 2 / 7;
+.lounge.root > div:nth-child(5) {
+  grid-area: 2 / 3 / 2 / 5;
+}
+.lounge.root > div:nth-child(6) {
+  grid-area: 2 / 5 / 2 / 7;
 }
 
 .bedroom {
@@ -56,12 +59,12 @@
   border-color: #bba220;
 }
 
-.outside {
-  background-image: url(/images/outside.svg);
-  border-color: #25a84a;
-}
-
 .hall {
   background-image: url(/images/crib.svg);
   border-color: #bb8a20;
+}
+
+.outside {
+  background-image: url(/images/outside.svg);
+  border-color: #25a84a;
 }

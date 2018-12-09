@@ -9,13 +9,22 @@ const { toggleDeskLamp, toggleLedPower } = require('./actions');
 function getSensorReadings(data, sensorName) {
   const sensor = data && data[sensorName];
 
-  if (!sensor) return null;
+  if (!sensor) {
+    return;
+  }
 
-  const temperature = parseFloat(sensor.Temperature) || null; // can't be 0, sorry!
-  const humidity = parseFloat(sensor.Humidity) || null; // 0% humidity would be nice!
-  const realFeel = getRealFeel(temperature, humidity);
+  const temperature = sensor.Temperature !== undefined ? parseFloat(sensor.Temperature) : null;
+  const humidity = sensor.Humidity !== undefined ? parseFloat(sensor.Humidity) : null;
+  const pressure = sensor.Pressure !== undefined ? parseFloat(sensor.Pressure) : null;
+  const realFeel = (temperature !== null && humidity !== null) ? getRealFeel(temperature, humidity) : null;
 
-  return { temperature, humidity, realFeel, lastUpdate: Date.now() };
+  return {
+    temperature,
+    humidity,
+    pressure,
+    realFeel,
+    lastUpdate: Date.now(),
+  };
 }
 
 async function updateDeviceState(deviceName, payload) {
