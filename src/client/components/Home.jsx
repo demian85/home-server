@@ -5,7 +5,6 @@ import TemperatureMeter from './TemperatureMeter';
 import HumidityMeter from './HumidityMeter';
 import Switcher from './Switcher';
 import Group from './Group';
-import MotionSensor from './MotionSensor';
 import SensorMeter from './SensorMeter';
 import Sun from './Sun';
 import StoreProvider from '../lib/store';
@@ -15,6 +14,8 @@ import styles from './Home.css';
 export default class Home extends React.Component {
   render() {
     const state = this.context;
+    const motionSensorValue = state.powerStatus.wemos1 ? String(state.powerStatus.wemos1).toUpperCase() : '-';
+
     return (
       <section className={styles.root} >
         {
@@ -85,15 +86,17 @@ export default class Home extends React.Component {
                 icon="desk-lamp.svg"
                 onChange={(value) => state.cmnd('sonoff-desk-lamp', value)}
               />
-              <MotionSensor
-                value={state.powerStatus.wemos1}
+              <SensorMeter
+                title="Motion"
+                icon="/images/motion-sensor.svg"
+                value={motionSensorValue}
                 lastUpdate={state.report.motionSensor && state.report.motionSensor.lastChange}
               />
               <SensorMeter
                 title="Pressure"
+                icon="images/gauge.svg"
                 value={`${state.report.lounge.BMP280.pressure} hPa`}
                 lastUpdate={state.report.lounge.BMP280.lastUpdate}
-                icon="images/gauge.svg"
               />
             </Group>
 
