@@ -11,10 +11,18 @@
     "build": "webpack -p",
     "start": "node src/index.js",
     "dev": "webpack --progress --watch",
+    "lint": "eslint ./src",
     "init:config": "node src/server/init.js"
   },
   "keywords": [
-    "sonoff", "smart", "home", "server", "esp8266", "wemos", "domotics", "automation"
+    "sonoff",
+    "smart",
+    "home",
+    "server",
+    "esp8266",
+    "wemos",
+    "domotics",
+    "automation"
   ],
   "author": "Demian Rodriguez",
   "license": "ISC",
@@ -30,6 +38,7 @@
     "lodash": "^4.17.11",
     "luxon": "^1.8.2",
     "mqtt": "^2.18.8",
+    "prop-types": "^15.6.2",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-router": "^4.3.1",
@@ -49,7 +58,7 @@
     "babel-loader": "^8.0.0",
     "copy-webpack-plugin": "^4.6.0",
     "css-loader": "^0.28.11",
-    "eslint": "^4.19.1",
+    "eslint": "^5.10.0",
     "eslint-plugin-react": "^7.11.1",
     "mini-css-extract-plugin": "^0.4.5",
     "style-loader": "^0.21.0",
