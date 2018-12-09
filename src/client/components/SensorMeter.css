@@ -31,6 +31,11 @@
   white-space: nowrap;
 }
 
+.suffix {
+  margin-left: 5px;
+  font-size: 0.8em;
+}
+
 @media (min-height: 700px) {
 
   .root h3 {

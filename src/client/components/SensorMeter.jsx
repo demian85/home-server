@@ -7,21 +7,28 @@ import styles from './SensorMeter.css';
 
 function SensorMeter(props) {
   const css = { backgroundImage: `url(${props.icon})` };
+  const tree = (
+    <>
+    <div className={styles.value}>
+      {props.value}
+      { props.suffix && <span className={styles.suffix}>{props.suffix}</span> }
+    </div>
+    { props.lastUpdate && <TimeAgo date={props.lastUpdate} /> }
+    </>
+  );
 
   if (props.title) {
     return (
       <div className={`${styles.root} ${styles.withTitle}`}>
         <h3 style={css}>{props.title}</h3>
-        <span className={styles.value}>{props.value}</span>
-        { props.lastUpdate && <TimeAgo date={props.lastUpdate} /> }
+        {tree}
       </div>
     );
   }
 
   return (
     <div className={`${styles.root} ${styles.noTitle}`} style={css}>
-      <span className={styles.value}>{props.value}</span>
-      { props.lastUpdate && <TimeAgo date={props.lastUpdate} /> }
+      {tree}
     </div>
   );
 }
@@ -30,6 +37,7 @@ SensorMeter.propTypes = {
   icon: PropTypes.string.isRequired,
   title: PropTypes.string,
   value: PropTypes.node,
+  suffix: PropTypes.string,
   lastUpdate: PropTypes.number,
 };
 

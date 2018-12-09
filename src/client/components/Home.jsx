@@ -95,7 +95,8 @@ export default class Home extends React.Component {
               <SensorMeter
                 title="Pressure"
                 icon="images/gauge.svg"
-                value={`${state.report.lounge.BMP280.pressure} hPa`}
+                value={state.report.lounge.BMP280.pressure}
+                suffix="hPa"
                 lastUpdate={state.report.lounge.BMP280.lastUpdate}
               />
             </Group>
@@ -132,7 +133,8 @@ export default class Home extends React.Component {
                 onChange={(value) => state.cmnd('sonoff-patio', value)} />
               <SensorMeter
                 icon="/images/wind.svg"
-                value={`${state.report.weather.windSpeedKmh} km/h`}
+                value={state.report.weather.windSpeedKmh}
+                suffix="km/h"
               />
               <Sun data={state.report.data} />
             </Group>

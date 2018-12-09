@@ -1,15 +1,17 @@
 import React from 'react';
 
-import TimeAgo from './TimeAgo';
+import SensorMeter from './SensorMeter';
 
-import styles from './TemperatureMeter.css';
-
-export default React.memo(function TemperatureMeter(props) {
+function TemperatureMeter(props) {
   return (
-    <div className={styles.root}>
-      { props.title && <h3>{props.title}</h3> }
-      <span className={styles.value}>{props.value} ˚C</span>
-      <TimeAgo date={props.lastUpdate} />
-    </div>
+    <SensorMeter
+      title={props.title}
+      icon="/images/temperature.svg"
+      value={props.value}
+      suffix="˚C"
+      lastUpdate={props.lastUpdate}
+    />
   );
-});
+}
+
+export default React.memo(TemperatureMeter);
