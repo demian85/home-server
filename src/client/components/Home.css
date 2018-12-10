@@ -22,7 +22,7 @@
   grid-gap: var(--spacing-compact);
 }
 
-@media (min-width: 400px) {
+@media (min-width: 475px) {
 
   .root {
     padding: calc(var(--spacing-normal) * 2);

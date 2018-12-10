@@ -6,6 +6,7 @@ import HumidityMeter from './HumidityMeter';
 import Switcher from './Switcher';
 import Group from './Group';
 import SensorMeter from './SensorMeter';
+import IlluminanceMeter from './IlluminanceMeter';
 import Sun from './Sun';
 import StoreProvider from '../lib/store';
 
@@ -104,11 +105,8 @@ export default class Home extends React.Component {
               }
               {
                 state.report.lounge.BH1750 &&
-                <SensorMeter
-                  title="Illuminance"
-                  icon="/images/exposure.svg"
+                <IlluminanceMeter
                   value={state.report.lounge.BH1750.illuminance}
-                  suffix="lx"
                   lastUpdate={state.report.lounge.BH1750.lastUpdate}
                 />
               }

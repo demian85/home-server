@@ -36,7 +36,7 @@
   font-size: 0.8em;
 }
 
-@media (min-height: 700px) {
+@media (min-width: 475px) {
 
   .root h3 {
     min-height: 24px;

@@ -72,7 +72,7 @@
   border-color: #25a84a;
 }
 
-@media (min-width: 400px) {
+@media (min-width: 475px) {
 
   .root {
     grid-gap: var(--spacing-normal);
