@@ -92,13 +92,26 @@ export default class Home extends React.Component {
                 value={motionSensorValue}
                 lastUpdate={state.report.motionSensor && state.report.motionSensor.lastChange}
               />
-              <SensorMeter
-                title="Pressure"
-                icon="images/gauge.svg"
-                value={state.report.lounge.BMP280.pressure}
-                suffix="hPa"
-                lastUpdate={state.report.lounge.BMP280.lastUpdate}
-              />
+              {
+                state.report.lounge.BMP280 &&
+                <SensorMeter
+                  title="Pressure"
+                  icon="images/gauge.svg"
+                  value={state.report.lounge.BMP280.pressure}
+                  suffix="hPa"
+                  lastUpdate={state.report.lounge.BMP280.lastUpdate}
+                />
+              }
+              {
+                state.report.lounge.BH1750 &&
+                <SensorMeter
+                  title="Illuminance"
+                  icon="/images/exposure.svg"
+                  value={state.report.lounge.BH1750.illuminance}
+                  suffix="lx"
+                  lastUpdate={state.report.lounge.BH1750.lastUpdate}
+                />
+              }
             </Group>
 
             <Group place="hall">

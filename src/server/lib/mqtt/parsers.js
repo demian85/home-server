@@ -40,6 +40,7 @@ const parsers = {
     const data = JSON.parse(payload.toString());
     const AM2301 = getSensorReadings(data, 'AM2301');
     const BMP280 = getSensorReadings(data, 'BMP280');
+    const BH1750 = getSensorReadings(data, 'BH1750');
 
     if (!AM2301) {
       logger.error('Sensor AM2301 not found!');
@@ -47,8 +48,11 @@ const parsers = {
     if (!BMP280) {
       logger.error('Sensor BMP280 not found!');
     }
+    if (!BH1750) {
+      logger.error('Sensor BH1750 not found!');
+    }
 
-    const readings = { AM2301, BMP280 };
+    const readings = { AM2301, BMP280, BH1750 };
 
     logger.debug('Saving wemos1 sensor data: %j', readings);
 

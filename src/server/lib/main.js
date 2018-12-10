@@ -13,15 +13,17 @@ function getSensorReadings(data, sensorName) {
     return;
   }
 
-  const temperature = sensor.Temperature !== undefined ? parseFloat(sensor.Temperature) : null;
-  const humidity = sensor.Humidity !== undefined ? parseFloat(sensor.Humidity) : null;
-  const pressure = sensor.Pressure !== undefined ? parseFloat(sensor.Pressure) : null;
-  const realFeel = (temperature !== null && humidity !== null) ? getRealFeel(temperature, humidity) : null;
+  const temperature = sensor.Temperature !== undefined ? parseFloat(sensor.Temperature) : undefined;
+  const humidity = sensor.Humidity !== undefined ? parseFloat(sensor.Humidity) : undefined;
+  const pressure = sensor.Pressure !== undefined ? parseFloat(sensor.Pressure) : undefined;
+  const illuminance = sensor.Illuminance !== undefined ? parseFloat(sensor.Illuminance) : undefined;
+  const realFeel = (temperature !== undefined && humidity !== undefined) ? getRealFeel(temperature, humidity) : undefined;
 
   return {
     temperature,
     humidity,
     pressure,
+    illuminance,
     realFeel,
     lastUpdate: Date.now(),
   };
