@@ -1,7 +1,14 @@
 .root {
   height: 100%;
+  margin: 1em 0;
   white-space: pre;
   overflow: auto;
   font-family: monospace;
   font-size: 1em;
+}
+
+.root:empty::after {
+  content: 'waiting for logs...';
+  display: block;
+  text-align: center;
 }

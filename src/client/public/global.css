@@ -3,6 +3,7 @@
 :root {
   --spacing-compact: 0.2em;
   --spacing-normal: 0.5em;
+  --color-text: #666;
 }
 
 * {
@@ -17,7 +18,7 @@ html {
 body {
   height: 100%;
   background: #fff;
-  color: #666;
+  color: var(--color-text);
   font-size: 14px;
   font-family: "Open Sans", sans-serif;
   cursor: default;

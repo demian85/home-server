@@ -7,12 +7,19 @@
 
 .footer {
   margin: 1em 0;
-  text-align: center;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
 }
 
 .footer a {
   font-size: 1.25em;
   margin: 0 1em;
+  border: 1px solid #eee;
+  padding: 0.2em 0.5em;
+  text-decoration: none;
+  color: var(--color-text);
+  border-radius: 3px;
 }
 
 .dashboard {
