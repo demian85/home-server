@@ -25,7 +25,8 @@ client.on('message', async (topic, payload) => {
     try {
       await parser(payload);
     } catch (err) {
-      logger.error('unexpected error parsing payload for topic %s', topic);
+      logger.error('unexpected error parsing payload for topic %s: %s', topic, err);
+      console.error(err);
     }
   }
 });
