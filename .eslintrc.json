@@ -4,11 +4,17 @@
     "eslint:recommended",
     "plugin:react/recommended"
   ],
+  "parser": "babel-eslint",
   "env": {
     "es6": true,
     "node": true
   },
   "rules": {
     "no-console": "off"
+  },
+  "settings": {
+    "react": {
+      "version": "16"
+    }
   }
 }
