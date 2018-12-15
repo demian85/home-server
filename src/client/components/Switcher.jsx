@@ -5,18 +5,25 @@ import styles from './Switcher.css';
 
 function Switcher(props) {
   // eslint-disable-next-line
-  const { device, value, online, title, icon, onChange } = props;
+  const { device, title, icon, onChange } = props;
 
-  const powerStatus = device ? device.power : value;
-  const onlineStatus = device ? device.online : online;
-  const ipAddress = device && device.ipAddress;
+  const powerStatus = device.power;
+  const onlineStatus = device.online;
+  const ipAddress = device.ipAddress;
   const isOn = powerStatus === 'on' || powerStatus === true || powerStatus == 1;
   const backgroundImage = `url(/images/${icon})`;
   const disabled = onlineStatus === false;
 
   return (
     <div className={styles.root} style={{ backgroundImage }}>
-      { ipAddress && onlineStatus && <button className={styles.config} onClick={() => window.open(`http://${ipAddress}`)} /> }
+      {
+        ipAddress && onlineStatus &&
+          <button
+            className={styles.config}
+            title="Config"
+            onClick={() => window.open(`http://${ipAddress}`)}
+          />
+      }
       { title && <h3>{title}</h3> }
       <Checkbox
         disabled={disabled}
@@ -25,8 +32,11 @@ function Switcher(props) {
         onChange={(value) => onChange(value ? 1 : 0)}
       />
       {
-        onlineStatus !== undefined
-          && <span className={`${styles.onlineStatus} ${onlineStatus ? styles.online : styles.offline}`} />
+        onlineStatus !== null &&
+          <span
+            title={`${onlineStatus ? 'online' : 'offline'}`}
+            className={`${styles.onlineStatus} ${onlineStatus ? styles.online : styles.offline}`}
+          />
       }
     </div>
   );

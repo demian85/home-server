@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import TemperatureMeter from './TemperatureMeter';
 import HumidityMeter from './HumidityMeter';
 import Switcher from './Switcher';
+import AutoSwitcher from './AutoSwitcher';
 import Group from './Group';
 import SensorMeter from './SensorMeter';
 import IlluminanceMeter from './IlluminanceMeter';
@@ -39,10 +40,9 @@ export default class Home extends React.Component {
                 value={state.report.room.realFeel}
                 lastUpdate={state.report.room.lastUpdate}
               />
-              <Switcher
-                title={`~${state.report.config.setPoint} ˚C`}
+              <AutoSwitcher
+                label={`~${state.report.config.setPoint} ˚C`}
                 value={state.config.autoMode}
-                icon="auto-mode.svg"
                 onChange={(value) => state.setConfig({ autoMode: !!value })}
               />
               <Switcher

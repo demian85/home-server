@@ -1,0 +1,30 @@
+.root {
+  position: relative;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #eee;
+  padding: 0.5em 1em 0.5em 30px;
+  background-repeat: no-repeat;
+  background-position: left 0.5em center;
+  background-size: 20px;
+  background-image: url(/images/auto-mode.svg);
+}
+
+.root h3 {
+  text-align: center;
+  margin-left: 1em;
+  font-size: 0.8em;
+}
+
+@media (min-width: 475px) {
+  .root {
+    padding-left: 34px;
+    background-size: 24px;
+  }
+
+  .root h3 {
+    font-size: 1em;
+  }
+}
