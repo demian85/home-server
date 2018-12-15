@@ -2,7 +2,8 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import { BrowserRouter } from 'react-router-dom';
 
-import { store, sonoffDevices, Provider } from '../lib/store';
+import { store, Provider } from '../lib/store';
+import { devices } from '../lib/devices';
 import { initMqttClient } from '../lib/mqtt';
 
 import Home from './Home';
@@ -51,8 +52,6 @@ export default class App extends React.Component {
     localStorage.mqttUrl = auth.mqttUrl;
 
     const parsers = {
-      'stat/wemos/POWER': this.buildStatusParser('wemos1'),
-      'tele/wemos/LWT': this.buildOnlineStatusParser('wemos1'),
       'stat/_report': (payload) => {
         const report = JSON.parse(payload);
         this.setState({ report });
@@ -69,9 +68,11 @@ export default class App extends React.Component {
         });
       },
     };
-    sonoffDevices.forEach((name) => {
-      parsers[`stat/sonoff-${name}/POWER`] = this.buildStatusParser(name);
-      parsers[`tele/sonoff-${name}/LWT`] = this.buildOnlineStatusParser(name);
+
+    Object.keys(devices).forEach((name) => {
+      const device = devices[name];
+      parsers[`stat/${device.topic}/POWER`] = this.buildPowerStatusParser(name);
+      parsers[`tele/${device.topic}/LWT`] = this.buildOnlineStatusParser(name);
     });
 
     const mqttClient = initMqttClient(parsers);
@@ -109,14 +110,19 @@ export default class App extends React.Component {
     );
   }
 
-  buildStatusParser(deviceName) {
+  buildPowerStatusParser(deviceName) {
     return (payload) => {
-      const value = String(payload).toLowerCase();
+      const power = String(payload).toLowerCase();
+
       this.setState((state) => {
+        const { devices } = state;
         return {
-          powerStatus: {
-            ...state.powerStatus,
-            [deviceName]: value
+          devices: {
+            ...devices,
+            [deviceName]: {
+              ...devices[deviceName],
+              power,
+            }
           },
         };
       });
@@ -125,12 +131,17 @@ export default class App extends React.Component {
 
   buildOnlineStatusParser(deviceName) {
     return (payload) => {
-      const value = String(payload).toLowerCase() === 'online';
+      const online = String(payload).toLowerCase() === 'online';
+
       this.setState((state) => {
+        const { devices } = state;
         return {
-          onlineStatus: {
-            ...state.onlineStatus,
-            [deviceName]: value,
+          devices: {
+            ...devices,
+            [deviceName]: {
+              ...devices[deviceName],
+              online,
+            }
           },
         };
       });

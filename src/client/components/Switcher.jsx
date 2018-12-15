@@ -3,23 +3,33 @@ import Checkbox from './Checkbox';
 
 import styles from './Switcher.css';
 
-export default React.memo(function Switcher(props) {
-  const isOn = props.value === 'on' || props.value === true || props.value == 1;
-  const backgroundImage = `url(/images/${props.icon})`;
-  const disabled = props.online === false;
+function Switcher(props) {
+  // eslint-disable-next-line
+  const { device, value, online, title, icon, onChange } = props;
+
+  const powerStatus = device ? device.power : value;
+  const onlineStatus = device ? device.online : online;
+  const ipAddress = device && device.ipAddress;
+  const isOn = powerStatus === 'on' || powerStatus === true || powerStatus == 1;
+  const backgroundImage = `url(/images/${icon})`;
+  const disabled = onlineStatus === false;
+
   return (
     <div className={styles.root} style={{ backgroundImage }}>
-      { props.title && <h3>{props.title}</h3> }
+      { ipAddress && onlineStatus && <button className={styles.config} onClick={() => window.open(`http://${ipAddress}`)} /> }
+      { title && <h3>{title}</h3> }
       <Checkbox
         disabled={disabled}
         label=""
         value={isOn}
-        onChange={(value) => props.onChange(value ? 1 : 0)}
+        onChange={(value) => onChange(value ? 1 : 0)}
       />
       {
-        props.online !== undefined
-          && <span className={`${styles.onlineStatus} ${props.online ? styles.online : styles.offline}`} />
+        onlineStatus !== undefined
+          && <span className={`${styles.onlineStatus} ${onlineStatus ? styles.online : styles.offline}`} />
       }
     </div>
   );
-});
+}
+
+export default React.memo(Switcher);

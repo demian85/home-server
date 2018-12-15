@@ -15,12 +15,12 @@ import styles from './Home.css';
 export default class Home extends React.Component {
   render() {
     const state = this.context;
-    const motionSensorValue = state.powerStatus.wemos1 ? String(state.powerStatus.wemos1).toUpperCase() : '-';
+    const motionSensorValue = state.devices.wemos1.power !== null ? String(state.devices.wemos1.power).toUpperCase() : '-';
 
     return (
       <section className={styles.root} >
         {
-          state.report && state.powerStatus &&
+          state.report &&
           <section className={styles.dashboard}>
 
             <Group place="bedroom">
@@ -46,20 +46,17 @@ export default class Home extends React.Component {
                 onChange={(value) => state.setConfig({ autoMode: !!value })}
               />
               <Switcher
-                value={state.powerStatus.lamp}
-                online={state.onlineStatus.lamp}
+                device={state.devices.lamp}
                 icon="room-lamp.svg"
                 onChange={(value) => state.cmnd('sonoff-lamp', value)}
               />
               <Switcher
-                value={state.powerStatus.heater}
-                online={state.onlineStatus.heater}
+                device={state.devices.heater}
                 icon="heater.svg"
                 onChange={(value) => state.manualHeaterSwitch(1, value)}
               />
               <Switcher
-                value={state.powerStatus.heater2}
-                online={state.onlineStatus.heater2}
+                device={state.devices.heater2}
                 icon="heater2.svg"
                 onChange={(value) => state.manualHeaterSwitch(2, value)}
               />
@@ -82,8 +79,7 @@ export default class Home extends React.Component {
                 lastUpdate={state.report.lounge.AM2301.lastUpdate}
               />
               <Switcher
-                value={state.powerStatus['desk-lamp']}
-                online={state.onlineStatus['desk-lamp']}
+                device={state.devices.deskLamp}
                 icon="desk-lamp.svg"
                 onChange={(value) => state.cmnd('sonoff-desk-lamp', value)}
               />
@@ -98,8 +94,8 @@ export default class Home extends React.Component {
                 <SensorMeter
                   title="Pressure"
                   icon="images/gauge.svg"
-                  value={state.report.lounge.BMP280.pressure}
                   suffix="hPa"
+                  value={state.report.lounge.BMP280.pressure}
                   lastUpdate={state.report.lounge.BMP280.lastUpdate}
                 />
               }
@@ -114,8 +110,7 @@ export default class Home extends React.Component {
 
             <Group place="hall">
               <Switcher
-                value={state.powerStatus.socket1}
-                online={state.onlineStatus.socket1}
+                device={state.devices.socket1}
                 icon="no-mosquito.svg"
                 onChange={(value) => state.cmnd('sonoff-socket1', value)}
               />
@@ -138,8 +133,7 @@ export default class Home extends React.Component {
                 lastUpdate={state.report.weather.lastUpdate}
               />
               <Switcher
-                value={state.powerStatus.patio}
-                online={state.onlineStatus.patio}
+                device={state.devices.patio}
                 icon="patio-lamp.svg"
                 onChange={(value) => state.cmnd('sonoff-patio', value)} />
               <SensorMeter

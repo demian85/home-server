@@ -1,8 +1,6 @@
 import React from 'react';
 
-export const sonoffDevices = [
-  'heater', 'heater2', 'lamp', 'desk-lamp', 'patio', 'socket1'
-];
+import { devices } from './devices';
 
 export const store = {
   loaded: false,
@@ -11,8 +9,7 @@ export const store = {
   config: null,
   report: null,
   auth: null,
-  powerStatus: {},
-  onlineStatus: {},
+  devices,
   logs: [],
 };
 
