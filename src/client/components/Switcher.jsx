@@ -5,11 +5,11 @@ import styles from './Switcher.css';
 
 function Switcher(props) {
   // eslint-disable-next-line
-  const { device, title, icon, onChange } = props;
+  const { device, title, value, icon, onChange } = props;
 
-  const powerStatus = device.power;
-  const onlineStatus = device.online;
-  const ipAddress = device.ipAddress;
+  const powerStatus = device ? device.power : value;
+  const onlineStatus = device ? device.online : null;
+  const ipAddress = device ? device.ipAddress : null;
   const isOn = powerStatus === 'on' || powerStatus === true || powerStatus == 1;
   const backgroundImage = `url(/images/${icon})`;
   const disabled = onlineStatus === false;

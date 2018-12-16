@@ -1,7 +1,6 @@
 import React from 'react';
 import * as _ from 'lodash';
 import Switcher from './Switcher';
-import Checkbox from './Checkbox';
 
 import styles from './Config.css';
 
