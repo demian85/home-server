@@ -1,4 +1,6 @@
 .root {
+  max-width: 512px;
+  margin: auto;
   padding: var(--spacing-normal);
   box-sizing: border-box;
   user-select: none;

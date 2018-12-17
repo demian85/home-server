@@ -9,10 +9,7 @@ class Log extends React.Component {
     return (
       <div className={styles.root}>
         {
-          this.context.logs.map((log) => {
-            const str = `[${log.level}] ${log.message}`;
-            return str;
-          }).join('\n')
+          this.context.logs.map((log) => `[${log.level}] ${log.message}`).join('\n')
         }
       </div>
     );

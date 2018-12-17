@@ -1,14 +1,20 @@
 .root {
-  height: 100%;
-  margin: 1em 0;
+  padding: 1em;
   white-space: pre;
   overflow: auto;
   font-family: monospace;
-  font-size: 1em;
+  font-size: 0.8em;
 }
 
 .root:empty::after {
   content: 'waiting for logs...';
   display: block;
   text-align: center;
+}
+
+@media (min-width: 475px) {
+
+  .root {
+    font-size: 1em;
+  }
 }

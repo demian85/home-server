@@ -25,7 +25,6 @@ body {
 }
 
 #root {
-  max-width: 512px;
   height: 100%;
   margin: auto;
 }
