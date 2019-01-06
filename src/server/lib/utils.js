@@ -2,6 +2,8 @@ const Feels = require('feels');
 const { DateTime } = require('luxon');
 const SolarCalc = require('solar-calc');
 
+const db = require('./db');
+
 const LATITUDE = Number(process.env.LATITUDE);
 const LONGITUDE = Number(process.env.LONGITUDE);
 
@@ -40,6 +42,27 @@ function isBedTime() {
   const calc = new SolarCalc(new Date(), LATITUDE, LONGITUDE);
   const bedTime = DateTime.fromJSDate(calc.sunset).plus({ minutes: 150 }); // 2:30h after sunset
   return bedTime.diffNow().as('minutes') < 0;
+}
+
+exports.getMotionSensorState = async function getMotionSensorState() {
+  const values = await Promise.all([
+    db.getDeviceState('wemos1.switch1'),
+    db.getDeviceState('wemos1.switch2'),
+  ]);
+  const sensors = values.filter(v => !!v);
+
+  if (sensors.length === 0) {
+    return null;
+  }
+
+  const isOff = sensors.every(v => !v.on);
+
+  if (isOff) {
+    const lastChange = Math.max(...sensors.map(v => v.lastChange));
+    return { on: false, lastChange };
+  }
+
+  return sensors[0];
 }
 
 exports.getRealFeel = getRealFeel;

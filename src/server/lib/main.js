@@ -3,7 +3,7 @@ const { getWeather } = require('./weather');
 const db = require('./db');
 const topics = require('./mqtt/topics');
 const mqttClient = require('./mqtt/client');
-const { getRealFeel, getSolarCalc } = require('./utils');
+const { getRealFeel, getSolarCalc, getMotionSensorState } = require('./utils');
 const { toggleDeskLamp, toggleLedPower } = require('./actions');
 
 function getSensorReadings(data, sensorName) {
@@ -30,7 +30,8 @@ function getSensorReadings(data, sensorName) {
 }
 
 async function updateDeviceState(deviceName, payload) {
-  const on = String(payload).toLowerCase() === 'on';
+  const stateValue = String(payload).toLowerCase();
+  const on = stateValue === 'on' || stateValue === '1';
   const lastChange = Date.now();
   logger.debug(`Saving ${deviceName} state data: %j`, { on, lastChange });
   await db.set(`${deviceName}.state`, JSON.stringify({ on, lastChange }));
@@ -129,7 +130,7 @@ async function updateReport() {
   const setPoint = await getRoomSetPoint();
   const heaterSensor = await db.getSensorData('heater1');
   const loungeSensor = await db.getSensorData('wemos1');
-  const motionSensor = await db.getDeviceState('wemos1');
+  const motionSensor = await getMotionSensorState();
   const { sunrise, sunset } = getSolarCalc();
 
   let report = {

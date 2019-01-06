@@ -26,6 +26,8 @@ const topics = {
     stat: `stat/wemos/POWER`,
     sensor: `tele/wemos/SENSOR`,
     result: `tele/wemos/RESULT`,
+    switch1: 'stat/wemos/SWITCH1',
+    switch2: 'stat/wemos/SWITCH2',
   },
 };
 

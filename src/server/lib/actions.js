@@ -2,12 +2,12 @@ const db = require('./db');
 const logger = require('./logger');
 const mqttClient = require('./mqtt/client');
 const topics = require('./mqtt/topics');
-const { isDayTime, isNightTime, isBedTime } = require('./utils');
+const { isDayTime, isNightTime, isBedTime, getMotionSensorState } = require('./utils');
 
 // turn on/off desk lamp after 10 min of inactivity
 exports.toggleDeskLamp = async function() {
   const { autoTurnOffDeskLamp } = await db.getHeaterConfig();
-  const motionSensorState = await db.getDeviceState('wemos1');
+  const motionSensorState = await getMotionSensorState();
 
   logger.debug(`toggleDeskLamp(): %j`, { autoTurnOffDeskLamp, motionSensorState, isBedTime: isBedTime() });
 

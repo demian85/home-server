@@ -16,7 +16,6 @@ import styles from './Home.css';
 export default class Home extends React.Component {
   render() {
     const state = this.context;
-    const motionSensorValue = state.devices.wemos1.power !== null ? String(state.devices.wemos1.power).toUpperCase() : '-';
 
     return (
       <section className={styles.root} >
@@ -83,12 +82,15 @@ export default class Home extends React.Component {
                 icon="desk-lamp.svg"
                 onChange={(value) => state.cmnd('sonoff-desk-lamp', value)}
               />
-              <SensorMeter
-                title="Motion"
-                icon="/images/motion-sensor.svg"
-                value={motionSensorValue}
-                lastUpdate={state.report.motionSensor && state.report.motionSensor.lastChange}
-              />
+              {
+                state.report.motionSensor &&
+                <SensorMeter
+                  title="Motion"
+                  icon="/images/motion-sensor.svg"
+                  value={(state.report.motionSensor.on ? 'ON' : 'OFF')}
+                  lastUpdate={state.report.motionSensor.lastChange}
+                />
+              }
               {
                 state.report.lounge.BMP280 &&
                 <SensorMeter

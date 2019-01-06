@@ -1,7 +1,13 @@
 const logger = require('../logger');
 const topics = require('./topics');
 const db = require('../db');
-const { updateDeviceState, updateDeviceLedPower, updateHeaterState, updateReport, getSensorReadings } = require('../main');
+const {
+  updateDeviceState,
+  updateDeviceLedPower,
+  updateHeaterState,
+  updateReport,
+  getSensorReadings,
+} = require('../main');
 const ir = require('../ir');
 
 const parsers = {
@@ -68,8 +74,13 @@ const parsers = {
     }
   },
 
-  [topics.wemos1.stat]: async (payload) => {
-    await updateDeviceState('wemos1', payload);
+  [topics.wemos1.switch1]: async (payload) => {
+    await updateDeviceState('wemos1.switch1', payload);
+    await updateReport();
+  },
+
+  [topics.wemos1.switch2]: async (payload) => {
+    await updateDeviceState('wemos1.switch2', payload);
     await updateReport();
   },
 
