@@ -7,7 +7,7 @@ const db = require('./db');
 const LATITUDE = Number(process.env.LATITUDE);
 const LONGITUDE = Number(process.env.LONGITUDE);
 
-function getRealFeel(temperature, humidity, speed = 0) {
+exports.getRealFeel = function getRealFeel(temperature, humidity, speed = 0) {
   const feelsLike = new Feels({
     temp: temperature,
     humidity,
@@ -18,7 +18,7 @@ function getRealFeel(temperature, humidity, speed = 0) {
   return Math.round(feelsLike * 10) / 10;
 }
 
-function getSolarCalc() {
+exports.getSolarCalc = function getSolarCalc() {
   const calc = new SolarCalc(new Date(), LATITUDE, LONGITUDE);
   return {
     sunrise: calc.sunrise,
@@ -26,19 +26,19 @@ function getSolarCalc() {
   }
 }
 
-function isDayTime() {
+exports.isDayTime = function isDayTime() {
   const calc = new SolarCalc(new Date(), LATITUDE, LONGITUDE);
   const sunrise = DateTime.fromJSDate(calc.sunrise);
   return sunrise.diffNow().as('minutes') < 0;
 }
 
-function isNightTime() {
+exports.isNightTime = function isNightTime() {
   const calc = new SolarCalc(new Date(), LATITUDE, LONGITUDE);
   const sunset = DateTime.fromJSDate(calc.sunset);
   return sunset.diffNow().as('minutes') < 0;
 }
 
-function isBedTime() {
+exports.isBedTime = function isBedTime() {
   const calc = new SolarCalc(new Date(), LATITUDE, LONGITUDE);
   const bedTime = DateTime.fromJSDate(calc.sunset).plus({ minutes: 150 }); // 2:30h after sunset
   return bedTime.diffNow().as('minutes') < 0;
@@ -66,9 +66,3 @@ exports.getMotionSensorState = async function getMotionSensorState() {
 
   return onSensor;
 }
-
-exports.getRealFeel = getRealFeel;
-exports.isDayTime = isDayTime;
-exports.isNightTime = isNightTime;
-exports.isBedTime = isBedTime;
-exports.getSolarCalc = getSolarCalc;
