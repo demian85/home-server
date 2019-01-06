@@ -18,4 +18,3 @@ const StoreProvider = React.createContext(store);
 export const { Provider, Consumer } = StoreProvider;
 
 export default StoreProvider;
-

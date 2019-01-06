@@ -3,8 +3,8 @@ export async function apiCall(path, method = 'GET', body = {}) {
     method,
     body,
     headers: {
-      Authorization: localStorage.auth.apiKey
-    }
+      Authorization: localStorage.auth.apiKey,
+    },
   });
   return res.body && res.json();
 }

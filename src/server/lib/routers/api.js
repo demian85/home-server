@@ -8,10 +8,12 @@ const { updateHeaterState, updateReport } = require('../main');
 
 const api = new Router();
 
-api.use(basicAuth({
-  users: { 'admin': process.env.ADMIN_PASSWD },
-  challenge: true,
-}));
+api.use(
+  basicAuth({
+    users: { admin: process.env.ADMIN_PASSWD },
+    challenge: true,
+  }),
+);
 
 api.use(bodyParser.json());
 
@@ -66,7 +68,8 @@ api.post('/config', async (req, res) => {
     'minStateDurationSecs',
     'autoMode',
     'tempGroups',
-    'trigger', 'autoLedPower',
+    'trigger',
+    'autoLedPower',
     'autoTurnOffDeskLamp',
     'autoTurnOnDeskLamp',
   ];
@@ -98,16 +101,19 @@ api.post('/config', async (req, res) => {
   const autoTurnOnDeskLamp = !!newConfig.autoTurnOnDeskLamp;
 
   try {
-    await db.set('heater.config', JSON.stringify({
-      defaultSetPoint,
-      minStateDurationSecs,
-      autoMode,
-      tempGroups,
-      trigger,
-      autoLedPower,
-      autoTurnOffDeskLamp,
-      autoTurnOnDeskLamp,
-    }));
+    await db.set(
+      'heater.config',
+      JSON.stringify({
+        defaultSetPoint,
+        minStateDurationSecs,
+        autoMode,
+        tempGroups,
+        trigger,
+        autoLedPower,
+        autoTurnOffDeskLamp,
+        autoTurnOnDeskLamp,
+      }),
+    );
     const newConfig = await db.getHeaterConfig();
     if (autoMode) {
       await updateHeaterState();

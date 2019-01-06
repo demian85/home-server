@@ -17,7 +17,7 @@ function getSensorReadings(data, sensorName) {
   const humidity = sensor.Humidity !== undefined ? parseFloat(sensor.Humidity) : undefined;
   const pressure = sensor.Pressure !== undefined ? parseFloat(sensor.Pressure) : undefined;
   const illuminance = sensor.Illuminance !== undefined ? parseFloat(sensor.Illuminance) : undefined;
-  const realFeel = (temperature !== undefined && humidity !== undefined) ? getRealFeel(temperature, humidity) : undefined;
+  const realFeel = temperature !== undefined && humidity !== undefined ? getRealFeel(temperature, humidity) : undefined;
 
   return {
     temperature,
@@ -86,7 +86,7 @@ async function getRoomSetPoint() {
   const heaterConfig = await db.getHeaterConfig();
   const { defaultSetPoint, tempGroups } = heaterConfig;
   const currentHour = new Date().getHours();
-  const currentTempGroup = tempGroups.find(entry => currentHour >= entry.start && currentHour < entry.end);
+  const currentTempGroup = tempGroups.find((entry) => currentHour >= entry.start && currentHour < entry.end);
   const setPoint = currentTempGroup ? currentTempGroup.temp : defaultSetPoint;
   return setPoint;
 }
@@ -113,12 +113,12 @@ async function updateHeaterState() {
     turnOnDevice('heater2', true);
   }
 
-  if (triggerTemp >= (setPoint + 0.1)) {
+  if (triggerTemp >= setPoint + 0.1) {
     // turn off heater2 when setPoint exceeds .1 threshold
     turnOnDevice('heater2', false);
 
     // turn off heater1 when setPoint exceeds .5 threshold
-    if (triggerTemp >= (setPoint + 0.5)) {
+    if (triggerTemp >= setPoint + 0.5) {
       turnOnDevice('heater1', false);
     }
   }
@@ -152,9 +152,9 @@ async function updateReport() {
         temperature: Math.round(weather.main.temp * 10) / 10,
         humidity: weather.main.humidity,
         realFeel: getRealFeel(weather.main.temp, weather.main.humidity, weather.wind.speed),
-        windSpeedKmh: Math.round(weather.wind.speed / 1000 * 3600),
+        windSpeedKmh: Math.round((weather.wind.speed / 1000) * 3600),
         lastUpdate: weather.dt ? weather.dt * 1000 : null,
-      }
+      },
     });
   } catch (err) {
     logger.error('error parsing weather report: %o', err);

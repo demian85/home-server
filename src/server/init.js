@@ -8,4 +8,3 @@ const defaultConfig = require('./config');
   console.log('Default config set:', defaultConfig);
   await db.end();
 })();
-

@@ -5,10 +5,12 @@ const db = require('../db');
 
 const main = new Router();
 
-main.use(basicAuth({
-  users: { 'admin': process.env.ADMIN_PASSWD },
-  challenge: true,
-}));
+main.use(
+  basicAuth({
+    users: { admin: process.env.ADMIN_PASSWD },
+    challenge: true,
+  }),
+);
 
 main.get('/init', async (req, res) => {
   const auth = {

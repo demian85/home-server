@@ -32,7 +32,7 @@ const logger = createLogger({
       stream: new MqttStream({ objectMode: true }),
       level: 'debug',
     }),
-  ]
+  ],
 });
 
 module.exports = logger;

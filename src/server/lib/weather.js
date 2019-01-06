@@ -6,7 +6,6 @@ const db = require('./db');
 const expireTimeoutSecs = 60 * 15; // 15 minutes
 
 async function getWeather() {
-
   const value = await db.get('weather');
 
   if (value) {
@@ -15,11 +14,13 @@ async function getWeather() {
   }
 
   return new Promise((resolve, reject) => {
-    const url = `http://api.openweathermap.org/data/2.5/weather?id=3433955&appid=${process.env.OPENWEATHER_APP_ID}&units=metric`;
+    const url = `http://api.openweathermap.org/data/2.5/weather?id=3433955&appid=${
+      process.env.OPENWEATHER_APP_ID
+    }&units=metric`;
 
     logger.info('requesting weather... %s', url);
 
-    request.get({ url, json: true}, async (err, res, body) => {
+    request.get({ url, json: true }, async (err, res, body) => {
       if (err) {
         return reject(err);
       }

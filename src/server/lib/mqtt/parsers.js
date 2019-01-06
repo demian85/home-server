@@ -12,7 +12,6 @@ const { turnOnDeskLampIfNeeded } = require('../actions');
 const ir = require('../ir');
 
 const parsers = {
-
   [topics.heater1.stat]: async (payload) => {
     await updateDeviceState('heater1', payload);
   },
@@ -69,7 +68,7 @@ const parsers = {
 
   [topics.wemos1.result]: async (payload) => {
     const data = JSON.parse(payload.toString());
-    const hexCode = data && data.IrReceived && data.IrReceived.Data || null;
+    const hexCode = (data && data.IrReceived && data.IrReceived.Data) || null;
     if (hexCode) {
       ir.receive(hexCode);
     }

@@ -13,7 +13,7 @@ exports.toggleDeskLamp = async function() {
 
   if (autoTurnOffDeskLamp && motionSensorState) {
     const motionSensorLastStateChangeDiff = Date.now() - motionSensorState.lastChange;
-    if (isBedTime() && motionSensorState.on === false && motionSensorLastStateChangeDiff > (1000 * 60 * 10)) {
+    if (isBedTime() && motionSensorState.on === false && motionSensorLastStateChangeDiff > 1000 * 60 * 10) {
       logger.info('switching off device: deskLamp');
       mqttClient.publish(topics.deskLamp.cmnd(), '0');
     }
@@ -40,7 +40,7 @@ exports.toggleLedPower = async function() {
 
   Object.keys(autoLedPower).forEach(async (deviceName) => {
     const shouldTurnOn = !!autoLedPower[deviceName];
-    const ledPower = await db.get(`${deviceName}.ledPower`) || null;
+    const ledPower = (await db.get(`${deviceName}.ledPower`)) || null;
 
     if (!shouldTurnOn && (!ledPower || ledPower === 'on')) {
       // set led off by default
@@ -53,7 +53,7 @@ exports.toggleLedPower = async function() {
       }
     }
   });
-}
+};
 
 function turnOnDeviceLed(deviceName, on) {
   logger.debug(`turnOnDeviceLed(): %j`, { deviceName, on });
