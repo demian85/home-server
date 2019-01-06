@@ -17,7 +17,7 @@
     "dev": "webpack --progress --watch",
     "lint": "eslint ./src",
     "init:config": "node src/server/init.js",
-    "format": "prettier --write ./src/*"
+    "format": "prettier --write './src/**/*.js'"
   },
   "keywords": [
     "sonoff",
