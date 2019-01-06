@@ -36,6 +36,7 @@ I also have a bunch of sensors connected to a Wemos D1 Mini (flashed with the sa
 - [BMP280](https://components101.com/sensors/bmp180-atmospheric-pressure-sensor) temperature and atmospheric pressure sensor
 - [BH1750](https://www.mysensors.org/build/light-bh1750) light level sensor
 - Infrared receiver and remote control
+- RF transmitter and receiver
 
 ## How it works
 All devices establish a connection to the MQTT broker and report their state while also subscribing to a control topic, allowing you to switch them on/off.
