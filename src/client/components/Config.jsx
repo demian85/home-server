@@ -110,11 +110,22 @@ export default class Config extends React.Component {
           <label>
             <input
               type="checkbox"
+              checked={!!this.state.autoTurnOnDeskLamp}
+              style={{ marginRight: '5px'}}
+              onChange={(e) => this.setState({ autoTurnOnDeskLamp: e.target.checked })}
+            />
+            Turn ON desk lamp automatically when motion is detected (after night time)
+          </label>
+        </div>
+        <div className={styles.content}>
+          <label>
+            <input
+              type="checkbox"
               checked={!!this.state.autoTurnOffDeskLamp}
               style={{ marginRight: '5px'}}
               onChange={(e) => this.setState({ autoTurnOffDeskLamp: e.target.checked })}
             />
-            Turn off desk lamp automatically at bed time (10min after motion sensor went off)
+            Turn OFF desk lamp automatically 5min after motion sensor went off (after bed time)
           </label>
         </div>
         <div className={styles.controls}>

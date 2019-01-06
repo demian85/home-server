@@ -8,6 +8,7 @@ const {
   updateReport,
   getSensorReadings,
 } = require('../main');
+const { turnOnDeskLampIfNeeded } = require('../actions');
 const ir = require('../ir');
 
 const parsers = {
@@ -76,11 +77,13 @@ const parsers = {
 
   [topics.wemos1.switch1]: async (payload) => {
     await updateDeviceState('wemos1.switch1', payload);
+    await turnOnDeskLampIfNeeded();
     await updateReport();
   },
 
   [topics.wemos1.switch2]: async (payload) => {
     await updateDeviceState('wemos1.switch2', payload);
+    await turnOnDeskLampIfNeeded();
     await updateReport();
   },
 

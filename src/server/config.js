@@ -16,4 +16,5 @@ module.exports = {
     deskLamp: 0,
   },
   autoTurnOffDeskLamp: false,
+  autoTurnOnDeskLamp: false,
 };

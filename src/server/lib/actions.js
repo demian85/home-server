@@ -20,6 +20,18 @@ exports.toggleDeskLamp = async function() {
   }
 };
 
+exports.turnOnDeskLampIfNeeded = async function() {
+  const { autoTurnOnDeskLamp } = await db.getHeaterConfig();
+  const motionSensorState = await getMotionSensorState();
+
+  logger.debug(`turnOnDeskLampIfNeeded(): %j`, { autoTurnOnDeskLamp, motionSensorState, isNightTime: isNightTime() });
+
+  if (autoTurnOnDeskLamp && isNightTime() && motionSensorState && motionSensorState.on === true) {
+    logger.info('switching on device: deskLamp');
+    mqttClient.publish(topics.deskLamp.cmnd(), '1');
+  }
+};
+
 // turn on/off led power for specific devices
 exports.toggleLedPower = async function() {
   const { autoLedPower } = await db.getHeaterConfig();
