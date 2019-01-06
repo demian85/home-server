@@ -157,7 +157,7 @@ async function updateReport() {
       }
     });
   } catch (err) {
-    logger.error('error parsing weather report');
+    logger.error('error parsing weather report: %o', err);
   }
 
   logger.info('custom report: %j', report);
