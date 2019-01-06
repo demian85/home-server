@@ -62,7 +62,9 @@ exports.getMotionSensorState = async function getMotionSensorState() {
     return { on: false, lastChange };
   }
 
-  return sensors[0];
+  const onSensor = sensors.find(v => v.on);
+
+  return onSensor;
 }
 
 exports.getRealFeel = getRealFeel;
