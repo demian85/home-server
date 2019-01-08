@@ -14,7 +14,7 @@ exports.toggleDeskLamp = async function() {
 
   if (autoTurnOffDeskLamp && motionSensorState) {
     const motionSensorLastStateChangeDiff = Date.now() - motionSensorState.lastChange;
-    if (isBedTime() && motionSensorState.on === false && motionSensorLastStateChangeDiff > 1000 * 60 * 10) {
+    if (isBedTime() && motionSensorState.on === false && motionSensorLastStateChangeDiff > 1000 * 60 * 5) {
       logger.info('switching off device: deskLamp');
       mqttClient.publish(topics.deskLamp.cmnd(), '0');
     }
