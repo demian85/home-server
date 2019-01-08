@@ -3,6 +3,7 @@ const logger = require('./logger');
 const mqttClient = require('./mqtt/client');
 const topics = require('./mqtt/topics');
 const { isDayTime, isNightTime, isBedTime, getMotionSensorState } = require('./utils');
+const { getWeather } = require('./weather');
 
 // turn on/off desk lamp after 10 min of inactivity
 exports.toggleDeskLamp = async function() {
@@ -53,6 +54,27 @@ exports.toggleLedPower = async function() {
       }
     }
   });
+};
+
+exports.updateOLEDDisplay = async function() {
+  const heaterSensor = await db.getSensorData('heater1');
+  const loungeSensor = await db.getSensorData('wemos1');
+  const commands = [`DisplayText [z]`];
+  let displayCommand = `DisplayText [f1l1c1]Room temp: ${heaterSensor.temperature} C [f1l3c1]Living temp: ${
+    loungeSensor.AM2301.temperature
+  } C`;
+
+  try {
+    const weather = await getWeather();
+    const outsideTemp = Math.round(weather.main.temp * 10) / 10;
+    displayCommand += ` [f1l5c1]Outside: ${outsideTemp} C`;
+  } catch (err) {
+    logger.error('error parsing weather report: %o', err);
+  }
+
+  commands.push(displayCommand);
+
+  mqttClient.publish(topics.wemos1.cmnd('Backlog'), commands.join(';'));
 };
 
 function turnOnDeviceLed(deviceName, on) {
