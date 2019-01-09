@@ -59,7 +59,7 @@ exports.getMotionSensorState = async function getMotionSensorState() {
     return { on: false, lastChange };
   }
 
-  const onSensor = sensors.find((v) => v.on);
-
-  return onSensor;
+  const onSensors = sensors.filter((v) => v.on);
+  const lastChange = Math.min(...onSensors.map((v) => v.lastChange));
+  return { on: true, lastChange };
 };
