@@ -17,4 +17,5 @@ module.exports = {
   },
   autoTurnOffDeskLamp: false,
   autoTurnOnDeskLamp: false,
+  enableOledDisplay: false,
 };

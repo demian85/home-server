@@ -57,6 +57,14 @@ exports.toggleLedPower = async function() {
 };
 
 exports.updateOLEDDisplay = async function() {
+  const { enableOledDisplay } = await db.getHeaterConfig();
+
+  logger.debug(`updateOLEDDisplay(): %j`, { enableOledDisplay });
+
+  if (!enableOledDisplay) {
+    return;
+  }
+
   const heaterSensor = await db.getSensorData('heater1');
   const loungeSensor = await db.getSensorData('wemos1');
   const commands = [`DisplayText [z]`];

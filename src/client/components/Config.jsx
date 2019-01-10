@@ -131,6 +131,17 @@ export default class Config extends React.Component {
             Turn OFF desk lamp automatically 5min after motion sensor went off (after bed time)
           </label>
         </div>
+        <div className={styles.content}>
+          <label>
+            <input
+              type="checkbox"
+              checked={!!this.state.enableOledDisplay}
+              style={{ marginRight: '5px' }}
+              onChange={(e) => this.setState({ enableOledDisplay: e.target.checked })}
+            />
+            Enable OLED display
+          </label>
+        </div>
         <div className={styles.controls}>
           <button className={styles.saveBtn} onClick={() => this.save()}>
             Save

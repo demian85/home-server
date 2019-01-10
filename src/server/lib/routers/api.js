@@ -99,6 +99,7 @@ api.post('/config', async (req, res) => {
   const autoLedPower = newConfig.autoLedPower;
   const autoTurnOffDeskLamp = !!newConfig.autoTurnOffDeskLamp;
   const autoTurnOnDeskLamp = !!newConfig.autoTurnOnDeskLamp;
+  const enableOledDisplay = !!newConfig.enableOledDisplay;
 
   try {
     await db.set(
@@ -112,6 +113,7 @@ api.post('/config', async (req, res) => {
         autoLedPower,
         autoTurnOffDeskLamp,
         autoTurnOnDeskLamp,
+        enableOledDisplay,
       }),
     );
     const newConfig = await db.getHeaterConfig();
