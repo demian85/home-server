@@ -11,12 +11,12 @@ function AutoSwitcher(props) {
 
   return (
     <div className={styles.root}>
-      <Checkbox
-        label=""
-        value={isOn}
-        onChange={(value) => onChange(value ? 1 : 0)}
-      />
-      <h3>Auto heating<br />{label}</h3>
+      <Checkbox label="" value={isOn} onChange={(value) => onChange(value ? 1 : 0)} />
+      <h3>
+        Auto heating
+        <br />
+        {label}
+      </h3>
     </div>
   );
 }

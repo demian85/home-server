@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import { DateTime } from 'luxon';
 
 import SensorMeter from './SensorMeter';
@@ -10,17 +10,11 @@ export default function Sun(props) {
 
   return (
     <>
-      <SensorMeter
-        value={sunrise}
-        icon="images/sunrise.svg"
-      />
-      <SensorMeter
-        value={sunset}
-        icon="images/sunset.svg"
-      />
+      <SensorMeter value={sunrise} icon="images/sunrise.svg" />
+      <SensorMeter value={sunset} icon="images/sunset.svg" />
     </>
   );
-};
+}
 
 Sun.propTypes = {
   sunrise: PropTypes.string,

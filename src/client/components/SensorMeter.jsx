@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 import TimeAgo from './TimeAgo';
 
@@ -9,11 +9,11 @@ function SensorMeter(props) {
   const css = { backgroundImage: `url(${props.icon})` };
   const tree = (
     <>
-    <div className={styles.value}>
-      {props.value}
-      { props.suffix && <span className={styles.suffix}>{props.suffix}</span> }
-    </div>
-    { props.lastUpdate && <TimeAgo date={props.lastUpdate} /> }
+      <div className={styles.value}>
+        {props.value}
+        {props.suffix && <span className={styles.suffix}>{props.suffix}</span>}
+      </div>
+      {props.lastUpdate && <TimeAgo date={props.lastUpdate} />}
     </>
   );
 

@@ -18,22 +18,16 @@ export default class Home extends React.Component {
     const state = this.context;
 
     return (
-      <section className={styles.root} >
-        {
-          state.report &&
+      <section className={styles.root}>
+        {state.report && (
           <section className={styles.dashboard}>
-
             <Group place="bedroom">
               <TemperatureMeter
                 title="Temp"
                 value={state.report.room.temperature}
                 lastUpdate={state.report.room.lastUpdate}
               />
-              <HumidityMeter
-                title="Hum"
-                value={state.report.room.humidity}
-                lastUpdate={state.report.room.lastUpdate}
-              />
+              <HumidityMeter title="Hum" value={state.report.room.humidity} lastUpdate={state.report.room.lastUpdate} />
               <TemperatureMeter
                 title="Feel"
                 value={state.report.room.realFeel}
@@ -82,17 +76,15 @@ export default class Home extends React.Component {
                 icon="desk-lamp.svg"
                 onChange={(value) => state.cmnd('sonoff-desk-lamp', value)}
               />
-              {
-                state.report.motionSensor &&
+              {state.report.motionSensor && (
                 <SensorMeter
                   title="Motion"
                   icon="/images/motion-sensor.svg"
-                  value={(state.report.motionSensor.on ? 'ON' : 'OFF')}
+                  value={state.report.motionSensor.on ? 'ON' : 'OFF'}
                   lastUpdate={state.report.motionSensor.lastChange}
                 />
-              }
-              {
-                state.report.lounge.BMP280 &&
+              )}
+              {state.report.lounge.BMP280 && (
                 <SensorMeter
                   title="Pressure"
                   icon="images/gauge.svg"
@@ -100,14 +92,13 @@ export default class Home extends React.Component {
                   value={state.report.lounge.BMP280.pressure}
                   lastUpdate={state.report.lounge.BMP280.lastUpdate}
                 />
-              }
-              {
-                state.report.lounge.BH1750 &&
+              )}
+              {state.report.lounge.BH1750 && (
                 <IlluminanceMeter
                   value={state.report.lounge.BH1750.illuminance}
                   lastUpdate={state.report.lounge.BH1750.lastUpdate}
                 />
-              }
+              )}
             </Group>
 
             <Group place="hall">
@@ -137,22 +128,18 @@ export default class Home extends React.Component {
               <Switcher
                 device={state.devices.patio}
                 icon="patio-lamp.svg"
-                onChange={(value) => state.cmnd('sonoff-patio', value)} />
-              <SensorMeter
-                icon="/images/wind.svg"
-                value={state.report.weather.windSpeedKmh}
-                suffix="km/h"
+                onChange={(value) => state.cmnd('sonoff-patio', value)}
               />
+              <SensorMeter icon="/images/wind.svg" value={state.report.weather.windSpeedKmh} suffix="km/h" />
               <Sun data={state.report.data} />
             </Group>
-
           </section>
-        }
-        <div className={styles.footer} >
+        )}
+        <div className={styles.footer}>
           <Link to="/config">Config</Link>
           <Link to="/logs">Logs</Link>
         </div>
-      </section >
+      </section>
     );
   }
 }

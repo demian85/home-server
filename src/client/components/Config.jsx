@@ -5,26 +5,19 @@ import Switcher from './Switcher';
 import styles from './Config.css';
 
 export default class Config extends React.Component {
-
   constructor(props) {
     super(props);
 
     this.state = _.cloneDeep(props.value);
     this.presets = {
-      'simple': [
-        { start: 0, end: 24, temp: 20.5 },
-      ],
-      'default': [
-        { start: 0, end: 9, temp: 21 },
-        { start: 9, end: 18, temp: 19 },
-        { start: 18, end: 24, temp: 20.5 },
-      ],
-      'sleep': [
+      simple: [{ start: 0, end: 24, temp: 20.5 }],
+      default: [{ start: 0, end: 9, temp: 21 }, { start: 9, end: 18, temp: 19 }, { start: 18, end: 24, temp: 20.5 }],
+      sleep: [
         { start: 0, end: 4, temp: 20.7 },
         { start: 4, end: 10, temp: 20.8 },
         { start: 10, end: 19, temp: 10 },
         { start: 19, end: 24, temp: 20.6 },
-      ]
+      ],
     };
   }
 
@@ -36,7 +29,9 @@ export default class Config extends React.Component {
     const tempGroups = this.state.tempGroups.map((item, key) => {
       return (
         <div className={styles.tempGroup} key={key}>
-          <div>{item.start} - {item.end} hs.</div>
+          <div>
+            {item.start} - {item.end} hs.
+          </div>
           <input
             type="number"
             min="10"
@@ -55,13 +50,17 @@ export default class Config extends React.Component {
           <p>Set desired set point for each time frame:</p>
           <div className={styles.presets}>
             <label>Presets: </label>
-            <button className={styles.presetBtn} onClick={() => this.onPresetClick('default')}>Default</button>
-            <button className={styles.presetBtn} onClick={() => this.onPresetClick('simple')}>Simple</button>
-            <button className={styles.presetBtn} onClick={() => this.onPresetClick('sleep')}>Sleep</button>
+            <button className={styles.presetBtn} onClick={() => this.onPresetClick('default')}>
+              Default
+            </button>
+            <button className={styles.presetBtn} onClick={() => this.onPresetClick('simple')}>
+              Simple
+            </button>
+            <button className={styles.presetBtn} onClick={() => this.onPresetClick('sleep')}>
+              Sleep
+            </button>
           </div>
-          <div className={styles.tempGroups}>
-            {tempGroups}
-          </div>
+          <div className={styles.tempGroups}>{tempGroups}</div>
         </div>
         <div className={styles.content}>
           <label>Trigger: </label>
@@ -88,22 +87,26 @@ export default class Config extends React.Component {
               value={this.state.autoLedPower.heater1}
               title="Room heater 1"
               icon="led.svg"
-              onChange={(value) => this.onSwitchToggle('heater1', value)} />
+              onChange={(value) => this.onSwitchToggle('heater1', value)}
+            />
             <Switcher
               value={this.state.autoLedPower.heater2}
               title="Room heater 2"
               icon="led.svg"
-              onChange={(value) => this.onSwitchToggle('heater2', value)} />
+              onChange={(value) => this.onSwitchToggle('heater2', value)}
+            />
             <Switcher
               value={this.state.autoLedPower.roomLamp}
               title="Room lamp"
               icon="led.svg"
-              onChange={(value) => this.onSwitchToggle('roomLamp', value)} />
+              onChange={(value) => this.onSwitchToggle('roomLamp', value)}
+            />
             <Switcher
               value={this.state.autoLedPower.deskLamp}
               title="Desk lamp"
               icon="led.svg"
-              onChange={(value) => this.onSwitchToggle('deskLamp', value)} />
+              onChange={(value) => this.onSwitchToggle('deskLamp', value)}
+            />
           </div>
         </div>
         <div className={styles.content}>
@@ -111,7 +114,7 @@ export default class Config extends React.Component {
             <input
               type="checkbox"
               checked={!!this.state.autoTurnOnDeskLamp}
-              style={{ marginRight: '5px'}}
+              style={{ marginRight: '5px' }}
               onChange={(e) => this.setState({ autoTurnOnDeskLamp: e.target.checked })}
             />
             Turn ON desk lamp automatically when motion is detected (after night time)
@@ -122,15 +125,19 @@ export default class Config extends React.Component {
             <input
               type="checkbox"
               checked={!!this.state.autoTurnOffDeskLamp}
-              style={{ marginRight: '5px'}}
+              style={{ marginRight: '5px' }}
               onChange={(e) => this.setState({ autoTurnOffDeskLamp: e.target.checked })}
             />
             Turn OFF desk lamp automatically 5min after motion sensor went off (after bed time)
           </label>
         </div>
         <div className={styles.controls}>
-          <button className={styles.saveBtn} onClick={() => this.save()}>Save</button>
-          <button className={styles.cancelBtn} onClick={() => history.back()}>Back</button>
+          <button className={styles.saveBtn} onClick={() => this.save()}>
+            Save
+          </button>
+          <button className={styles.cancelBtn} onClick={() => history.back()}>
+            Back
+          </button>
         </div>
       </section>
     );
@@ -143,7 +150,7 @@ export default class Config extends React.Component {
 
   onPresetClick(name) {
     this.setState({
-      tempGroups: _.cloneDeep(this.presets[name])
+      tempGroups: _.cloneDeep(this.presets[name]),
     });
   }
 

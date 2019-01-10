@@ -37,12 +37,17 @@ export default class TimeAgo extends React.PureComponent {
       }
     }
 
-    return (
-      <span className={styles.root}>{friendlyTimeAgo}</span>
-    );
+    return <span className={styles.root}>{friendlyTimeAgo}</span>;
   }
 
   getDiff() {
-    return this.props.date && Math.abs(DateTime.fromMillis(this.props.date).diffNow().as('seconds')).toFixed(0);
+    return (
+      this.props.date &&
+      Math.abs(
+        DateTime.fromMillis(this.props.date)
+          .diffNow()
+          .as('seconds'),
+      ).toFixed(0)
+    );
   }
 }

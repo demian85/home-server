@@ -6,7 +6,7 @@ export default function Checkbox(props) {
   const checked = !!props.value;
   return (
     <div className={styles.checkbox}>
-      <span className={styles.label}>{ props.label }</span>
+      <span className={styles.label}>{props.label}</span>
       <input
         type="checkbox"
         checked={checked}

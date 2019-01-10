@@ -12,7 +12,6 @@ import Loader from './Loader';
 import Log from './Log';
 
 export default class App extends React.Component {
-
   static getDerivedStateFromError(error) {
     return { error };
   }
@@ -33,14 +32,14 @@ export default class App extends React.Component {
           method: 'POST',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
-          body
+          body,
         });
       },
       manualHeaterSwitch: async (n, value) => {
         const deviceSuffix = n > 1 ? n : '';
         await this.state.cmnd(`sonoff-heater${deviceSuffix}`, value ? '1' : '0');
         await this.state.setConfig({ autoMode: false });
-      }
+      },
     };
   }
 
@@ -95,7 +94,9 @@ export default class App extends React.Component {
 
     if (this.state.error) {
       return (
-        <div className="error">An error occurred <pre>{this.state.error.toString()}</pre></div>
+        <div className="error">
+          An error occurred <pre>{this.state.error.toString()}</pre>
+        </div>
       );
     }
 
@@ -103,7 +104,10 @@ export default class App extends React.Component {
       <BrowserRouter>
         <Provider value={this.state}>
           <Route exact path="/" render={() => <Home />} />
-          <Route path="/config" render={() => <Config value={this.state.config} onSave={(config) => this.state.setConfig(config)} />} />
+          <Route
+            path="/config"
+            render={() => <Config value={this.state.config} onSave={(config) => this.state.setConfig(config)} />}
+          />
           <Route path="/logs" render={() => <Log />} />
         </Provider>
       </BrowserRouter>
@@ -122,7 +126,7 @@ export default class App extends React.Component {
             [deviceName]: {
               ...devices[deviceName],
               power,
-            }
+            },
           },
         };
       });
@@ -141,7 +145,7 @@ export default class App extends React.Component {
             [deviceName]: {
               ...devices[deviceName],
               online,
-            }
+            },
           },
         };
       });
