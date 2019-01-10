@@ -72,6 +72,7 @@ api.post('/config', async (req, res) => {
     'autoLedPower',
     'autoTurnOffDeskLamp',
     'autoTurnOnDeskLamp',
+    'enableOledDisplay',
   ];
   const newConfig = {};
 
