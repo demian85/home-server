@@ -5,6 +5,7 @@ const logger = require('../logger');
 const db = require('../db');
 const client = require('../mqtt/client');
 const { updateHeaterState, updateReport } = require('../main');
+const { clearDisplay } = require('../oled');
 
 const api = new Router();
 
@@ -120,6 +121,9 @@ api.post('/config', async (req, res) => {
     const newConfig = await db.getHeaterConfig();
     if (autoMode) {
       await updateHeaterState();
+    }
+    if (!enableOledDisplay) {
+      clearDisplay();
     }
     await updateReport();
     client.publish('stat/_config', JSON.stringify(newConfig));
