@@ -1,9 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700|Oswald:500');
 
 :root {
-  --spacing-compact: 0.2em;
-  --spacing-normal: 0.5em;
+  --spacing-compact: 0.2rem;
+  --spacing-normal: 0.5rem;
   --color-text: #666;
+  --color-border: #eee;
 }
 
 * {

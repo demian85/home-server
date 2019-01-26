@@ -16,7 +16,7 @@
 
 .footer a {
   margin: 0 1em;
-  border: 1px solid #eee;
+  border: 1px solid var(--color-border);
   padding: 0.1em 0.5em;
   text-decoration: none;
   color: var(--color-text);

@@ -1,5 +1,11 @@
 .root {
-  padding: 1em;
+  max-width: 512px;
+  margin: auto;
+  padding: var(--spacing-normal);
+  border-radius: 6px;
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .root p {
@@ -9,7 +15,7 @@
 .content {
   margin-bottom: 1em;
   padding-bottom: 1em;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .content label {
@@ -47,7 +53,7 @@
 
 .root input {
   font-size: 1.25em;
-  border: 1px solid #ccc;;
+  border: 1px solid var(--color-border);
   padding: 0.2em 0.5em;
   border-radius: 3px;
 }
@@ -80,4 +86,13 @@
   grid-template-rows: 1fr;
   grid-template-columns: 1fr 1fr;
   grid-gap: 1em;
+}
+
+@media (min-width: 475px) {
+
+  .root {
+    padding: calc(var(--spacing-normal) * 2);
+    border: 1px solid var(--color-border);
+    margin: var(--spacing-normal) auto;
+  }
 }
