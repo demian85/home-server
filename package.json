@@ -14,7 +14,9 @@
     "postinstall": "npm run build",
     "build": "webpack -p",
     "start": "node src/index.js",
-    "dev": "webpack --progress --watch",
+    "dev-client": "webpack --progress --watch",
+    "dev-server": "nodemon src/index.js",
+    "dev": "concurrently -k -c 'green,magenta' 'npm:dev-client' 'npm:dev-server'",
     "lint": "eslint ./src",
     "init:config": "node src/server/init.js",
     "format": "prettier --write './src/**/*.{js,jsx,ts,tsx}'"
@@ -62,6 +64,7 @@
     "@types/react-router-dom": "^4.3.1",
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.5",
+    "concurrently": "^4.1.0",
     "copy-webpack-plugin": "^4.6.0",
     "css-loader": "^0.28.11",
     "eslint": "^5.12.0",
