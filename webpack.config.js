@@ -1,6 +1,6 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const dev = process.env.NODE_ENV === 'development';
 
@@ -10,10 +10,10 @@ const config = {
   devtool: dev ? 'cheap-module-eval-source-map' : 'source-map',
   output: {
     path: path.resolve(__dirname, 'dist/client/public'),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.json', '.css']
+    extensions: ['.js', '.jsx', '.json', '.css'],
   },
   module: {
     rules: [
@@ -23,9 +23,9 @@ const config = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env']
-          }
-        }
+            presets: ['@babel/preset-env'],
+          },
+        },
       },
       {
         test: /\.css$/,
@@ -34,23 +34,23 @@ const config = {
           {
             loader: 'css-loader',
             options: {
-              modules: true
-            }
-          }
-        ]
-      }
-    ]
+              modules: true,
+            },
+          },
+        ],
+      },
+    ],
   },
   plugins: [
     new CopyWebpackPlugin([
       {
         from: path.resolve(__dirname, 'src/client/public/'),
-        to: path.resolve(__dirname, 'dist/client/public/')
-      }
+        to: path.resolve(__dirname, 'dist/client/public/'),
+      },
     ]),
     new MiniCssExtractPlugin({
-      filename: 'bundle.css'
-    })
+      filename: 'bundle.css',
+    }),
   ],
 };
 
