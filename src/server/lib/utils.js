@@ -26,22 +26,18 @@ exports.getSolarCalc = function getSolarCalc() {
   };
 };
 
-exports.isDayTime = function isDayTime() {
-  const calc = new SolarCalc(new Date(), LATITUDE, LONGITUDE);
-  const sunrise = DateTime.fromJSDate(calc.sunrise);
-  return sunrise.diffNow().as('minutes') < 0;
-};
-
 exports.isNightTime = function isNightTime() {
   const calc = new SolarCalc(new Date(), LATITUDE, LONGITUDE);
   const sunset = DateTime.fromJSDate(calc.sunset);
-  return sunset.diffNow().as('minutes') < 0;
+  const sunrise = DateTime.fromJSDate(calc.sunrise);
+  return sunset.diffNow().as('minutes') < 0 || sunrise.diffNow().as('minutes') > 0;
 };
 
 exports.isBedTime = function isBedTime() {
   const calc = new SolarCalc(new Date(), LATITUDE, LONGITUDE);
   const bedTime = DateTime.fromJSDate(calc.sunset).plus({ minutes: 150 }); // 2:30h after sunset
-  return bedTime.diffNow().as('minutes') < 0;
+  const sunrise = DateTime.fromJSDate(calc.sunrise);
+  return bedTime.diffNow().as('minutes') < 0 || sunrise.diffNow().as('minutes') > 0;
 };
 
 exports.getMotionSensorState = async function getMotionSensorState() {

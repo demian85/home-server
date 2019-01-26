@@ -2,14 +2,14 @@ const db = require('./db');
 const logger = require('./logger');
 const mqttClient = require('./mqtt/client');
 const topics = require('./mqtt/topics');
-const { isDayTime, isNightTime, isBedTime, getMotionSensorState } = require('./utils');
+const { isNightTime, isBedTime, getMotionSensorState } = require('./utils');
 
-// turn on/off desk lamp after 10 min of inactivity
-exports.toggleDeskLamp = async function() {
+// turn off desk lamp after 5 min of inactivity
+exports.turnOffDeskLampIfNeeded = async function() {
   const { autoTurnOffDeskLamp } = await db.getHeaterConfig();
   const motionSensorState = await getMotionSensorState();
 
-  logger.debug(`toggleDeskLamp(): %j`, { autoTurnOffDeskLamp, motionSensorState, isBedTime: isBedTime() });
+  logger.debug(`turnOffDeskLampIfNeeded(): %j`, { autoTurnOffDeskLamp, motionSensorState, isBedTime: isBedTime() });
 
   if (autoTurnOffDeskLamp && motionSensorState) {
     const motionSensorLastStateChangeDiff = Date.now() - motionSensorState.lastChange;
@@ -20,6 +20,7 @@ exports.toggleDeskLamp = async function() {
   }
 };
 
+// turn on desk lamp during night time
 exports.turnOnDeskLampIfNeeded = async function() {
   const { autoTurnOnDeskLamp } = await db.getHeaterConfig();
   const motionSensorState = await getMotionSensorState();
@@ -36,7 +37,7 @@ exports.turnOnDeskLampIfNeeded = async function() {
 exports.toggleLedPower = async function() {
   const { autoLedPower } = await db.getHeaterConfig();
 
-  logger.debug(`toggleLedPower(): %j`, { autoLedPower, isDayMode: isDayTime(), isNightMode: isNightTime() });
+  logger.debug(`toggleLedPower(): %j`, { autoLedPower, isNightTime: isNightTime() });
 
   Object.keys(autoLedPower).forEach(async (deviceName) => {
     const shouldTurnOn = !!autoLedPower[deviceName];
@@ -48,7 +49,7 @@ exports.toggleLedPower = async function() {
     } else if (shouldTurnOn) {
       if (isNightTime() && (!ledPower || ledPower === 'off')) {
         turnOnDeviceLed(deviceName, true);
-      } else if (isDayTime() && (!ledPower || ledPower === 'on')) {
+      } else if (!isNightTime() && (!ledPower || ledPower === 'on')) {
         turnOnDeviceLed(deviceName, false);
       }
     }
