@@ -32,7 +32,7 @@ const parsers = {
       return logger.error('Sensor SI7021 not found!');
     }
 
-    logger.debug('Saving heater sensor data: %j', readings);
+    logger.debug('Saving heater sensor readings: %j', readings);
 
     await db.set('heater1.sensor', JSON.stringify(readings));
     const { autoMode } = await db.getHeaterConfig();
@@ -60,10 +60,31 @@ const parsers = {
 
     const readings = { AM2301, BMP280, BH1750 };
 
-    logger.debug('Saving wemos1 sensor data: %j', readings);
+    logger.debug('Saving wemos1 sensor readings: %j', readings);
 
     await db.set('wemos1.sensor', JSON.stringify(readings));
     await updateReport();
+  },
+
+  [topics.nodemcu1.sensor]: async (payload) => {
+    const data = JSON.parse(payload.toString());
+    const analogReadings = data.ADS1115;
+
+    if (!analogReadings) {
+      logger.error('No analog readings found!');
+    }
+
+    const volts0 = (analogReadings.A0 * 0.1875) / 1000;
+    const readings = {
+      MQ135: {
+        volts: volts0,
+        airQuality: 100 - (100 * volts0) / 5,
+      },
+    };
+
+    logger.debug('Saving nodemcu1 sensor readings: %j', { readings });
+
+    await db.set('nodemcu1.sensor', JSON.stringify(readings));
   },
 
   [topics.wemos1.result]: async (payload) => {

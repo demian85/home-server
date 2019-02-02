@@ -29,6 +29,12 @@ const topics = {
     switch1: 'stat/wemos/SWITCH1',
     switch2: 'stat/wemos/SWITCH2',
   },
+  nodemcu1: {
+    cmnd: (cmnd = 'POWER') => `cmnd/nodemcu/${cmnd}`,
+    stat: `stat/nodemcu/POWER`,
+    sensor: `tele/nodemcu/SENSOR`,
+    result: `tele/nodemcu/RESULT`,
+  },
 };
 
 module.exports = topics;
