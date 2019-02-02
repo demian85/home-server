@@ -15,17 +15,18 @@ exports.updateDisplay = async function() {
 
   const heaterSensor = await db.getSensorData('heater1');
   const loungeSensor = await db.getSensorData('wemos1');
-  let cmnd = `[z][f1l1c1]Room temp: ${heaterSensor.temperature} C [f1l3c1]Living temp: ${
-    loungeSensor.AM2301.temperature
-  } C`;
+  const nodemcuSensor = await db.getSensorData('nodemcu1');
+  let cmnd = `[z][s2l1c1]R: ${heaterSensor.temperature} C [s2l2c1]L: ${loungeSensor.AM2301.temperature} C`;
 
   try {
     const weather = await getWeather();
     const outsideTemp = Math.round(weather.main.temp * 10) / 10;
-    cmnd += ` [f1l5c1]Outside: ${outsideTemp} C`;
+    cmnd += ` [s2l3c1]P: ${outsideTemp} C`;
   } catch (err) {
     logger.error('error parsing weather report: %o', err);
   }
+
+  cmnd += `[s2l4c1]Air Q: ${Math.round(nodemcuSensor.MQ135.airQuality)}%`;
 
   mqttClient.publish(topics.wemos1.cmnd('DisplayText'), cmnd);
 };
