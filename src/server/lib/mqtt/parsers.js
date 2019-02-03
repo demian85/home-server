@@ -78,7 +78,7 @@ const parsers = {
     const readings = {
       MQ135: {
         volts: volts0,
-        airQuality: 100 - (100 * volts0) / 5,
+        airQuality: 100 - Math.round((100 * volts0) / 5),
         lastUpdate: Date.now(),
       },
     };
