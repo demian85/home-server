@@ -18,7 +18,7 @@ function getSensorReadings(data, sensorName) {
   const humidity = sensor.Humidity !== undefined ? parseFloat(sensor.Humidity) : undefined;
   const pressure = sensor.Pressure !== undefined ? parseFloat(sensor.Pressure) : undefined;
   const illuminance = sensor.Illuminance !== undefined ? parseFloat(sensor.Illuminance) : undefined;
-  const realFeel = temperature !== undefined && humidity !== undefined ? getRealFeel(temperature, humidity) : undefined;
+  const realFeel = temperature && humidity ? getRealFeel(temperature, humidity) : undefined;
 
   return {
     temperature,
