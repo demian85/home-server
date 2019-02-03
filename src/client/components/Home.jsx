@@ -99,6 +99,15 @@ export default class Home extends React.Component {
                   lastUpdate={state.report.lounge.BH1750.lastUpdate}
                 />
               )}
+              {state.report.lounge.MQ135 && (
+                <SensorMeter
+                  title="Air Quality"
+                  icon="images/air-quality.svg"
+                  suffix="%"
+                  value={state.report.lounge.MQ135.airQuality}
+                  lastUpdate={state.report.lounge.MQ135.lastUpdate}
+                />
+              )}
             </Group>
 
             <Group place="hall">

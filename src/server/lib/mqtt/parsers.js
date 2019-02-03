@@ -86,6 +86,7 @@ const parsers = {
     logger.debug('Saving nodemcu1 sensor readings: %j', { readings });
 
     await db.set('nodemcu1.sensor', JSON.stringify(readings));
+    await updateReport();
   },
 
   [topics.wemos1.result]: async (payload) => {

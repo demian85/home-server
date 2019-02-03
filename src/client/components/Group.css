@@ -49,7 +49,10 @@
   grid-area: 2 / 5 / 2 / 7;
 }
 .lounge.root > div:nth-child(7) {
-  grid-area: 3 / 3 / 3 / 7;
+  grid-area: 3 / 3 / 3 / 5;
+}
+.lounge.root > div:nth-child(8) {
+  grid-area: 3 / 5 / 3 / 7;
 }
 
 .bedroom {
