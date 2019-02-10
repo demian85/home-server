@@ -28,6 +28,7 @@ const topics = {
     result: `tele/wemos/RESULT`,
     switch1: 'stat/wemos/SWITCH1',
     switch2: 'stat/wemos/SWITCH2',
+    switch3: 'stat/wemos/SWITCH3',
   },
   nodemcu1: {
     cmnd: (cmnd = 'POWER') => `cmnd/nodemcu/${cmnd}`,

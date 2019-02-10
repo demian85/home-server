@@ -10,6 +10,7 @@ const {
 } = require('../main');
 const { turnOnDeskLampIfNeeded } = require('../actions');
 const ir = require('../ir');
+const { displayText } = require('../oled');
 
 const parsers = {
   [topics.heater1.stat]: async (payload) => {
@@ -107,6 +108,13 @@ const parsers = {
     await updateDeviceState('wemos1.switch2', payload);
     await turnOnDeskLampIfNeeded();
     await updateReport();
+  },
+
+  [topics.wemos1.switch3]: async (payload) => {
+    const state = payload.toString();
+    if (state === '1') {
+      displayText();
+    }
   },
 
   [topics.heater1.statResult]: async (payload) => {

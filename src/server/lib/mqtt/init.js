@@ -12,6 +12,7 @@ client.on('connect', () => {
     'stat/+/RESULT',
     'stat/+/SWITCH1',
     'stat/+/SWITCH2',
+    'stat/+/SWITCH3',
     'cmnd/+/POWER',
     'tele/+/SENSOR',
     'tele/+/RESULT',

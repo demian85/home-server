@@ -5,7 +5,6 @@ const topics = require('./mqtt/topics');
 const mqttClient = require('./mqtt/client');
 const { getRealFeel, getSolarCalc, getMotionSensorState } = require('./utils');
 const { turnOnDeskLampIfNeeded, turnOffDeskLampIfNeeded, toggleLedPower } = require('./actions');
-const { updateDisplay } = require('./oled');
 
 function getSensorReadings(data, sensorName) {
   const sensor = data && data[sensorName];
@@ -173,7 +172,6 @@ function runScheduledActions() {
   turnOnDeskLampIfNeeded();
   turnOffDeskLampIfNeeded();
   toggleLedPower();
-  updateDisplay();
 
   setTimeout(runScheduledActions, 60000);
 }
