@@ -94,11 +94,11 @@ async function getSensorInfo() {
   }
 
   if (loungeSensor && loungeSensor.BMP280) {
-    cmnd.push(`${loungeSensor.BMP280.pressure}hPa`);
+    cmnd.push(`${loungeSensor.BMP280.pressure} hPa`);
   }
 
   if (loungeSensor && loungeSensor.BH1750) {
-    cmnd.push(`${loungeSensor.BH1750.illuminance}lx`);
+    cmnd.push(`${loungeSensor.BH1750.illuminance} lx`);
   }
 
   return cmnd;
