@@ -1,6 +1,5 @@
 import React from 'react';
-import * as _ from 'lodash';
-import Switcher from './Switcher';
+import { cloneDeep } from 'lodash';
 
 import styles from './Config.css';
 
@@ -8,7 +7,7 @@ export default class Config extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = _.cloneDeep(props.value);
+    this.state = cloneDeep(props.value);
     this.presets = {
       simple: [{ start: 0, end: 24, temp: 20.5 }],
       default: [{ start: 0, end: 9, temp: 21 }, { start: 9, end: 18, temp: 19 }, { start: 18, end: 24, temp: 20.5 }],
@@ -81,35 +80,6 @@ export default class Config extends React.Component {
           />
         </div>
         <div className={styles.content}>
-          <label>Turn on leds at night (sunset - sunrise): </label>
-          <div className={styles.grid}>
-            <Switcher
-              value={this.state.autoLedPower.heater1}
-              title="Room heater 1"
-              icon="led.svg"
-              onChange={(value) => this.onSwitchToggle('heater1', value)}
-            />
-            <Switcher
-              value={this.state.autoLedPower.heater2}
-              title="Room heater 2"
-              icon="led.svg"
-              onChange={(value) => this.onSwitchToggle('heater2', value)}
-            />
-            <Switcher
-              value={this.state.autoLedPower.roomLamp}
-              title="Room lamp"
-              icon="led.svg"
-              onChange={(value) => this.onSwitchToggle('roomLamp', value)}
-            />
-            <Switcher
-              value={this.state.autoLedPower.deskLamp}
-              title="Desk lamp"
-              icon="led.svg"
-              onChange={(value) => this.onSwitchToggle('deskLamp', value)}
-            />
-          </div>
-        </div>
-        <div className={styles.content}>
           <label>
             <input
               type="checkbox"
@@ -160,15 +130,8 @@ export default class Config extends React.Component {
 
   onPresetClick(name) {
     this.setState({
-      tempGroups: _.cloneDeep(this.presets[name]),
+      tempGroups: cloneDeep(this.presets[name]),
     });
-  }
-
-  onSwitchToggle(device, value) {
-    const autoLedPower = Object.assign({}, this.state.autoLedPower, {
-      [device]: value,
-    });
-    this.setState({ autoLedPower });
   }
 
   handleTempChange(key, value) {

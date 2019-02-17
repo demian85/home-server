@@ -69,7 +69,6 @@ api.post('/config', async (req, res) => {
     'autoMode',
     'tempGroups',
     'trigger',
-    'autoLedPower',
     'autoTurnOffDeskLamp',
     'autoTurnOffDeskLampDelay',
     'autoTurnOnDeskLamp',
@@ -98,7 +97,6 @@ api.post('/config', async (req, res) => {
   const autoMode = Boolean(newConfig.autoMode);
   const tempGroups = newConfig.tempGroups || [];
   const trigger = newConfig.trigger;
-  const autoLedPower = newConfig.autoLedPower;
   const autoTurnOffDeskLamp = !!newConfig.autoTurnOffDeskLamp;
   const autoTurnOffDeskLampDelay = Number(newConfig.autoTurnOffDeskLampDelay);
   const autoTurnOnDeskLamp = !!newConfig.autoTurnOnDeskLamp;
@@ -112,7 +110,6 @@ api.post('/config', async (req, res) => {
         autoMode,
         tempGroups,
         trigger,
-        autoLedPower,
         autoTurnOffDeskLamp,
         autoTurnOffDeskLampDelay,
         autoTurnOnDeskLamp,

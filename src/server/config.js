@@ -9,12 +9,6 @@ module.exports = {
     { start: 9, end: 18, temp: 19 },
     { start: 18, end: 24, temp: 20.5 },
   ],
-  autoLedPower: {
-    heater1: 0,
-    heater2: 0,
-    roomLamp: 0,
-    deskLamp: 0,
-  },
   autoTurnOffDeskLamp: false,
   autoTurnOffDeskLampDelay: 60, // in seconds
   autoTurnOnDeskLamp: false,

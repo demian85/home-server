@@ -4,7 +4,7 @@ const db = require('./db');
 const topics = require('./mqtt/topics');
 const mqttClient = require('./mqtt/client');
 const { getRealFeel, getSolarCalc, getMotionSensorState } = require('./utils');
-const { turnOnDeskLampIfNeeded, turnOffDeskLampIfNeeded, toggleLedPower } = require('./actions');
+const { turnOnDeskLampIfNeeded, turnOffDeskLampIfNeeded } = require('./actions');
 
 function getSensorReadings(data, sensorName) {
   const sensor = data && data[sensorName];
@@ -35,15 +35,6 @@ async function updateDeviceState(deviceName, payload) {
   const lastChange = Date.now();
   logger.debug(`Saving ${deviceName} state data: %j`, { on, lastChange });
   await db.set(`${deviceName}.state`, JSON.stringify({ on, lastChange }));
-}
-
-async function updateDeviceLedPower(deviceName, payload) {
-  const data = JSON.parse(payload);
-  if (data.LedPower) {
-    const ledPower = String(data.LedPower).toLowerCase();
-    logger.debug(`Saving ${deviceName} led power state: %s`, ledPower);
-    await db.set(`${deviceName}.ledPower`, ledPower);
-  }
 }
 
 async function turnOnDevice(deviceName, on) {
@@ -171,7 +162,6 @@ function runScheduledActions() {
 
   turnOnDeskLampIfNeeded();
   turnOffDeskLampIfNeeded();
-  toggleLedPower();
 
   setTimeout(runScheduledActions, 60000);
 }
@@ -182,4 +172,3 @@ exports.updateReport = updateReport;
 exports.getRealFeel = getRealFeel;
 exports.getSensorReadings = getSensorReadings;
 exports.runScheduledActions = runScheduledActions;
-exports.updateDeviceLedPower = updateDeviceLedPower;
