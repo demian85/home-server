@@ -13,7 +13,9 @@ const ir = require('../ir');
 const { clearDisplay, displayNextState } = require('../oled');
 const { debounce } = require('lodash');
 
-const clearDisplayIn10Secs = debounce(clearDisplay, 10000);
+const resetIn10Secs = debounce(() => {
+  clearDisplay(true);
+}, 10000);
 
 const parsers = {
   [topics.heater1.stat]: async (payload) => {
@@ -118,7 +120,7 @@ const parsers = {
     if (state === '1') {
       clearDisplay();
       displayNextState();
-      clearDisplayIn10Secs();
+      resetIn10Secs();
     }
   },
 

@@ -15,15 +15,18 @@ async function displayNextState() {
   displayText(textLines, 2);
 }
 
-function clearDisplay() {
-  logger.debug(`clearDisplay()`);
+function clearDisplay(resetState = false) {
+  logger.debug(`clearDisplay(): %j`, { resetState });
 
   mqttClient.publish(topics.wemos1.cmnd('DisplayText'), '[z]');
-  currentStateIndex = -1;
+
+  if (resetState) {
+    currentStateIndex = -1;
+  }
 }
 
 function displayText(textLines = [], size = 1) {
-  logger.debug(`displayText()`);
+  logger.debug(`displayText(): %j`, { textLines, size });
 
   const cmnd = textLines
     .map((text, index) => {
