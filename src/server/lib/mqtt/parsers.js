@@ -10,7 +10,10 @@ const {
 } = require('../main');
 const { turnOnDeskLampIfNeeded } = require('../actions');
 const ir = require('../ir');
-const { displayText } = require('../oled');
+const { clearDisplay, displayNextState } = require('../oled');
+const { debounce } = require('lodash');
+
+const clearDisplayIn10Secs = debounce(clearDisplay, 10000);
 
 const parsers = {
   [topics.heater1.stat]: async (payload) => {
@@ -113,7 +116,9 @@ const parsers = {
   [topics.wemos1.switch3]: async (payload) => {
     const state = payload.toString();
     if (state === '1') {
-      displayText();
+      clearDisplay();
+      displayNextState();
+      clearDisplayIn10Secs();
     }
   },
 
