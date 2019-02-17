@@ -5,7 +5,6 @@ const logger = require('../logger');
 const db = require('../db');
 const client = require('../mqtt/client');
 const { updateHeaterState, updateReport } = require('../main');
-const { clearDisplay } = require('../oled');
 
 const api = new Router();
 
@@ -72,6 +71,7 @@ api.post('/config', async (req, res) => {
     'trigger',
     'autoLedPower',
     'autoTurnOffDeskLamp',
+    'autoTurnOffDeskLampDelay',
     'autoTurnOnDeskLamp',
     'enableOledDisplay',
   ];
@@ -100,8 +100,8 @@ api.post('/config', async (req, res) => {
   const trigger = newConfig.trigger;
   const autoLedPower = newConfig.autoLedPower;
   const autoTurnOffDeskLamp = !!newConfig.autoTurnOffDeskLamp;
+  const autoTurnOffDeskLampDelay = Number(newConfig.autoTurnOffDeskLampDelay);
   const autoTurnOnDeskLamp = !!newConfig.autoTurnOnDeskLamp;
-  const enableOledDisplay = !!newConfig.enableOledDisplay;
 
   try {
     await db.set(
@@ -114,16 +114,13 @@ api.post('/config', async (req, res) => {
         trigger,
         autoLedPower,
         autoTurnOffDeskLamp,
+        autoTurnOffDeskLampDelay,
         autoTurnOnDeskLamp,
-        enableOledDisplay,
       }),
     );
     const newConfig = await db.getHeaterConfig();
     if (autoMode) {
       await updateHeaterState();
-    }
-    if (!enableOledDisplay) {
-      clearDisplay();
     }
     await updateReport();
     client.publish('stat/_config', JSON.stringify(newConfig));

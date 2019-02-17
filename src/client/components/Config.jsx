@@ -128,18 +128,17 @@ export default class Config extends React.Component {
               style={{ marginRight: '5px' }}
               onChange={(e) => this.setState({ autoTurnOffDeskLamp: e.target.checked })}
             />
-            Turn OFF desk lamp automatically 5min after motion sensor went off (after bed time)
-          </label>
-        </div>
-        <div className={styles.content}>
-          <label>
+            Turn OFF desk lamp automatically
             <input
-              type="checkbox"
-              checked={!!this.state.enableOledDisplay}
-              style={{ marginRight: '5px' }}
-              onChange={(e) => this.setState({ enableOledDisplay: e.target.checked })}
+              type="number"
+              value={this.state.autoTurnOffDeskLampDelay}
+              style={{ margin: '0 5px' }}
+              min="0"
+              max="3600"
+              step="1"
+              onChange={(e) => this.setState({ autoTurnOffDeskLampDelay: e.target.value })}
             />
-            Enable OLED display
+            seconds after motion sensor went off (after bed time)
           </label>
         </div>
         <div className={styles.controls}>

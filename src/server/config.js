@@ -18,5 +18,4 @@ module.exports = {
   autoTurnOffDeskLamp: false,
   autoTurnOffDeskLampDelay: 60, // in seconds
   autoTurnOnDeskLamp: false,
-  enableOledDisplay: false,
 };
