@@ -19,6 +19,7 @@ function clearDisplay() {
   logger.debug(`clearDisplay()`);
 
   mqttClient.publish(topics.wemos1.cmnd('DisplayText'), '[z]');
+  currentStateIndex = -1;
 }
 
 function displayText(textLines = [], size = 1) {
