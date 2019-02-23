@@ -43,15 +43,12 @@
   grid-area: 2 / 1 / 4 / 3;
 }
 .bedroom.root > div:nth-child(5) {
-  grid-area: 2 / 3 / 2 / 5;
+  grid-area: 2 / 3 / 2 / 7;
 }
 .bedroom.root > div:nth-child(6) {
-  grid-area: 2 / 5 / 2 / 7;
-}
-.bedroom.root > div:nth-child(7) {
   grid-area: 3 / 3 / 3 / 5;
 }
-.bedroom.root > div:nth-child(8) {
+.bedroom.root > div:nth-child(7) {
   grid-area: 3 / 5 / 3 / 7;
 }
 

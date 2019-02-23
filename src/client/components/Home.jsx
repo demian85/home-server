@@ -33,15 +33,15 @@ export default class Home extends React.Component {
                 value={state.report.room.realFeel}
                 lastUpdate={state.report.room.lastUpdate}
               />
-              <AutoSwitcher
-                label={`~${state.report.config.setPoint} ˚C`}
-                value={state.config.autoMode}
-                onChange={(value) => state.setConfig({ autoMode: !!value })}
-              />
               <Switcher
                 device={state.devices.lamp}
                 icon="room-lamp.svg"
                 onChange={(value) => state.cmnd('sonoff-lamp', value)}
+              />
+              <AutoSwitcher
+                label={`~${state.report.config.setPoint} ˚C`}
+                value={state.config.autoMode}
+                onChange={(value) => state.setConfig({ autoMode: !!value })}
               />
               <Switcher
                 device={state.devices.heater}
