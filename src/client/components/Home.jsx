@@ -121,18 +121,18 @@ export default class Home extends React.Component {
             <Group place="outside">
               <TemperatureMeter
                 title="Temp"
-                value={state.report.weather.temperature}
-                lastUpdate={state.report.weather.lastUpdate}
+                value={state.report.patio.temperature}
+                lastUpdate={state.report.patio.lastUpdate}
               />
               <HumidityMeter
                 title="Hum"
-                value={state.report.weather.humidity}
-                lastUpdate={state.report.weather.lastUpdate}
+                value={state.report.patio.humidity}
+                lastUpdate={state.report.patio.lastUpdate}
               />
               <TemperatureMeter
                 title="Feel"
-                value={state.report.weather.realFeel}
-                lastUpdate={state.report.weather.lastUpdate}
+                value={state.report.patio.realFeel}
+                lastUpdate={state.report.patio.lastUpdate}
               />
               <Switcher
                 device={state.devices.patio}

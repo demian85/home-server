@@ -68,14 +68,19 @@ const parsers = {
 
   [topics.nodemcu1.sensor]: async (payload) => {
     const data = JSON.parse(payload.toString());
+    const AM2301 = getSensorReadings(data, 'AM2301');
     const analogReadings = data.ADS1115;
 
+    if (!AM2301) {
+      logger.error('Sensor AM2301 not found!');
+    }
     if (!analogReadings) {
-      logger.error('No analog readings found!');
+      logger.error('ADS1115 not found!');
     }
 
     const volts0 = (analogReadings.A0 * 0.1875) / 1000;
     const readings = {
+      AM2301,
       MQ135: {
         volts: volts0,
         airQuality: 100 - Math.round((100 * volts0) / 5),

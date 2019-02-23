@@ -2,7 +2,6 @@ const db = require('./db');
 const logger = require('./logger');
 const mqttClient = require('./mqtt/client');
 const topics = require('./mqtt/topics');
-const { getWeather } = require('./weather');
 const { DateTime } = require('luxon');
 
 let currentStateIndex = -1;
@@ -41,6 +40,7 @@ function displayText(textLines = [], size = 1) {
 async function getTemperatureInfo() {
   const heaterSensor = await db.getSensorData('heater1');
   const loungeSensor = await db.getSensorData('wemos1');
+  const patioSensor = await db.getSensorData('nodemcu1');
   const cmnd = [];
 
   if (heaterSensor) {
@@ -51,12 +51,8 @@ async function getTemperatureInfo() {
     cmnd.push(`L: ${loungeSensor.AM2301.temperature} C`);
   }
 
-  try {
-    const weather = await getWeather();
-    const outsideTemp = Math.round(weather.main.temp * 10) / 10;
-    cmnd.push(`P: ${outsideTemp} C`);
-  } catch (err) {
-    logger.error('error parsing weather report: %o', err);
+  if (patioSensor && patioSensor.AM2301) {
+    cmnd.push(`P: ${patioSensor.AM2301.temperature} C`);
   }
 
   return cmnd;
@@ -65,6 +61,7 @@ async function getTemperatureInfo() {
 async function getHumidityInfo() {
   const heaterSensor = await db.getSensorData('heater1');
   const loungeSensor = await db.getSensorData('wemos1');
+  const patioSensor = await db.getSensorData('nodemcu1');
   const cmnd = [];
 
   if (heaterSensor) {
@@ -75,11 +72,8 @@ async function getHumidityInfo() {
     cmnd.push(`L: ${loungeSensor.AM2301.humidity} %`);
   }
 
-  try {
-    const weather = await getWeather();
-    cmnd.push(`P: ${weather.main.humidity} %`);
-  } catch (err) {
-    logger.error('error parsing weather report: %o', err);
+  if (patioSensor && patioSensor.AM2301) {
+    cmnd.push(`P: ${patioSensor.AM2301.humidity} %`);
   }
 
   return cmnd;
@@ -87,10 +81,11 @@ async function getHumidityInfo() {
 
 async function getSensorInfo() {
   const loungeSensor = await db.getSensorData('wemos1');
+  const patioSensor = await db.getSensorData('nodemcu1');
   let cmnd = [];
 
-  if (loungeSensor && loungeSensor.MQ135) {
-    cmnd.push(`Air Q: ${loungeSensor.MQ135.airQuality}%`);
+  if (patioSensor && patioSensor.MQ135) {
+    cmnd.push(`Air Q: ${patioSensor.MQ135.airQuality}%`);
   }
 
   if (loungeSensor && loungeSensor.BMP280) {

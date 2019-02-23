@@ -120,15 +120,16 @@ async function updateReport() {
 
   const setPoint = await getRoomSetPoint();
   const heaterSensor = await db.getSensorData('heater1');
-  const loungeSensor1 = await db.getSensorData('wemos1');
-  const loungeSensor2 = await db.getSensorData('nodemcu1');
+  const loungeSensor = await db.getSensorData('wemos1');
+  const patioSensor = await db.getSensorData('nodemcu1');
   const motionSensor = await getMotionSensorState();
   const { sunrise, sunset } = getSolarCalc();
 
   let report = {
     config: { setPoint },
     room: heaterSensor,
-    lounge: { ...loungeSensor1, ...loungeSensor2 },
+    lounge: loungeSensor,
+    patio: patioSensor,
     motionSensor,
     data: {
       sunrise: sunrise.toISOString(),
