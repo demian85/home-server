@@ -99,15 +99,6 @@ export default class Home extends React.Component {
                   lastUpdate={state.report.lounge.BH1750.lastUpdate}
                 />
               )}
-              {state.report.lounge.MQ135 && (
-                <SensorMeter
-                  title="Air Quality"
-                  icon="images/air-quality.svg"
-                  suffix="%"
-                  value={state.report.lounge.MQ135.airQuality}
-                  lastUpdate={state.report.lounge.MQ135.lastUpdate}
-                />
-              )}
             </Group>
 
             <Group place="hall">
@@ -121,24 +112,33 @@ export default class Home extends React.Component {
             <Group place="outside">
               <TemperatureMeter
                 title="Temp"
-                value={state.report.patio.temperature}
-                lastUpdate={state.report.patio.lastUpdate}
+                value={state.report.patio.AM2301.temperature}
+                lastUpdate={state.report.patio.AM2301.lastUpdate}
               />
               <HumidityMeter
                 title="Hum"
-                value={state.report.patio.humidity}
-                lastUpdate={state.report.patio.lastUpdate}
+                value={state.report.patio.AM2301.humidity}
+                lastUpdate={state.report.patio.AM2301.lastUpdate}
               />
               <TemperatureMeter
                 title="Feel"
-                value={state.report.patio.realFeel}
-                lastUpdate={state.report.patio.lastUpdate}
+                value={state.report.patio.AM2301.realFeel}
+                lastUpdate={state.report.patio.AM2301.lastUpdate}
               />
               <Switcher
                 device={state.devices.patio}
                 icon="patio-lamp.svg"
                 onChange={(value) => state.cmnd('sonoff-patio', value)}
               />
+              {state.report.patio.MQ135 && (
+                <SensorMeter
+                  title="Air Quality"
+                  icon="images/air-quality.svg"
+                  suffix="%"
+                  value={state.report.patio.MQ135.airQuality}
+                  lastUpdate={state.report.patio.MQ135.lastUpdate}
+                />
+              )}
               <SensorMeter icon="/images/wind.svg" value={state.report.weather.windSpeedKmh} suffix="km/h" />
               <Sun data={state.report.data} />
             </Group>

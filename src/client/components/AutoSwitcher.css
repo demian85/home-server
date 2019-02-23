@@ -5,7 +5,7 @@
   justify-content: center;
   align-items: center;
   border: 1px solid #eee;
-  padding: 0.5em 1em 0.5em 30px;
+  padding: 0.5em 1em 0.5em 34px;
   background-repeat: no-repeat;
   background-position: left 0.5em center;
   background-size: 20px;
@@ -20,7 +20,7 @@
 
 @media (min-width: 475px) {
   .root {
-    padding-left: 34px;
+    padding-left: 38px;
     background-size: 24px;
   }
 
