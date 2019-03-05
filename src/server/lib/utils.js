@@ -35,7 +35,7 @@ exports.isNightTime = function isNightTime() {
 
 exports.isBedTime = function isBedTime() {
   const calc = new SolarCalc(new Date(), LATITUDE, LONGITUDE);
-  const bedTime = DateTime.fromJSDate(calc.sunset).plus({ minutes: 150 }); // 2:30h after sunset
+  const bedTime = DateTime.fromJSDate(calc.sunset).plus({ minutes: 180 }); // 3h after sunset
   const sunrise = DateTime.fromJSDate(calc.sunrise);
   return bedTime.diffNow().as('minutes') < 0 || sunrise.diffNow().as('minutes') > 0;
 };
