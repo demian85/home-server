@@ -65,15 +65,15 @@ async function getHumidityInfo() {
   const cmnd = [];
 
   if (heaterSensor) {
-    cmnd.push(`R: ${heaterSensor.humidity} %`);
+    cmnd.push(`R: ${Math.round(heaterSensor.humidity)} %`);
   }
 
   if (loungeSensor && loungeSensor.AM2301) {
-    cmnd.push(`L: ${loungeSensor.AM2301.humidity} %`);
+    cmnd.push(`L: ${Math.round(loungeSensor.AM2301.humidity)} %`);
   }
 
   if (patioSensor && patioSensor.AM2301) {
-    cmnd.push(`P: ${patioSensor.AM2301.humidity} %`);
+    cmnd.push(`P: ${Math.round(patioSensor.AM2301.humidity)} %`);
   }
 
   return cmnd;
