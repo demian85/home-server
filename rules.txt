@@ -1,0 +1,3 @@
+# Rules needed for wemos device to make motion sensors work
+
+  rule1 on Switch1#State do publish2 stat/wemos/SWITCH1 %value% endon on Switch2#State do publish2 stat/wemos/SWITCH2 %value% endon
