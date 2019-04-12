@@ -36,7 +36,7 @@ router.get('/event/toggle', (req, res) => {
   const { device } = req.query;
 
   logger.info('/event/toggle device: %s', device);
-  client.publish(`cmnd/${device}/TOGGLE`);
+  client.publish(`cmnd/${device}/POWER`, 'TOGGLE');
 
   res.end();
 });
