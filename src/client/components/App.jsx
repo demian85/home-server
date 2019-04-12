@@ -105,7 +105,7 @@ export default class App extends React.Component {
         <Provider value={this.state}>
           <Route exact path="/" render={() => <Home />} />
           <Route
-            path="/config"
+            path="/config-view"
             render={() => <Config value={this.state.config} onSave={(config) => this.state.setConfig(config)} />}
           />
           <Route path="/logs" render={() => <Log />} />

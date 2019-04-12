@@ -1,9 +1,13 @@
 import React from 'react';
 import { cloneDeep } from 'lodash';
 
+import StoreProvider from '../lib/store';
+
 import styles from './Config.css';
 
 export default class Config extends React.Component {
+  static contextType = StoreProvider;
+
   constructor(props) {
     super(props);
 
@@ -80,6 +84,28 @@ export default class Config extends React.Component {
           />
         </div>
         <div className={styles.content}>
+          <label>Night time: </label>
+          <input
+            type="time"
+            value={this.state.nightTime || ''}
+            disabled={this.state.nightTime === null}
+            onChange={(e) => this.setNightTime(e.target.value)}
+          />
+          &nbsp;
+          <label>
+            <input
+              type="checkbox"
+              checked={this.state.nightTime === null}
+              onChange={(e) => this.setNightTime(e.target.checked)}
+            />
+            &nbsp;Use sunset
+          </label>
+        </div>
+        <div className={styles.content}>
+          <label>Bed time: </label>
+          <input type="time" value={this.state.bedTime} onChange={(e) => this.setState({ bedTime: e.target.value })} />
+        </div>
+        <div className={styles.content}>
           <label>
             <input
               type="checkbox"
@@ -121,6 +147,10 @@ export default class Config extends React.Component {
         </div>
       </section>
     );
+  }
+
+  setNightTime(value) {
+    this.setState({ nightTime: value === true ? null : value });
   }
 
   async save() {

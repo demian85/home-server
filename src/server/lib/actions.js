@@ -8,13 +8,14 @@ const { isNightTime, isBedTime, getMotionSensorState } = require('./utils');
 exports.turnOffDeskLampIfNeeded = async function() {
   const { autoTurnOffDeskLamp, autoTurnOffDeskLampDelay } = await db.getHeaterConfig();
   const motionSensorState = await getMotionSensorState();
+  const bedTime = await isBedTime();
 
-  logger.debug(`turnOffDeskLampIfNeeded(): %j`, { autoTurnOffDeskLamp, motionSensorState, isBedTime: isBedTime() });
+  logger.debug(`turnOffDeskLampIfNeeded(): %j`, { autoTurnOffDeskLamp, motionSensorState, isBedTime: bedTime });
 
   if (autoTurnOffDeskLamp && motionSensorState) {
     const motionSensorLastStateChangeDiff = Date.now() - motionSensorState.lastChange;
     if (
-      isBedTime() &&
+      bedTime &&
       motionSensorState.on === false &&
       motionSensorLastStateChangeDiff > 1000 * autoTurnOffDeskLampDelay
     ) {

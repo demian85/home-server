@@ -58,7 +58,8 @@ router.post('/config', bodyParser.json(), async (req, res) => {
     'autoTurnOffDeskLamp',
     'autoTurnOffDeskLampDelay',
     'autoTurnOnDeskLamp',
-    'enableOledDisplay',
+    'nightTime',
+    'bedTime',
   ];
   const newConfig = {};
 
@@ -86,6 +87,8 @@ router.post('/config', bodyParser.json(), async (req, res) => {
   const autoTurnOffDeskLamp = !!newConfig.autoTurnOffDeskLamp;
   const autoTurnOffDeskLampDelay = Number(newConfig.autoTurnOffDeskLampDelay);
   const autoTurnOnDeskLamp = !!newConfig.autoTurnOnDeskLamp;
+  const nightTime = newConfig.nightTime;
+  const bedTime = newConfig.bedTime;
 
   try {
     await db.set(
@@ -99,6 +102,8 @@ router.post('/config', bodyParser.json(), async (req, res) => {
         autoTurnOffDeskLamp,
         autoTurnOffDeskLampDelay,
         autoTurnOnDeskLamp,
+        nightTime,
+        bedTime,
       }),
     );
     const newConfig = await db.getHeaterConfig();

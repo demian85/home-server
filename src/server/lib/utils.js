@@ -33,11 +33,12 @@ exports.isNightTime = function isNightTime() {
   return sunset.diffNow().as('minutes') < 0 || sunrise.diffNow().as('minutes') > 0;
 };
 
-exports.isBedTime = function isBedTime() {
+exports.isBedTime = async function isBedTime() {
+  const { bedTime } = await db.getHeaterConfig();
   const calc = new SolarCalc(new Date(), LATITUDE, LONGITUDE);
-  const bedTime = DateTime.fromJSDate(calc.sunset).plus({ minutes: 180 }); // 3h after sunset
   const sunrise = DateTime.fromJSDate(calc.sunrise);
-  return bedTime.diffNow().as('minutes') < 0 || sunrise.diffNow().as('minutes') > 0;
+  const bedTimeDate = bedTime === null ? DateTime.fromJSDate(calc.sunset) : DateTime.fromFormat(bedTime, 'HH:mm');
+  return bedTimeDate.diffNow().as('minutes') < 0 || sunrise.diffNow().as('minutes') > 0;
 };
 
 exports.getMotionSensorState = async function getMotionSensorState() {

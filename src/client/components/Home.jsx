@@ -145,7 +145,7 @@ export default class Home extends React.Component {
           </section>
         )}
         <div className={styles.footer}>
-          <Link to="/config">Config</Link>
+          <Link to="/config-view">Config</Link>
           <Link to="/logs">Logs</Link>
         </div>
       </section>

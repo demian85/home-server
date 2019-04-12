@@ -12,4 +12,6 @@ module.exports = {
   autoTurnOffDeskLamp: false,
   autoTurnOffDeskLampDelay: 60, // in seconds
   autoTurnOnDeskLamp: false,
+  nightTime: null,
+  bedTime: '23:00',
 };
