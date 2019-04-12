@@ -28,7 +28,7 @@ export default class App extends React.Component {
       setConfig: async (values) => {
         console.debug('setConfig', values);
         const body = JSON.stringify(Object.assign({}, this.state.config, values));
-        await fetch('/api/config', {
+        await fetch('/config', {
           method: 'POST',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },

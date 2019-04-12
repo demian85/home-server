@@ -1,32 +1,22 @@
 const bodyParser = require('body-parser');
 const { Router } = require('express');
-const basicAuth = require('express-basic-auth');
 const logger = require('../logger');
-const db = require('../db');
 const client = require('../mqtt/client');
-const { updateHeaterState, updateReport } = require('../main');
 
-const api = new Router();
+const router = new Router();
 
-api.use(
-  basicAuth({
-    users: { admin: process.env.ADMIN_PASSWD },
-    challenge: true,
-  }),
-);
+router.use(bodyParser.json());
 
-api.use(bodyParser.json());
+router.use((req, res, next) => {
+  const key = process.env.AUTH_KEY;
+  if (req.query.key !== key && req.headers.authorization !== key) {
+    res.status(401).end('Invalid auth key!');
+    return;
+  }
+  next();
+});
 
-// api.use((req, res, next) => {
-//   const key = process.env.AUTH_KEY;
-//   if (req.query.key !== key && req.headers.authorization !== key) {
-//     res.status(401).end('Invalid auth key!');
-//     return;
-//   }
-//   next();
-// });
-
-api.get('/event/on', (req, res) => {
+router.get('/event/on', (req, res) => {
   const { device } = req.query;
 
   logger.debug('/event/on device: %s', device);
@@ -35,7 +25,7 @@ api.get('/event/on', (req, res) => {
   res.end();
 });
 
-api.get('/event/off', (req, res) => {
+router.get('/event/off', (req, res) => {
   const { device } = req.query;
 
   logger.debug('/event/off device: %s', device);
@@ -44,90 +34,4 @@ api.get('/event/off', (req, res) => {
   res.end();
 });
 
-api.get('/config', async (req, res) => {
-  logger.debug('GET /config');
-
-  try {
-    const config = await db.getHeaterConfig();
-    res.json(config);
-  } catch (err) {
-    logger.error(err);
-    res.status(500);
-  }
-
-  res.end();
-});
-
-api.post('/config', async (req, res) => {
-  const config = req.body || {};
-
-  logger.debug('POST /config %o', config);
-
-  const validKeys = [
-    'defaultSetPoint',
-    'minStateDurationSecs',
-    'autoMode',
-    'tempGroups',
-    'trigger',
-    'autoTurnOffDeskLamp',
-    'autoTurnOffDeskLampDelay',
-    'autoTurnOnDeskLamp',
-    'enableOledDisplay',
-  ];
-  const newConfig = {};
-
-  Object.keys(config).forEach((key) => {
-    if (validKeys.includes(key)) {
-      newConfig[key] = config[key];
-    }
-  });
-
-  if (isNaN(newConfig.defaultSetPoint)) {
-    res.status(400).end();
-  }
-  if (isNaN(newConfig.minStateDurationSecs)) {
-    res.status(400).end();
-  }
-  if (!['temp', 'feel'].includes(newConfig.trigger)) {
-    res.status(400).end();
-  }
-
-  const defaultSetPoint = Number(newConfig.defaultSetPoint);
-  const minStateDurationSecs = Number(newConfig.minStateDurationSecs);
-  const autoMode = Boolean(newConfig.autoMode);
-  const tempGroups = newConfig.tempGroups || [];
-  const trigger = newConfig.trigger;
-  const autoTurnOffDeskLamp = !!newConfig.autoTurnOffDeskLamp;
-  const autoTurnOffDeskLampDelay = Number(newConfig.autoTurnOffDeskLampDelay);
-  const autoTurnOnDeskLamp = !!newConfig.autoTurnOnDeskLamp;
-
-  try {
-    await db.set(
-      'heater.config',
-      JSON.stringify({
-        defaultSetPoint,
-        minStateDurationSecs,
-        autoMode,
-        tempGroups,
-        trigger,
-        autoTurnOffDeskLamp,
-        autoTurnOffDeskLampDelay,
-        autoTurnOnDeskLamp,
-      }),
-    );
-    const newConfig = await db.getHeaterConfig();
-    if (autoMode) {
-      await updateHeaterState();
-    }
-    await updateReport();
-    client.publish('stat/_config', JSON.stringify(newConfig));
-    res.json(newConfig);
-  } catch (err) {
-    logger.error(err);
-    res.status(500);
-  }
-
-  res.end();
-});
-
-module.exports = api;
+module.exports = router;
