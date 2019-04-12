@@ -6,7 +6,8 @@ const router = new Router();
 
 router.use((req, res, next) => {
   const key = process.env.AUTH_KEY;
-  if (req.query.key !== key && req.headers.authorization !== key) {
+  const clientKey = req.headers.authorization || req.query.key;
+  if (clientKey !== key) {
     res.status(401).end('Invalid auth key!');
     return;
   }
