@@ -1,11 +1,8 @@
-const bodyParser = require('body-parser');
 const { Router } = require('express');
 const logger = require('../logger');
 const client = require('../mqtt/client');
 
 const router = new Router();
-
-router.use(bodyParser.json());
 
 router.use((req, res, next) => {
   const key = process.env.AUTH_KEY;
@@ -30,6 +27,15 @@ router.get('/event/off', (req, res) => {
 
   logger.debug('/event/off device: %s', device);
   client.publish(`cmnd/${device}/POWER`, '0');
+
+  res.end();
+});
+
+router.get('/event/toggle', (req, res) => {
+  const { device } = req.query;
+
+  logger.debug('/event/toggle device: %s', device);
+  client.publish(`cmnd/${device}/TOGGLE`);
 
   res.end();
 });
