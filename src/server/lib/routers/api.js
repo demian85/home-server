@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const logger = require('../logger');
 const client = require('../mqtt/client');
+const { getDevicePowerStateFromPayload } = require('../utils');
 
 const router = new Router();
 
@@ -37,6 +38,21 @@ router.get('/event/toggle', (req, res) => {
 
   logger.info('/event/toggle device: %s', device);
   client.publish(`cmnd/${device}/POWER`, 'TOGGLE');
+
+  res.end();
+});
+
+router.get('/state', (req, res) => {
+  const { device, power } = req.query;
+  const isOn = getDevicePowerStateFromPayload(power);
+
+  if (!device) {
+    res.status(400).end('Invalid device name!');
+    return;
+  }
+
+  logger.info('/state device: %s, isOn: %s', device, isOn);
+  client.publish(`stat/${device}/POWER`, '1');
 
   res.end();
 });

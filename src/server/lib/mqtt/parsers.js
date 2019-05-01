@@ -1,3 +1,6 @@
+const { debounce } = require('lodash');
+
+const client = require('./client');
 const logger = require('../logger');
 const topics = require('./topics');
 const db = require('../db');
@@ -5,11 +8,24 @@ const { updateDeviceState, updateHeaterState, updateReport, getSensorReadings } 
 const { turnOnDeskLampIfNeeded } = require('../actions');
 const ir = require('../ir');
 const { clearDisplay, displayNextState } = require('../oled');
-const { debounce } = require('lodash');
+const ifttt = require('../ifttt');
+const { getDevicePowerStateFromPayload } = require('../utils');
 
 const resetIn10Secs = debounce(() => {
   clearDisplay(true);
 }, 10000);
+
+const smartBulbCmndParser = (deviceName) => {
+  return async (payload) => {
+    const power = payload.toString().toLowerCase();
+    const isOn = getDevicePowerStateFromPayload(power);
+    const strState = isOn ? 'on' : 'off';
+    const intState = isOn ? '1' : '0';
+
+    await ifttt.sendEvent(`${deviceName}:power:${strState}`);
+    client.publish(`stat/${deviceName}/POWER`, intState);
+  };
+};
 
 const parsers = {
   [topics.heater1.stat]: async (payload) => {
@@ -22,6 +38,10 @@ const parsers = {
 
   [topics.deskLamp.stat]: async (payload) => {
     await updateDeviceState('deskLamp', payload);
+  },
+
+  [topics.bulb1.stat]: async (payload) => {
+    await updateDeviceState('bulb1', payload);
   },
 
   [topics.heater1.sensor]: async (payload) => {
@@ -122,6 +142,11 @@ const parsers = {
       resetIn10Secs();
     }
   },
+
+  // simulate Tuya-Tasmota device
+  [topics.bulb1.cmnd()]: smartBulbCmndParser('bulb1'),
+
+  [topics.bulb2.cmnd()]: smartBulbCmndParser('bulb2'),
 };
 
 module.exports = parsers;

@@ -60,3 +60,8 @@ exports.getMotionSensorState = async function getMotionSensorState() {
   const lastChange = Math.min(...onSensors.map((v) => v.lastChange));
   return { on: true, lastChange };
 };
+
+exports.getDevicePowerStateFromPayload = (payload) => {
+  const stateValue = String(payload).toLowerCase();
+  return stateValue === 'on' || stateValue === '1';
+};

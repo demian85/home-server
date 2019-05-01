@@ -17,7 +17,6 @@ exports.set = promisify(db.set.bind(db));
 exports.mset = promisify(db.mset.bind(db));
 exports.get = promisify(db.get.bind(db));
 exports.mget = promisify(db.mget.bind(db));
-
 exports.end = promisify(db.end.bind(db));
 
 exports.getSensorData = async (deviceName) => {

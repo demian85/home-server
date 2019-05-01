@@ -32,6 +32,14 @@ const topics = {
     sensor: `tele/nodemcu/SENSOR`,
     result: `tele/nodemcu/RESULT`,
   },
+  bulb1: {
+    cmnd: (cmnd = 'POWER') => `cmnd/bulb1/${cmnd}`,
+    stat: `stat/bulb1/POWER`,
+  },
+  bulb2: {
+    cmnd: (cmnd = 'POWER') => `cmnd/bulb2/${cmnd}`,
+    stat: `stat/bulb2/POWER`,
+  },
 };
 
 module.exports = topics;
