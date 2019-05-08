@@ -99,11 +99,17 @@ const parsers = {
     }
 
     const volts0 = (analogReadings.A0 * 0.1875) / 1000;
+    const volts1 = (analogReadings.A1 * 0.1875) / 1000;
     const readings = {
       AM2301,
       MQ135: {
         volts: volts0,
         airQuality: 100 - Math.round((100 * volts0) / 5),
+        lastUpdate: Date.now(),
+      },
+      SOIL: {
+        volts: volts1,
+        value: 100 - Math.round((100 * volts1) / 3.3), // resistive value
         lastUpdate: Date.now(),
       },
     };

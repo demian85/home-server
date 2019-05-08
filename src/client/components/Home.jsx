@@ -139,6 +139,15 @@ export default class Home extends React.Component {
                   lastUpdate={state.report.patio.MQ135.lastUpdate}
                 />
               )}
+              {state.report.patio.SOIL && (
+                <SensorMeter
+                  title="Soil Hum"
+                  icon="images/soil.svg"
+                  suffix="%"
+                  value={state.report.patio.SOIL.value}
+                  lastUpdate={state.report.patio.SOIL.lastUpdate}
+                />
+              )}
               <SensorMeter icon="/images/wind.svg" value={state.report.weather.windSpeedKmh} suffix="km/h" />
               <Sun data={state.report.data} />
             </Group>
