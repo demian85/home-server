@@ -2,7 +2,7 @@
   display: grid;
   grid-gap: var(--spacing-compact);
   grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: repeat(auto-fit, minmax(50px, auto));
+  grid-template-rows: repeat(auto-fit, minmax(60px, auto));
   padding: var(--spacing-compact);
   padding-left: 34px;
   background-repeat: no-repeat;
@@ -78,13 +78,16 @@
   grid-area: 2 / 5 / 2 / 7;
 }
 .outside.root > div:nth-child(7) {
-  grid-area: 3 / 1 / 3 / 3;
+  grid-area: 3 / 1 / 5 / 3;
 }
 .outside.root > div:nth-child(8) {
-  grid-area: 3 / 3 / 3 / 5;
+  grid-area: 3 / 3 / 5 / 5;
 }
 .outside.root > div:nth-child(9) {
   grid-area: 3 / 5 / 3 / 7;
+}
+.outside.root > div:nth-child(10) {
+  grid-area: 4 / 5 / 4 / 7;
 }
 
 .bedroom {

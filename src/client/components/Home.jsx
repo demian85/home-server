@@ -130,6 +130,12 @@ export default class Home extends React.Component {
                 icon="patio-lamp.svg"
                 onChange={(value) => state.cmnd('sonoff-patio', value)}
               />
+              <Switcher
+                device={state.devices.socket2}
+                icon="valve.svg"
+                onChange={(value) => state.cmnd('sonoff-socket2', value)}
+              />
+              <SensorMeter icon="/images/wind.svg" value={state.report.weather.windSpeedKmh} suffix="km/h" />
               {state.report.patio.MQ135 && (
                 <SensorMeter
                   title="Air Quality"
@@ -148,7 +154,6 @@ export default class Home extends React.Component {
                   lastUpdate={state.report.patio.SOIL.lastUpdate}
                 />
               )}
-              <SensorMeter icon="/images/wind.svg" value={state.report.weather.windSpeedKmh} suffix="km/h" />
               <Sun data={state.report.data} />
             </Group>
           </section>

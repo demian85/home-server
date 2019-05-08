@@ -19,7 +19,7 @@ function SensorMeter(props) {
 
   if (props.title) {
     return (
-      <div className={`${styles.root} ${styles.withTitle}`}>
+      <div className={styles.root}>
         <h3 style={css}>{props.title}</h3>
         {tree}
       </div>
