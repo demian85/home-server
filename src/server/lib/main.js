@@ -33,7 +33,9 @@ async function updateDeviceState(deviceName, payload) {
   const stateValue = String(payload).toLowerCase();
   const on = stateValue === 'on' || stateValue === '1';
   const lastChange = Date.now();
+
   logger.debug(`Saving ${deviceName} state data: %j`, { on, lastChange });
+
   await db.set(`${deviceName}.state`, JSON.stringify({ on, lastChange }));
 }
 
