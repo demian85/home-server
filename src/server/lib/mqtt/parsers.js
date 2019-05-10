@@ -22,8 +22,13 @@ const smartBulbCmndParser = (deviceName) => {
     const strState = isOn ? 'on' : 'off';
     const intState = isOn ? '1' : '0';
 
-    await ifttt.sendEvent(`${deviceName}:power:${strState}`);
-    client.publish(`stat/${deviceName}/POWER`, intState);
+    try {
+      await ifttt.sendEvent(`${deviceName}:power:${strState}`);
+      client.publish(`stat/${deviceName}/POWER`, intState);
+    } catch (err) {
+      logger.error('error sending IFTTT event: %s', err.message);
+      console.error(err);
+    }
   };
 };
 
