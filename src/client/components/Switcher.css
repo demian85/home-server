@@ -1,4 +1,5 @@
 .root {
+  min-height: 70px;
   position: relative;
   display: flex;
   flex-flow: column nowrap;
