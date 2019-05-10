@@ -40,7 +40,13 @@ export default class TimeAgo extends React.PureComponent {
       }
     }
 
-    return <span className={styles.root}>{friendlyTimeAgo}</span>;
+    const css = [styles.root];
+
+    if (timeDiffSecs >= 600) {
+      css.push(styles.old);
+    }
+
+    return <span className={css.join(' ')}>{friendlyTimeAgo}</span>;
   }
 
   getDiff() {
