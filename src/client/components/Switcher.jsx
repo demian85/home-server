@@ -19,6 +19,7 @@ function Switcher(props) {
       {ipAddress && onlineStatus && (
         <button className={styles.config} title="Config" onClick={() => window.open(`http://${ipAddress}`)} />
       )}
+      {device.external && <img src="/images/ifttt.png" className={styles.external} />}
       {title && <h3>{title}</h3>}
       <Checkbox disabled={disabled} label="" value={isOn} onChange={(value) => onChange(value ? 1 : 0)} />
       {onlineStatus !== null && (

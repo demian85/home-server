@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import TemperatureMeter from './TemperatureMeter';
 import HumidityMeter from './HumidityMeter';
 import Switcher from './Switcher';
+import SmartBulbControl from './SmartBulbControl';
 import AutoSwitcher from './AutoSwitcher';
 import Group from './Group';
 import SensorMeter from './SensorMeter';
@@ -32,11 +33,6 @@ export default class Home extends React.Component {
                 title="Feel"
                 value={state.report.room.realFeel}
                 lastUpdate={state.report.room.lastUpdate}
-              />
-              <Switcher
-                device={state.devices.lamp}
-                icon="room-lamp.svg"
-                onChange={(value) => state.cmnd('sonoff-lamp', value)}
               />
               <AutoSwitcher
                 label={`~${state.report.config.setPoint} ˚C`}
@@ -74,7 +70,18 @@ export default class Home extends React.Component {
               <Switcher
                 device={state.devices.deskLamp}
                 icon="desk-lamp.svg"
-                onChange={(value) => state.cmnd('sonoff-desk-lamp', value)}
+                onChange={(value) => state.cmnd('POWER', 'sonoff-desk-lamp', value)}
+              />
+              {/* <SmartBulbControl
+                device={state.devices.bulb1}
+                icon="roof-lamp.svg"
+                onChange={(value) => state.cmnd('POWER', 'bulb1', value)}
+                onSceneChange={(value) => state.cmnd('SCENE', 'bulb1', value)}
+              /> */}
+              <Switcher
+                device={state.devices.lamp}
+                icon="room-lamp.svg"
+                onChange={(value) => state.cmnd('POWER', 'sonoff-lamp', value)}
               />
               {state.report.motionSensor && (
                 <SensorMeter
@@ -105,7 +112,7 @@ export default class Home extends React.Component {
               <Switcher
                 device={state.devices.socket1}
                 icon="no-mosquito.svg"
-                onChange={(value) => state.cmnd('sonoff-socket1', value)}
+                onChange={(value) => state.cmnd('POWER', 'sonoff-socket1', value)}
               />
             </Group>
 
@@ -128,12 +135,12 @@ export default class Home extends React.Component {
               <Switcher
                 device={state.devices.patio}
                 icon="patio-lamp.svg"
-                onChange={(value) => state.cmnd('sonoff-patio', value)}
+                onChange={(value) => state.cmnd('POWER', 'sonoff-patio', value)}
               />
               <Switcher
                 device={state.devices.socket2}
                 icon="valve.svg"
-                onChange={(value) => state.cmnd('sonoff-socket2', value)}
+                onChange={(value) => state.cmnd('POWER', 'sonoff-socket2', value)}
               />
               <SensorMeter icon="/images/wind.svg" value={state.report.weather.windSpeedKmh} suffix="km/h" />
               {state.report.patio.MQ135 && (

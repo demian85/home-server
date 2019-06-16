@@ -34,27 +34,16 @@
   background-color: red;
 }
 
-.external {
-  max-width: 24px;
-  position: absolute;
-  right: 3px;
-  bottom: 3px;
+.sceneSelector {
+  margin-top: 1em;
 }
 
-.config {
-  width: 12px;
-  height: 12px;
-  position: absolute;
-  right: 3px;
-  bottom: 3px;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 12px;
-  background-image: url(/images/config.svg);
-  background-color: transparent;
-  cursor: pointer;
-  border: 0;
-  padding: 0;
+.dialog {
+  position: fixed;
+  width: 80vw;
+  top: 30%;
+  left: 10vw;
+  right: auto;
 }
 
 @media (min-width: 475px) {

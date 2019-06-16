@@ -15,7 +15,7 @@ const resetIn10Secs = debounce(() => {
   clearDisplay(true);
 }, 10000);
 
-const smartBulbCmndParser = (deviceName) => {
+const smartBulbPowerCmndParser = (deviceName) => {
   return async (payload) => {
     const power = payload.toString().toLowerCase();
     const isOn = getDevicePowerStateFromPayload(power);
@@ -25,6 +25,18 @@ const smartBulbCmndParser = (deviceName) => {
     try {
       await ifttt.sendEvent(`${deviceName}:power:${strState}`);
       client.publish(`stat/${deviceName}/POWER`, intState);
+    } catch (err) {
+      logger.error('error sending IFTTT event: %s', err.message);
+      console.error(err);
+    }
+  };
+};
+
+const smartBulbSceneCmndParser = (deviceName) => {
+  return async (payload) => {
+    try {
+      const scene = payload.toString().toLowerCase();
+      await ifttt.sendEvent(`${deviceName}:scene:${scene}`);
     } catch (err) {
       logger.error('error sending IFTTT event: %s', err.message);
       console.error(err);
@@ -155,9 +167,11 @@ const parsers = {
   },
 
   // simulate Tuya-Tasmota device
-  [topics.bulb1.cmnd()]: smartBulbCmndParser('bulb1'),
+  [topics.bulb1.cmnd('POWER')]: smartBulbPowerCmndParser('bulb1'),
+  [topics.bulb1.cmnd('SCENE')]: smartBulbSceneCmndParser('bulb1'),
 
-  [topics.bulb2.cmnd()]: smartBulbCmndParser('bulb2'),
+  [topics.bulb2.cmnd('POWER')]: smartBulbPowerCmndParser('bulb2'),
+  [topics.bulb2.cmnd('SCENE')]: smartBulbSceneCmndParser('bulb2'),
 };
 
 module.exports = parsers;

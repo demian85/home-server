@@ -21,9 +21,9 @@ export default class App extends React.Component {
 
     this.state = {
       ...store,
-      cmnd: async (device, value) => {
-        console.debug('cmnd', device, value);
-        this.state.mqttClient.publish(`cmnd/${device}/POWER`, String(value));
+      cmnd: async (cmnd, device, value) => {
+        console.debug('cmnd', cmnd, device, value);
+        this.state.mqttClient.publish(`cmnd/${device}/${cmnd}`, String(value));
       },
       setConfig: async (values) => {
         console.debug('setConfig', values);
@@ -37,7 +37,7 @@ export default class App extends React.Component {
       },
       manualHeaterSwitch: async (n, value) => {
         const deviceSuffix = n > 1 ? n : '';
-        await this.state.cmnd(`sonoff-heater${deviceSuffix}`, value ? '1' : '0');
+        await this.state.cmnd('POWER', `sonoff-heater${deviceSuffix}`, value ? '1' : '0');
         await this.state.setConfig({ autoMode: false });
       },
     };

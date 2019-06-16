@@ -47,4 +47,11 @@ export const devices = {
     power: null,
     online: null,
   },
+  bulb1: {
+    topic: 'bulb1',
+    ipAddress: '192.168.0.32',
+    power: null,
+    online: null,
+    external: true,
+  },
 };
