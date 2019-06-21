@@ -18,6 +18,10 @@
   font-size: 0.8em;
 }
 
+.label {
+  white-space: nowrap;
+}
+
 @media (min-width: 475px) {
   .root {
     padding-left: 38px;

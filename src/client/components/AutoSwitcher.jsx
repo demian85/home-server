@@ -15,7 +15,7 @@ function AutoSwitcher(props) {
       <h3>
         Auto heating
         <br />
-        {label}
+        <span className={styles.label}>{label}</span>
       </h3>
     </div>
   );
