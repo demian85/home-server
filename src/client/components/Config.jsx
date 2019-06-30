@@ -66,6 +66,17 @@ export default class Config extends React.Component {
           <div className={styles.tempGroups}>{tempGroups}</div>
         </div>
         <div className={styles.content}>
+          <label>Threshold: </label>
+          <input
+            type="number"
+            min="0.1"
+            max="2"
+            step="0.1"
+            value={this.state.threshold}
+            onChange={(e) => this.setState({ threshold: e.target.value })}
+          />
+        </div>
+        <div className={styles.content}>
           <label>Trigger: </label>
           <select value={this.state.trigger} onChange={(e) => this.setState({ trigger: e.target.value })}>
             <option value="temp">Temperature</option>

@@ -55,6 +55,7 @@ router.post('/config', bodyParser.json(), async (req, res) => {
     'autoMode',
     'tempGroups',
     'trigger',
+    'threshold',
     'autoTurnOffDeskLamp',
     'autoTurnOffDeskLampDelay',
     'autoTurnOnDeskLamp',
@@ -89,6 +90,7 @@ router.post('/config', bodyParser.json(), async (req, res) => {
   const autoTurnOnDeskLamp = !!newConfig.autoTurnOnDeskLamp;
   const nightTime = newConfig.nightTime;
   const bedTime = newConfig.bedTime;
+  const threshold = newConfig.threshold;
 
   try {
     await db.set(
@@ -99,6 +101,7 @@ router.post('/config', bodyParser.json(), async (req, res) => {
         autoMode,
         tempGroups,
         trigger,
+        threshold,
         autoTurnOffDeskLamp,
         autoTurnOffDeskLampDelay,
         autoTurnOnDeskLamp,

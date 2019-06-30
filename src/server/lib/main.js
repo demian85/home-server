@@ -94,12 +94,13 @@ async function updateHeaterState() {
     return;
   }
 
-  const { trigger } = await db.getHeaterConfig();
+  const { trigger, threshold } = await db.getHeaterConfig();
   const triggerTemp = trigger === 'temp' ? sensor.temperature : sensor.realFeel;
   const setPoint = await getRoomSetPoint();
 
   logger.info('set point: %d', setPoint);
   logger.info('trigger temp: %d', triggerTemp);
+  logger.info('threshold: %d', threshold);
 
   if (triggerTemp < setPoint) {
     turnOnDevice('heater1', true);
@@ -111,7 +112,7 @@ async function updateHeaterState() {
     turnOnDevice('heater2', false);
 
     // turn off heater1 when setPoint exceeds .5 threshold
-    if (triggerTemp >= setPoint + 0.5) {
+    if (triggerTemp >= setPoint + threshold) {
       turnOnDevice('heater1', false);
     }
   }

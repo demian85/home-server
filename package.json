@@ -1,6 +1,6 @@
 {
   "name": "home-server",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Smart Home server",
   "main": "src/index.js",
   "engines": {
