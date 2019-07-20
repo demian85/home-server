@@ -13,7 +13,7 @@ export const devices = {
   },
   heater2: {
     topic: 'sonoff-heater2',
-    ipAddress: '192.168.0.23',
+    ipAddress: '192.168.0.31',
     power: null,
     online: null,
   },

@@ -107,14 +107,10 @@ async function updateHeaterState() {
     turnOnDevice('heater2', true);
   }
 
-  if (triggerTemp >= setPoint + 0.1) {
-    // turn off heater2 when setPoint exceeds .1 threshold
+  // turn off heater1 when setPoint exceeds threshold
+  if (triggerTemp >= setPoint + threshold) {
+    turnOnDevice('heater1', false);
     turnOnDevice('heater2', false);
-
-    // turn off heater1 when setPoint exceeds .5 threshold
-    if (triggerTemp >= setPoint + threshold) {
-      turnOnDevice('heater1', false);
-    }
   }
 }
 
