@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import TemperatureMeter from './TemperatureMeter';
 import HumidityMeter from './HumidityMeter';
 import Switcher from './Switcher';
-import SmartBulbControl from './SmartBulbControl';
+// import SmartBulbControl from './SmartBulbControl';
 import AutoSwitcher from './AutoSwitcher';
 import Group from './Group';
 import SensorMeter from './SensorMeter';

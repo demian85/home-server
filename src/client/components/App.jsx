@@ -72,6 +72,7 @@ export default class App extends React.Component {
       const device = devices[name];
       parsers[`stat/${device.topic}/POWER`] = this.buildPowerStatusParser(name);
       parsers[`tele/${device.topic}/LWT`] = this.buildOnlineStatusParser(name);
+      parsers[`tele/${device.topic}/SENSOR`] = this.buildSensorStatusParser(name);
     });
 
     const mqttClient = initMqttClient(parsers);
@@ -145,6 +146,25 @@ export default class App extends React.Component {
             [deviceName]: {
               ...devices[deviceName],
               online,
+            },
+          },
+        };
+      });
+    };
+  }
+
+  buildSensorStatusParser(deviceName) {
+    return (payload) => {
+      const sensor = JSON.parse(String(payload));
+
+      this.setState((state) => {
+        const { devices } = state;
+        return {
+          devices: {
+            ...devices,
+            [deviceName]: {
+              ...devices[deviceName],
+              sensor,
             },
           },
         };

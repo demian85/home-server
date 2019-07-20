@@ -1,5 +1,6 @@
 import React from 'react';
 import Checkbox from './Checkbox';
+import EnergyMeter from './EnergyMeter';
 
 import styles from './Switcher.css';
 
@@ -28,6 +29,7 @@ function Switcher(props) {
           className={`${styles.onlineStatus} ${onlineStatus ? styles.online : styles.offline}`}
         />
       )}
+      {device.sensor && device.sensor.ENERGY && <EnergyMeter value={device.sensor.ENERGY} />}
     </div>
   );
 }

@@ -8,6 +8,7 @@ const topics = {
   heater2: {
     cmnd: (cmnd = 'power') => `cmnd/sonoff-heater2/${cmnd}`,
     stat: `stat/sonoff-heater2/POWER`,
+    sensor: `tele/sonoff-heater2/SENSOR`,
   },
   roomLamp: {
     cmnd: (cmnd = 'power') => `cmnd/sonoff-lamp/${cmnd}`,

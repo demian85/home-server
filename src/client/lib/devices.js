@@ -16,6 +16,7 @@ export const devices = {
     ipAddress: '192.168.0.31',
     power: null,
     online: null,
+    sensor: null,
   },
   lamp: {
     topic: 'sonoff-lamp',
