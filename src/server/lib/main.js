@@ -103,6 +103,7 @@ async function updateHeaterState() {
   }
 
   const { trigger, threshold } = await db.getHeaterConfig();
+  const patioSensor = await db.getSensorData('nodemcu1');
   const triggerTemp = trigger === 'temp' ? sensor.temperature : sensor.realFeel;
   const setPoint = await getRoomSetPoint();
 
@@ -115,10 +116,20 @@ async function updateHeaterState() {
     turnOnDevice('heater2', true);
   }
 
-  // turn off heater1 when setPoint exceeds threshold
+  // turn off heating when setPoint exceeds threshold
   if (triggerTemp >= setPoint + threshold) {
-    turnOnDevice('heater1', false);
     turnOnDevice('heater2', false);
+
+    const outsideTempAvailable = patioSensor && patioSensor.AM2301 && patioSensor.AM2301.temperature !== null;
+
+    if (outsideTempAvailable) {
+      const tempDiff = setPoint - patioSensor.AM2301.temperature;
+      logger.info('tempDiff: %d', tempDiff);
+      const shouldTurnPanelOff = tempDiff < 5 || triggerTemp > setPoint + 0.5;
+      turnOnDevice('heater1', shouldTurnPanelOff);
+    } else {
+      turnOnDevice('heater1', false);
+    }
   }
 }
 
