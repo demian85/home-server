@@ -29,6 +29,11 @@ exports.getDeviceState = async (deviceName) => {
   return value && JSON.parse(value);
 };
 
+exports.getDeviceOnlineStatus = async (deviceName) => {
+  const value = await exports.get(`${deviceName}.online`);
+  return value && JSON.parse(value);
+};
+
 exports.getHeaterConfig = async () => {
   const value = await exports.get('heater.config');
   const config = value && JSON.parse(value);

@@ -4,7 +4,13 @@ const client = require('./client');
 const logger = require('../logger');
 const topics = require('./topics');
 const db = require('../db');
-const { updateDeviceState, updateHeaterState, updateReport, getSensorReadings } = require('../main');
+const {
+  updateDeviceOnlineStatus,
+  updateDeviceState,
+  updateHeaterState,
+  updateReport,
+  getSensorReadings,
+} = require('../main');
 const { turnOnDeskLampIfNeeded } = require('../actions');
 const ir = require('../ir');
 const { clearDisplay, displayNextState } = require('../oled');
@@ -49,8 +55,16 @@ const parsers = {
     await updateDeviceState('heater1', payload);
   },
 
+  [topics.heater1.lwt]: async (payload) => {
+    await updateDeviceOnlineStatus('heater1', payload);
+  },
+
   [topics.heater2.stat]: async (payload) => {
     await updateDeviceState('heater2', payload);
+  },
+
+  [topics.heater2.lwt]: async (payload) => {
+    await updateDeviceOnlineStatus('heater2', payload);
   },
 
   [topics.deskLamp.stat]: async (payload) => {

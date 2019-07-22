@@ -39,6 +39,14 @@ async function updateDeviceState(deviceName, payload) {
   await db.set(`${deviceName}.state`, JSON.stringify({ on, lastChange }));
 }
 
+async function updateDeviceOnlineStatus(deviceName, payload) {
+  const isOnline = String(payload).toLowerCase() === 'online';
+
+  logger.debug(`Saving ${deviceName} online status: %j`, { isOnline });
+
+  await db.set(`${deviceName}.online`, JSON.stringify(isOnline));
+}
+
 async function turnOnDevice(deviceName, on) {
   logger.debug(`turnOnDevice(): %j`, { deviceName, on });
 
@@ -167,6 +175,7 @@ function runScheduledActions() {
 }
 
 exports.updateDeviceState = updateDeviceState;
+exports.updateDeviceOnlineStatus = updateDeviceOnlineStatus;
 exports.updateHeaterState = updateHeaterState;
 exports.updateReport = updateReport;
 exports.getRealFeel = getRealFeel;

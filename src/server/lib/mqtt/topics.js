@@ -1,11 +1,13 @@
 const topics = {
   report: 'stat/_report',
   heater1: {
+    lwt: `tele/sonoff-heater/LWT`,
     cmnd: (cmnd = 'power') => `cmnd/sonoff-heater/${cmnd}`,
     stat: `stat/sonoff-heater/POWER`,
     sensor: `tele/sonoff-heater/SENSOR`,
   },
   heater2: {
+    lwt: `tele/sonoff-heater2/LWT`,
     cmnd: (cmnd = 'power') => `cmnd/sonoff-heater2/${cmnd}`,
     stat: `stat/sonoff-heater2/POWER`,
     sensor: `tele/sonoff-heater2/SENSOR`,
