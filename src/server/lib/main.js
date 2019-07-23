@@ -126,7 +126,7 @@ async function updateHeaterState() {
       const tempDiff = setPoint - patioSensor.AM2301.temperature;
       logger.info('tempDiff: %d', tempDiff);
       const shouldTurnPanelOff = tempDiff < 5 || triggerTemp > setPoint + 0.5;
-      turnOnDevice('heater1', shouldTurnPanelOff);
+      turnOnDevice('heater1', !shouldTurnPanelOff);
     } else {
       turnOnDevice('heater1', false);
     }
