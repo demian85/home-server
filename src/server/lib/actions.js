@@ -48,7 +48,7 @@ exports.toggleBathroomHeaterIfNeeded = async function() {
   const shouldTurnOn =
     outsideSensorAvailable &&
     (patioSensor.AM2301.humidity >= 75 || patioSensor.AM2301.temperature < setPoint - 2) &&
-    (currentHour > 18 && currentHour < 8);
+    (currentHour >= 18 && currentHour < 8);
 
   logger.debug(`toggleBathroomHeaterIfNeeded(): %j`, { outsideSensorAvailable, shouldTurnOn });
 
