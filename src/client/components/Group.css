@@ -55,12 +55,12 @@
 }
 
 .hall {
-  background-image: url(/images/crib.svg);
+  background-image: url(/images/toys.svg);
   border-color: #bb8a20;
 }
 
 .bathroom {
-  background-image: url(/images/bathroom.svg);
+  background-image: url(/images/bathtub.svg);
   border-color: maroon;
 }
 
