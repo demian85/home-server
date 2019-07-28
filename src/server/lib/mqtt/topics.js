@@ -20,6 +20,10 @@ const topics = {
     cmnd: (cmnd = 'power') => `cmnd/sonoff-desk-lamp/${cmnd}`,
     stat: `stat/sonoff-desk-lamp/POWER`,
   },
+  bathroom: {
+    cmnd: (cmnd = 'power') => `cmnd/sonoff-bathroom/${cmnd}`,
+    stat: `stat/sonoff-bathroom/POWER`,
+  },
   wemos1: {
     cmnd: (cmnd = 'POWER') => `cmnd/wemos/${cmnd}`,
     stat: `stat/wemos/POWER`,

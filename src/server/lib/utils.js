@@ -65,3 +65,12 @@ exports.getDevicePowerStateFromPayload = (payload) => {
   const stateValue = String(payload).toLowerCase();
   return stateValue === 'on' || stateValue === '1';
 };
+
+exports.getRoomSetPoint = async function getRoomSetPoint() {
+  const heaterConfig = await db.getHeaterConfig();
+  const { defaultSetPoint, tempGroups } = heaterConfig;
+  const currentHour = new Date().getHours();
+  const currentTempGroup = tempGroups.find((entry) => currentHour >= entry.start && currentHour < entry.end);
+  const setPoint = currentTempGroup ? currentTempGroup.temp : defaultSetPoint;
+  return setPoint;
+};

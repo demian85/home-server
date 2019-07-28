@@ -3,8 +3,8 @@ const { getWeather } = require('./weather');
 const db = require('./db');
 const topics = require('./mqtt/topics');
 const mqttClient = require('./mqtt/client');
-const { getRealFeel, getSolarCalc, getMotionSensorState } = require('./utils');
-const { turnOnDeskLampIfNeeded, turnOffDeskLampIfNeeded } = require('./actions');
+const { getRealFeel, getSolarCalc, getMotionSensorState, getRoomSetPoint } = require('./utils');
+const { turnOnDeskLampIfNeeded, turnOffDeskLampIfNeeded, toggleBathroomHeaterIfNeeded } = require('./actions');
 
 function getSensorReadings(data, sensorName) {
   const sensor = data && data[sensorName];
@@ -81,15 +81,6 @@ async function turnOnDevice(deviceName, on) {
   if (process.env.NODE_ENV !== 'development') {
     mqttClient.publish(topics[deviceName].cmnd('power'), on ? '1' : '0');
   }
-}
-
-async function getRoomSetPoint() {
-  const heaterConfig = await db.getHeaterConfig();
-  const { defaultSetPoint, tempGroups } = heaterConfig;
-  const currentHour = new Date().getHours();
-  const currentTempGroup = tempGroups.find((entry) => currentHour >= entry.start && currentHour < entry.end);
-  const setPoint = currentTempGroup ? currentTempGroup.temp : defaultSetPoint;
-  return setPoint;
 }
 
 async function updateHeaterState() {
@@ -181,6 +172,7 @@ function runScheduledActions() {
 
   turnOnDeskLampIfNeeded();
   turnOffDeskLampIfNeeded();
+  toggleBathroomHeaterIfNeeded();
 
   setTimeout(runScheduledActions, 60000);
 }
