@@ -71,6 +71,10 @@ const parsers = {
     await updateDeviceState('deskLamp', payload);
   },
 
+  [topics.bathroom.stat]: async (payload) => {
+    await updateDeviceState('bathroom', payload);
+  },
+
   [topics.bulb1.stat]: async (payload) => {
     await updateDeviceState('bulb1', payload);
   },

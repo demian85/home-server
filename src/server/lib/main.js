@@ -4,7 +4,6 @@ const db = require('./db');
 const topics = require('./mqtt/topics');
 const mqttClient = require('./mqtt/client');
 const { getRealFeel, getSolarCalc, getMotionSensorState, getRoomSetPoint } = require('./utils');
-const { turnOnDeskLampIfNeeded, turnOffDeskLampIfNeeded, toggleBathroomHeaterIfNeeded } = require('./actions');
 
 function getSensorReadings(data, sensorName) {
   const sensor = data && data[sensorName];
@@ -167,20 +166,10 @@ async function updateReport() {
   mqttClient.publish(topics.report, JSON.stringify(report), { retain: true });
 }
 
-function runScheduledActions() {
-  logger.debug(`runScheduledActions()`);
-
-  turnOnDeskLampIfNeeded();
-  turnOffDeskLampIfNeeded();
-  toggleBathroomHeaterIfNeeded();
-
-  setTimeout(runScheduledActions, 60000);
-}
-
 exports.updateDeviceState = updateDeviceState;
 exports.updateDeviceOnlineStatus = updateDeviceOnlineStatus;
 exports.updateHeaterState = updateHeaterState;
 exports.updateReport = updateReport;
 exports.getRealFeel = getRealFeel;
 exports.getSensorReadings = getSensorReadings;
-exports.runScheduledActions = runScheduledActions;
+exports.turnOnDevice = turnOnDevice;

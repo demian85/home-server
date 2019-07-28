@@ -1,11 +1,22 @@
-const db = require('./db');
-const logger = require('./logger');
-const mqttClient = require('./mqtt/client');
-const topics = require('./mqtt/topics');
-const { isNightTime, isBedTime, getMotionSensorState, getRoomSetPoint } = require('./utils');
+const db = require('../db');
+const logger = require('../logger');
+const mqttClient = require('../mqtt/client');
+const topics = require('../mqtt/topics');
+const { isNightTime, isBedTime, getMotionSensorState, getRoomSetPoint } = require('../utils');
+const { turnOnDevice } = require('../main');
+
+exports.runScheduledActions = function runScheduledActions() {
+  logger.debug(`runScheduledActions()`);
+
+  turnOnDeskLampIfNeeded();
+  turnOffDeskLampIfNeeded();
+  toggleBathroomHeaterIfNeeded();
+
+  setTimeout(runScheduledActions, 60000);
+};
 
 // turn off desk lamp N minutes after motion sensor goes off
-exports.turnOffDeskLampIfNeeded = async function() {
+async function turnOffDeskLampIfNeeded() {
   const { autoTurnOffDeskLamp, autoTurnOffDeskLampDelay } = await db.getHeaterConfig();
   const motionSensorState = await getMotionSensorState();
   const bedTime = await isBedTime();
@@ -23,10 +34,10 @@ exports.turnOffDeskLampIfNeeded = async function() {
       mqttClient.publish(topics.deskLamp.cmnd(), '0');
     }
   }
-};
+}
 
 // turn on desk lamp during night time when motion sensor goes ON
-exports.turnOnDeskLampIfNeeded = async function() {
+async function turnOnDeskLampIfNeeded() {
   const { autoTurnOnDeskLamp } = await db.getHeaterConfig();
   const motionSensorState = await getMotionSensorState();
 
@@ -36,10 +47,10 @@ exports.turnOnDeskLampIfNeeded = async function() {
     logger.info('switching on device: deskLamp');
     mqttClient.publish(topics.deskLamp.cmnd(), '1');
   }
-};
+}
 
 // turn on bathroom heater automatically
-exports.toggleBathroomHeaterIfNeeded = async function() {
+async function toggleBathroomHeaterIfNeeded() {
   const patioSensor = await db.getSensorData('nodemcu1');
   const setPoint = await getRoomSetPoint();
   const outsideSensorAvailable = patioSensor && patioSensor.AM2301;
@@ -52,5 +63,9 @@ exports.toggleBathroomHeaterIfNeeded = async function() {
 
   logger.debug(`toggleBathroomHeaterIfNeeded(): %j`, { outsideSensorAvailable, setPoint, currentHour, shouldTurnOn });
 
-  mqttClient.publish(topics.bathroom.cmnd(), shouldTurnOn ? '1' : '0');
-};
+  turnOnDevice('bathroom', shouldTurnOn);
+}
+
+exports.turnOffDeskLampIfNeeded = turnOffDeskLampIfNeeded;
+exports.turnOnDeskLampIfNeeded = turnOnDeskLampIfNeeded;
+exports.toggleBathroomHeaterIfNeeded = toggleBathroomHeaterIfNeeded;

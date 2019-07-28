@@ -2,7 +2,7 @@ require('dotenv/config');
 
 const express = require('express');
 const compression = require('compression');
-const { runScheduledActions } = require('./server/lib/main');
+const { runScheduledActions } = require('./server/lib/actions');
 
 require('./server/lib/mqtt/init');
 
