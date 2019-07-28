@@ -48,6 +48,12 @@ export const devices = {
     power: null,
     online: null,
   },
+  bathroom: {
+    topic: 'sonoff-bathroom',
+    ipAddress: '192.168.0.34',
+    power: null,
+    online: null,
+  },
   bulb1: {
     topic: 'bulb1',
     ipAddress: '192.168.0.32',

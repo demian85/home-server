@@ -116,6 +116,14 @@ export default class Home extends React.Component {
               />
             </Group>
 
+            <Group place="bathroom">
+              <Switcher
+                device={state.devices.bathroom}
+                icon="towel-rail.svg"
+                onChange={(value) => state.cmnd('POWER', 'sonoff-bathroom', value)}
+              />
+            </Group>
+
             <Group place="outside">
               <TemperatureMeter
                 title="Temp"

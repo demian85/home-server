@@ -59,6 +59,11 @@
   border-color: #bb8a20;
 }
 
+.bathroom {
+  background-image: url(/images/bathroom.svg);
+  border-color: maroon;
+}
+
 .outside {
   background-image: url(/images/outside.svg);
   border-color: #25a84a;
