@@ -16,6 +16,7 @@ client.on('connect', () => {
     'cmnd/+/POWER',
     'tele/+/SENSOR',
     'tele/+/RESULT',
+    'tele/+/LWT',
   ]);
 });
 

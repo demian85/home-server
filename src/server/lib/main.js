@@ -93,33 +93,32 @@ async function updateHeaterState() {
   }
 
   const { trigger, threshold } = await db.getHeaterConfig();
-  const patioSensor = await db.getSensorData('nodemcu1');
-  const triggerTemp = trigger === 'temp' ? sensor.temperature : sensor.realFeel;
   const setPoint = await getRoomSetPoint();
+  const patioSensor = await db.getSensorData('nodemcu1');
+  const sensorValue = trigger === 'temp' ? sensor.temperature : sensor.realFeel;
+  const outsideTempAvailable = patioSensor && patioSensor.AM2301 && patioSensor.AM2301.temperature !== null;
+  const tempDiff = outsideTempAvailable ? setPoint - patioSensor.AM2301.temperature : 0;
+  const isTooCold = outsideTempAvailable && tempDiff >= 5;
+  const isSecondHeaterOnline = await db.getDeviceOnlineStatus('heater2');
 
-  logger.info('set point: %d', setPoint);
-  logger.info('trigger temp: %d', triggerTemp);
-  logger.info('threshold: %d', threshold);
+  logger.info('updating heating: %j', {
+    trigger,
+    threshold,
+    setPoint,
+    sensorValue,
+    outsideTempAvailable,
+    tempDiff,
+    isTooCold,
+    isSecondHeaterOnline,
+  });
 
-  if (triggerTemp < setPoint) {
-    turnOnDevice('heater1', true);
+  if (sensorValue < setPoint) {
+    turnOnDevice('heater1', !outsideTempAvailable || isTooCold || !isSecondHeaterOnline);
     turnOnDevice('heater2', true);
-  }
-
-  // turn off heating when setPoint exceeds threshold
-  if (triggerTemp >= setPoint + threshold) {
+  } else if (sensorValue >= setPoint + threshold) {
+    const shouldTurnPanelOff = !isTooCold || sensorValue >= setPoint + threshold + 0.2;
+    turnOnDevice('heater1', !shouldTurnPanelOff);
     turnOnDevice('heater2', false);
-
-    const outsideTempAvailable = patioSensor && patioSensor.AM2301 && patioSensor.AM2301.temperature !== null;
-
-    if (outsideTempAvailable) {
-      const tempDiff = setPoint - patioSensor.AM2301.temperature;
-      logger.info('tempDiff: %d', tempDiff);
-      const shouldTurnPanelOff = tempDiff < 5 || triggerTemp > setPoint + 0.5;
-      turnOnDevice('heater1', !shouldTurnPanelOff);
-    } else {
-      turnOnDevice('heater1', false);
-    }
   }
 }
 
