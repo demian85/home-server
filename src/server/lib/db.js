@@ -10,7 +10,7 @@ db.on('connect', function() {
 });
 
 db.on('error', function(err) {
-  logger.error(err);
+  logger.error('redis client error', err);
 });
 
 exports.set = promisify(db.set.bind(db));
