@@ -49,7 +49,7 @@ async function turnOnDeskLampIfNeeded() {
   }
 }
 
-// turn on bathroom heater automatically
+// turn on/off bathroom heater automatically
 async function toggleBathroomHeaterIfNeeded() {
   const patioSensor = await db.getSensorData('nodemcu1');
   const setPoint = await getRoomSetPoint();
@@ -59,7 +59,7 @@ async function toggleBathroomHeaterIfNeeded() {
   const shouldTurnOn =
     outsideSensorAvailable &&
     (patioSensor.AM2301.humidity >= 75 || patioSensor.AM2301.temperature < setPoint - 2) &&
-    (currentHour >= 18 || currentHour < 8);
+    (currentHour >= 18 || currentHour < 7);
 
   logger.debug(`toggleBathroomHeaterIfNeeded(): %j`, { outsideSensorAvailable, setPoint, currentHour, shouldTurnOn });
 
