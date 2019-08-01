@@ -98,7 +98,7 @@ async function updateHeaterState() {
   const sensorValue = trigger === 'temp' ? sensor.temperature : sensor.realFeel;
   const outsideTempAvailable = patioSensor && patioSensor.AM2301 && patioSensor.AM2301.temperature !== null;
   const tempDiff = outsideTempAvailable ? setPoint - patioSensor.AM2301.temperature : 0;
-  const isTooCold = outsideTempAvailable && tempDiff >= 5;
+  const isTooCold = outsideTempAvailable && tempDiff >= 4.25;
   const isSecondHeaterOnline = await db.getDeviceOnlineStatus('heater2');
 
   logger.info('updating heating: %j', {
