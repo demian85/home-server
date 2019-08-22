@@ -42,7 +42,7 @@
     "express-basic-auth": "^1.1.7",
     "feels": "^3.0.0",
     "hbs": "^4.0.3",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "luxon": "^1.12.1",
     "mqtt": "^2.18.8",
     "prop-types": "^15.7.2",
