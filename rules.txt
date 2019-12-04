@@ -1,3 +1,14 @@
 # Rules needed for wemos device to make motion sensors work
 
   rule1 on Switch1#State do publish2 stat/wemos/SWITCH1 %value% endon on Switch2#State do publish2 stat/wemos/SWITCH2 %value% endon
+
+# Benja's toy
+
+  rule1
+    on Switch1#state do BACKLOG POWER1 on; POWER2 off; POWER3 off; SCHEME 7; RuleTimer1 3 endon
+    on Switch2#state do BACKLOG POWER2 on; POWER1 off; POWER3 off; SCHEME 11; RuleTimer1 3 endon
+    on Switch3#state do BACKLOG POWER3 on; POWER1 off; POWER2 off; SCHEME 12; RuleTimer1 3 endon
+    on Switch2#state do BUZZER 2,1,1 endon
+
+  rule2
+    on Rules#Timer=1 do BACKLOG POWER1 off; POWER2 off; POWER3 off; POWER5 off endon
