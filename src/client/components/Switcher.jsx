@@ -11,7 +11,7 @@ function Switcher(props) {
   const powerStatus = device ? device.power : value;
   const onlineStatus = device ? device.online : null;
   const ipAddress = device ? device.ipAddress : null;
-  const isOn = powerStatus === 'on' || powerStatus === true || powerStatus == 1;
+  const isOn = powerStatus === 'on' || powerStatus === true || powerStatus === 1;
   const backgroundImage = `url(/images/${icon})`;
   const disabled = onlineStatus === false;
 

@@ -116,7 +116,8 @@ async function updateHeaterState() {
     turnOnDevice('heater1', !outsideTempAvailable || isTooCold || !isSecondHeaterOnline);
     turnOnDevice('heater2', true);
   } else if (sensorValue >= setPoint + threshold) {
-    const shouldTurnPanelOff = !isTooCold || sensorValue >= setPoint + threshold + 0.2;
+    const maxSensorValue = setPoint + threshold + 0.2;
+    const shouldTurnPanelOff = !isTooCold || sensorValue >= maxSensorValue;
     turnOnDevice('heater1', !shouldTurnPanelOff);
     turnOnDevice('heater2', false);
   }
