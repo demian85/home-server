@@ -146,9 +146,9 @@ export default class Home extends React.Component {
                 onChange={(value) => state.cmnd('POWER', 'sonoff-patio', value)}
               />
               <Switcher
-                device={state.devices.socket2}
+                device={state.devices.poolPump}
                 icon="valve.svg"
-                onChange={(value) => state.cmnd('POWER', 'sonoff-socket2', value)}
+                onChange={(value) => state.cmnd('POWER', 'sonoff-pool-pump', value)}
               />
               <SensorMeter icon="/images/wind.svg" value={state.report.weather.windSpeedKmh} suffix="km/h" />
               {state.report.patio.MQ135 && (

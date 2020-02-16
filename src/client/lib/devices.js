@@ -42,9 +42,9 @@ export const devices = {
     power: null,
     online: null,
   },
-  socket2: {
-    topic: 'sonoff-socket2',
-    ipAddress: '192.168.0.28',
+  poolPump: {
+    topic: 'sonoff-pool-pump',
+    ipAddress: '192.168.0.31',
     power: null,
     online: null,
   },

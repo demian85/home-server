@@ -12,3 +12,11 @@
 
   rule2
     on Rules#Timer=1 do BACKLOG POWER1 off; POWER2 off; POWER3 off; POWER5 off endon
+
+
+
+# Keypad Rules
+  rule1 
+    on switch1#state=1 do publish shellies/shelly-laundry-lamp/relay/0/command %value% endon
+    on switch2#state=1 do publish shellies/shelly-laundry-lamp/relay/0/command %value% endon
+    on switch3#state=1 do publish shellies/shelly-laundry-lamp/relay/0/command %value% endon
