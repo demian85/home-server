@@ -25,14 +25,18 @@ export default class Home extends React.Component {
             <Group place="bedroom">
               <TemperatureMeter
                 title="Temp"
-                value={state.report.room.temperature}
-                lastUpdate={state.report.room.lastUpdate}
+                value={state.report.room.AM2301.temperature}
+                lastUpdate={state.report.room.AM2301.lastUpdate}
               />
-              <HumidityMeter title="Hum" value={state.report.room.humidity} lastUpdate={state.report.room.lastUpdate} />
+              <HumidityMeter
+                title="Hum"
+                value={state.report.room.AM2301.humidity}
+                lastUpdate={state.report.room.AM2301.lastUpdate}
+              />
               <TemperatureMeter
                 title="Feel"
-                value={state.report.room.realFeel}
-                lastUpdate={state.report.room.lastUpdate}
+                value={state.report.room.AM2301.realFeel}
+                lastUpdate={state.report.room.AM2301.lastUpdate}
               />
               {state.report.room.MQ135 && (
                 <SensorMeter
