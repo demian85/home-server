@@ -1,64 +1,73 @@
 export const devices = {
-  wemos1: {
-    topic: 'wemos',
-    ipAddress: '192.168.0.12',
-    power: null,
-    online: null,
-  },
   heater: {
-    topic: 'sonoff-heater',
+    topics: {
+      power: 'cmnd/sonoff-heater/power',
+      status: 'stat/sonoff-heater/POWER',
+      sensor: 'tele/sonoff-heater/SENSOR',
+      lwt: 'tele/sonoff-heater/LWT',
+    },
     ipAddress: '192.168.0.16',
     power: null,
     online: null,
   },
-  heater2: {
-    topic: 'sonoff-heater2',
-    ipAddress: '192.168.0.31',
-    power: null,
-    online: null,
-    sensor: null,
-  },
-  lamp: {
-    topic: 'sonoff-lamp',
+  saltLamp: {
+    topics: {
+      power: 'cmnd/sonoff-salt-lamp/power',
+      status: 'stat/sonoff-salt-lamp/POWER',
+      lwt: 'tele/sonoff-salt-lamp/LWT',
+    },
     ipAddress: '192.168.0.14',
     power: null,
     online: null,
   },
-  deskLamp: {
-    topic: 'sonoff-desk-lamp',
+  flameLamp: {
+    topics: {
+      power: 'cmnd/sonoff-flame-lamp/power',
+      status: 'stat/sonoff-flame-lamp/POWER',
+      lwt: 'tele/sonoff-flame-lamp/LWT',
+    },
     ipAddress: '192.168.0.17',
     power: null,
     online: null,
   },
-  patio: {
-    topic: 'sonoff-patio',
-    ipAddress: '192.168.0.18',
+  heaterLight: {
+    topics: {
+      power: 'cmnd/sonoff-heater-light/power',
+      status: 'stat/sonoff-heater-light/POWER',
+      lwt: 'tele/sonoff-heater-light/LWT',
+    },
+    ipAddress: '192.168.0.24',
     power: null,
     online: null,
   },
-  socket1: {
-    topic: 'sonoff-socket1',
+  laundryLamp: {
+    topics: {
+      power: 'shellies/shelly-laundry-lamp/relay/0/command',
+      status: 'shellies/shelly-laundry-lamp/relay/0',
+      lwt: 'shellies/shelly-laundry-lamp/relay/0/online',
+    },
     ipAddress: '192.168.0.13',
     power: null,
     online: null,
   },
   poolPump: {
-    topic: 'sonoff-pool-pump',
+    topics: {
+      power: 'cmnd/sonoff-pool-pump/power',
+      status: 'stat/sonoff-pool-pump/POWER',
+      lwt: 'tele/sonoff-pool-pump/LWT',
+    },
     ipAddress: '192.168.0.31',
     power: null,
     online: null,
   },
   bathroom: {
-    topic: 'sonoff-bathroom',
+    topics: {
+      power: 'cmnd/sonoff-bathroom/power',
+      status: 'stat/sonoff-bathroom/POWER',
+      lwt: 'tele/sonoff-bathroom/LWT',
+    },
     ipAddress: '192.168.0.34',
     power: null,
     online: null,
-  },
-  bulb1: {
-    topic: 'bulb1',
-    ipAddress: '192.168.0.32',
-    power: null,
-    online: null,
-    external: true,
   },
 };

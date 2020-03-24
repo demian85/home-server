@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { store, Provider } from '../lib/store';
 import { devices } from '../lib/devices';
 import { initMqttClient } from '../lib/mqtt';
+import { getDevicePowerStateFromPayload } from '../lib/util';
 
 import Home from './Home';
 import Config from './Config';
@@ -21,9 +22,9 @@ export default class App extends React.Component {
 
     this.state = {
       ...store,
-      cmnd: async (cmnd, device, value) => {
-        console.debug('cmnd', cmnd, device, value);
-        this.state.mqttClient.publish(`cmnd/${device}/${cmnd}`, String(value));
+      sendCommand: (topic, value) => {
+        console.debug('command', topic, value);
+        this.state.mqttClient.publish(topic, value);
       },
       setConfig: async (values) => {
         console.debug('setConfig', values);
@@ -37,7 +38,7 @@ export default class App extends React.Component {
       },
       manualHeaterSwitch: async (n, value) => {
         const deviceSuffix = n > 1 ? n : '';
-        await this.state.cmnd('POWER', `sonoff-heater${deviceSuffix}`, value ? '1' : '0');
+        this.state.sendCommand(`cmnd/sonoff-heater${deviceSuffix}/power`, value ? '1' : '0');
         await this.state.setConfig({ autoMode: false });
       },
     };
@@ -70,9 +71,11 @@ export default class App extends React.Component {
 
     Object.keys(devices).forEach((name) => {
       const device = devices[name];
-      parsers[`stat/${device.topic}/POWER`] = this.buildPowerStatusParser(name);
-      parsers[`tele/${device.topic}/LWT`] = this.buildOnlineStatusParser(name);
-      parsers[`tele/${device.topic}/SENSOR`] = this.buildSensorStatusParser(name);
+      parsers[device.topics.status] = this.buildPowerStatusParser(name);
+      parsers[device.topics.lwt] = this.buildOnlineStatusParser(name);
+      if (device.topics.sensor) {
+        parsers[device.topics.sensor] = this.buildSensorStatusParser(name);
+      }
     });
 
     const mqttClient = initMqttClient(parsers);
@@ -117,7 +120,7 @@ export default class App extends React.Component {
 
   buildPowerStatusParser(deviceName) {
     return (payload) => {
-      const power = String(payload).toLowerCase();
+      const power = getDevicePowerStateFromPayload(payload);
 
       this.setState((state) => {
         const { devices } = state;
@@ -136,7 +139,8 @@ export default class App extends React.Component {
 
   buildOnlineStatusParser(deviceName) {
     return (payload) => {
-      const online = String(payload).toLowerCase() === 'online';
+      const value = String(payload).toLowerCase();
+      const online = value === 'online' || value === 'true';
 
       this.setState((state) => {
         const { devices } = state;

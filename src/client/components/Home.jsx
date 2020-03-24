@@ -34,6 +34,15 @@ export default class Home extends React.Component {
                 value={state.report.room.realFeel}
                 lastUpdate={state.report.room.lastUpdate}
               />
+              {state.report.room.MQ135 && (
+                <SensorMeter
+                  title="Air Quality"
+                  icon="images/air-quality.svg"
+                  suffix="%"
+                  value={state.report.room.MQ135.airQuality}
+                  lastUpdate={state.report.room.MQ135.lastUpdate}
+                />
+              )}
               <AutoSwitcher
                 label={`~${state.report.config.setPoint} ˚C`}
                 value={state.config.autoMode}
@@ -43,11 +52,6 @@ export default class Home extends React.Component {
                 device={state.devices.heater}
                 icon="heater.svg"
                 onChange={(value) => state.manualHeaterSwitch(1, value)}
-              />
-              <Switcher
-                device={state.devices.heater2}
-                icon="heater2.svg"
-                onChange={(value) => state.manualHeaterSwitch(2, value)}
               />
             </Group>
 
@@ -68,20 +72,19 @@ export default class Home extends React.Component {
                 lastUpdate={state.report.lounge.AM2301.lastUpdate}
               />
               <Switcher
-                device={state.devices.deskLamp}
-                icon="desk-lamp.svg"
-                onChange={(value) => state.cmnd('POWER', 'sonoff-desk-lamp', value)}
+                device={state.devices.flameLamp}
+                icon="lantern.svg"
+                onChange={(value) => state.sendCommand(state.devices.flameLamp.topics.power, value)}
               />
-              {/* <SmartBulbControl
-                device={state.devices.bulb1}
-                icon="roof-lamp.svg"
-                onChange={(value) => state.cmnd('POWER', 'bulb1', value)}
-                onSceneChange={(value) => state.cmnd('SCENE', 'bulb1', value)}
-              /> */}
               <Switcher
-                device={state.devices.lamp}
+                device={state.devices.saltLamp}
                 icon="room-lamp.svg"
-                onChange={(value) => state.cmnd('POWER', 'sonoff-lamp', value)}
+                onChange={(value) => state.sendCommand(state.devices.saltLamp.topics.power, value)}
+              />
+              <Switcher
+                device={state.devices.heaterLight}
+                icon="chimney.svg"
+                onChange={(value) => state.sendCommand(state.devices.heaterLight.power, value)}
               />
               {state.report.motionSensor && (
                 <SensorMeter
@@ -108,11 +111,13 @@ export default class Home extends React.Component {
               )}
             </Group>
 
-            <Group place="hall">
+            <Group place="laundry">
               <Switcher
-                device={state.devices.socket1}
-                icon="no-mosquito.svg"
-                onChange={(value) => state.cmnd('POWER', 'sonoff-socket1', value)}
+                device={state.devices.laundryLamp}
+                icon="desk-lamp.svg"
+                onChange={(value) =>
+                  state.sendCommand('shellies/shelly-laundry-lamp/relay/0/command', value ? 'on' : 'off')
+                }
               />
             </Group>
 
@@ -120,55 +125,26 @@ export default class Home extends React.Component {
               <Switcher
                 device={state.devices.bathroom}
                 icon="towel-rail.svg"
-                onChange={(value) => state.cmnd('POWER', 'sonoff-bathroom', value)}
+                onChange={(value) => state.sendCommand(state.devices.bathroom.topics.power, value)}
               />
             </Group>
 
             <Group place="outside">
-              <TemperatureMeter
-                title="Temp"
-                value={state.report.patio.AM2301.temperature}
-                lastUpdate={state.report.patio.AM2301.lastUpdate}
-              />
-              <HumidityMeter
-                title="Hum"
-                value={state.report.patio.AM2301.humidity}
-                lastUpdate={state.report.patio.AM2301.lastUpdate}
-              />
-              <TemperatureMeter
-                title="Feel"
-                value={state.report.patio.AM2301.realFeel}
-                lastUpdate={state.report.patio.AM2301.lastUpdate}
-              />
-              <Switcher
-                device={state.devices.patio}
-                icon="patio-lamp.svg"
-                onChange={(value) => state.cmnd('POWER', 'sonoff-patio', value)}
-              />
               <Switcher
                 device={state.devices.poolPump}
                 icon="valve.svg"
-                onChange={(value) => state.cmnd('POWER', 'sonoff-pool-pump', value)}
+                onChange={(value) => state.sendCommand(state.devices.poolPump.topics.power, value)}
               />
               <SensorMeter icon="/images/wind.svg" value={state.report.weather.windSpeedKmh} suffix="km/h" />
-              {state.report.patio.MQ135 && (
-                <SensorMeter
-                  title="Air Quality"
-                  icon="images/air-quality.svg"
-                  suffix="%"
-                  value={state.report.patio.MQ135.airQuality}
-                  lastUpdate={state.report.patio.MQ135.lastUpdate}
-                />
-              )}
-              {state.report.patio.SOIL && (
+              {/* {state.report.room.SOIL && (
                 <SensorMeter
                   title="Soil Hum"
                   icon="images/soil.svg"
                   suffix="%"
-                  value={state.report.patio.SOIL.value}
-                  lastUpdate={state.report.patio.SOIL.lastUpdate}
+                  value={state.report.room.SOIL.value}
+                  lastUpdate={state.report.room.SOIL.lastUpdate}
                 />
-              )}
+              )} */}
               <Sun data={state.report.data} />
             </Group>
           </section>

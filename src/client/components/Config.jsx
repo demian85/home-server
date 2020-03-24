@@ -124,7 +124,7 @@ export default class Config extends React.Component {
               style={{ marginRight: '5px' }}
               onChange={(e) => this.setState({ autoTurnOnDeskLamp: e.target.checked })}
             />
-            Turn ON desk lamp automatically when motion is detected (after night time)
+            Turn ON lounge lamp automatically when motion is detected (after night time)
           </label>
         </div>
         <div className={styles.content}>
@@ -135,7 +135,7 @@ export default class Config extends React.Component {
               style={{ marginRight: '5px' }}
               onChange={(e) => this.setState({ autoTurnOffDeskLamp: e.target.checked })}
             />
-            Turn OFF desk lamp automatically
+            Turn OFF lounge lamp automatically
             <input
               type="number"
               value={this.state.autoTurnOffDeskLampDelay}

@@ -8,3 +8,8 @@ export async function apiCall(path, method = 'GET', body = {}) {
   });
   return res.body && res.json();
 }
+
+export function getDevicePowerStateFromPayload(payload) {
+  const stateValue = String(payload).toLowerCase();
+  return stateValue === 'on' || stateValue === '1';
+}

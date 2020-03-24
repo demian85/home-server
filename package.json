@@ -29,7 +29,8 @@
     "esp8266",
     "wemos",
     "domotics",
-    "automation"
+    "automation",
+    "shelly"
   ],
   "author": "Demian Rodriguez",
   "license": "ISC",
