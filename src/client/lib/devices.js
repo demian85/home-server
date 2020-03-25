@@ -44,7 +44,7 @@ export const devices = {
     topics: {
       power: 'shellies/shelly-laundry-lamp/relay/0/command',
       status: 'shellies/shelly-laundry-lamp/relay/0',
-      lwt: 'shellies/shelly-laundry-lamp/relay/0/online',
+      lwt: 'shellies/shelly-laundry-lamp/online',
     },
     ipAddress: '192.168.0.13',
     power: null,
