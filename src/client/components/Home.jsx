@@ -88,7 +88,7 @@ export default class Home extends React.Component {
               <Switcher
                 device={state.devices.heaterLight}
                 icon="chimney.svg"
-                onChange={(value) => state.sendCommand(state.devices.heaterLight.power, value)}
+                onChange={(value) => state.sendCommand(state.devices.heaterLight.topics.power, value)}
               />
               {state.report.motionSensor && (
                 <SensorMeter

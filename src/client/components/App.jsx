@@ -24,7 +24,7 @@ export default class App extends React.Component {
       ...store,
       sendCommand: (topic, value) => {
         console.debug('command', topic, value);
-        this.state.mqttClient.publish(topic, value);
+        this.state.mqttClient.publish(topic, String(value));
       },
       setConfig: async (values) => {
         console.debug('setConfig', values);
