@@ -29,11 +29,13 @@ const parsers = {
 
   [topics.heaterPanel.sensor]: async (payload) => {
     const data = JSON.parse(payload.toString());
-    const readings = getSensorReadings(data, 'SI7021');
+    const SI7021 = getSensorReadings(data, 'SI7021');
 
-    if (!readings) {
+    if (!SI7021) {
       return logger.error('Sensor SI7021 not found!');
     }
+
+    const readings = { SI7021 };
 
     logger.debug('Saving heater sensor readings: %j', readings);
 
