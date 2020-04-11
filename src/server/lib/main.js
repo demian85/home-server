@@ -85,7 +85,7 @@ async function turnOnDevice(deviceName, on) {
 async function updateHeaterState() {
   logger.debug(`updateHeaterState()`);
 
-  const sensor = await db.getSensorData('heater1');
+  const sensor = await db.getSensorData('heaterPanel');
 
   if (!sensor) {
     logger.error(`not enough data! skipping...`);
@@ -94,12 +94,11 @@ async function updateHeaterState() {
 
   const { trigger, threshold } = await db.getHeaterConfig();
   const setPoint = await getRoomSetPoint();
-  const patioSensor = await db.getSensorData('nodemcu1');
+  const patioSensor = await db.getSensorData('laundry');
   const sensorValue = trigger === 'temp' ? sensor.temperature : sensor.realFeel;
-  const outsideTempAvailable = patioSensor && patioSensor.AM2301 && patioSensor.AM2301.temperature !== null;
-  const tempDiff = outsideTempAvailable ? setPoint - patioSensor.AM2301.temperature : 0;
-  const isTooCold = outsideTempAvailable && tempDiff >= 4.25;
-  const isSecondHeaterOnline = await db.getDeviceOnlineStatus('heater2');
+  const outsideTempAvailable = patioSensor && patioSensor.DS18B20 && patioSensor.DS18B20.temperature !== null;
+  const tempDiff = outsideTempAvailable ? setPoint - patioSensor.DS18B20.temperature : 0;
+  const isTooCold = outsideTempAvailable && tempDiff >= 4;
 
   logger.info('updating heating: %j', {
     trigger,
@@ -109,17 +108,14 @@ async function updateHeaterState() {
     outsideTempAvailable,
     tempDiff,
     isTooCold,
-    isSecondHeaterOnline,
   });
 
   if (sensorValue < setPoint) {
-    turnOnDevice('heater1', !outsideTempAvailable || isTooCold || !isSecondHeaterOnline);
-    turnOnDevice('heater2', true);
+    turnOnDevice('heaterPanel', true);
   } else if (sensorValue >= setPoint + threshold) {
     const maxSensorValue = setPoint + threshold + 0.2;
     const shouldTurnPanelOff = !isTooCold || sensorValue >= maxSensorValue;
-    turnOnDevice('heater1', !shouldTurnPanelOff);
-    turnOnDevice('heater2', false);
+    turnOnDevice('heaterPanel', !shouldTurnPanelOff);
   }
 }
 
@@ -129,6 +125,7 @@ async function updateReport() {
   const setPoint = await getRoomSetPoint();
   const loungeSensor = await db.getSensorData('wemos1');
   const roomSensor = await db.getSensorData('nodemcu1');
+  const laundrySensor = await db.getSensorData('laundry');
   const motionSensor = await getMotionSensorState();
   const { sunrise, sunset } = getSolarCalc();
 
@@ -136,6 +133,7 @@ async function updateReport() {
     config: { setPoint },
     room: roomSensor,
     lounge: loungeSensor,
+    laundry: laundrySensor,
     motionSensor,
     data: {
       sunrise: sunrise.toISOString(),

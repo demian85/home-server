@@ -1,12 +1,12 @@
 export const devices = {
-  heater: {
+  heaterPanel: {
     topics: {
-      power: 'cmnd/sonoff-heater/power',
-      status: 'stat/sonoff-heater/POWER',
-      sensor: 'tele/sonoff-heater/SENSOR',
-      lwt: 'tele/sonoff-heater/LWT',
+      power: 'cmnd/sonoff-heater-panel/power',
+      status: 'stat/sonoff-heater-panel/POWER',
+      sensor: 'tele/sonoff-heater-panel/SENSOR',
+      lwt: 'tele/sonoff-heater-panel/LWT',
     },
-    ipAddress: '192.168.0.16',
+    ipAddress: '192.168.0.30',
     power: null,
     online: null,
   },

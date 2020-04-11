@@ -38,7 +38,7 @@ function displayText(textLines = [], size = 1) {
 }
 
 async function getTemperatureInfo() {
-  const heaterSensor = await db.getSensorData('heater1');
+  const heaterSensor = await db.getSensorData('heaterPanel');
   const loungeSensor = await db.getSensorData('wemos1');
   const patioSensor = await db.getSensorData('nodemcu1');
   const cmnd = [];
@@ -59,7 +59,7 @@ async function getTemperatureInfo() {
 }
 
 async function getHumidityInfo() {
-  const heaterSensor = await db.getSensorData('heater1');
+  const heaterSensor = await db.getSensorData('heaterPanel');
   const loungeSensor = await db.getSensorData('wemos1');
   const patioSensor = await db.getSensorData('nodemcu1');
   const cmnd = [];

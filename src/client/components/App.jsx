@@ -36,9 +36,8 @@ export default class App extends React.Component {
           body,
         });
       },
-      manualHeaterSwitch: async (n, value) => {
-        const deviceSuffix = n > 1 ? n : '';
-        this.state.sendCommand(`cmnd/sonoff-heater${deviceSuffix}/power`, value ? '1' : '0');
+      manualHeaterSwitch: async (value) => {
+        this.state.sendCommand(`cmnd/sonoff-heater-panel/power`, value ? '1' : '0');
         await this.state.setConfig({ autoMode: false });
       },
     };

@@ -1,16 +1,10 @@
 const topics = {
   report: 'stat/_report',
-  heater1: {
-    lwt: `tele/sonoff-heater/LWT`,
-    cmnd: (cmnd = 'power') => `cmnd/sonoff-heater/${cmnd}`,
-    stat: `stat/sonoff-heater/POWER`,
-    sensor: `tele/sonoff-heater/SENSOR`,
-  },
-  heater2: {
-    lwt: `tele/sonoff-heater2/LWT`,
-    cmnd: (cmnd = 'power') => `cmnd/sonoff-heater2/${cmnd}`,
-    stat: `stat/sonoff-heater2/POWER`,
-    sensor: `tele/sonoff-heater2/SENSOR`,
+  heaterPanel: {
+    lwt: `tele/sonoff-heater-panel/LWT`,
+    cmnd: (cmnd = 'power') => `cmnd/sonoff-heater-panel/${cmnd}`,
+    stat: `stat/sonoff-heater-panel/POWER`,
+    sensor: `tele/sonoff-heater-panel/SENSOR`,
   },
   deskLamp: {
     cmnd: (cmnd = 'power') => `cmnd/sonoff-flame-lamp/${cmnd}`,
@@ -35,13 +29,11 @@ const topics = {
     sensor: `tele/nodemcu/SENSOR`,
     result: `tele/nodemcu/RESULT`,
   },
-  bulb1: {
-    cmnd: (cmnd = 'POWER') => `cmnd/bulb1/${cmnd}`,
-    stat: `stat/bulb1/POWER`,
-  },
-  bulb2: {
-    cmnd: (cmnd = 'POWER') => `cmnd/bulb2/${cmnd}`,
-    stat: `stat/bulb2/POWER`,
+  laundry: {
+    cmnd: (cmnd = 'POWER') => `cmnd/wemos-laundry/${cmnd}`,
+    stat: `stat/wemos-laundry/POWER`,
+    sensor: `tele/wemos-laundry/SENSOR`,
+    result: `tele/wemos-laundry/RESULT`,
   },
 };
 

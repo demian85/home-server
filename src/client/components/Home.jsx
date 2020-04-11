@@ -47,15 +47,18 @@ export default class Home extends React.Component {
                   lastUpdate={state.report.room.MQ135.lastUpdate}
                 />
               )}
+            </Group>
+
+            <Group place="bedroom">
               <AutoSwitcher
                 label={`~${state.report.config.setPoint} ˚C`}
                 value={state.config.autoMode}
                 onChange={(value) => state.setConfig({ autoMode: !!value })}
               />
               <Switcher
-                device={state.devices.heater}
+                device={state.devices.heaterPanel}
                 icon="heater.svg"
-                onChange={(value) => state.manualHeaterSwitch(1, value)}
+                onChange={(value) => state.manualHeaterSwitch(value)}
               />
             </Group>
 
@@ -122,6 +125,11 @@ export default class Home extends React.Component {
                 onChange={(value) =>
                   state.sendCommand('shellies/shelly-laundry-lamp/relay/0/command', value ? 'on' : 'off')
                 }
+              />
+              <TemperatureMeter
+                title="Temp"
+                value={state.report.laundry.DS18B20.temperature}
+                lastUpdate={state.report.laundry.DS18B20.lastUpdate}
               />
             </Group>
 

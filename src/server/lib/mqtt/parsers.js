@@ -1,6 +1,3 @@
-const { debounce } = require('lodash');
-
-const client = require('./client');
 const logger = require('../logger');
 const topics = require('./topics');
 const db = require('../db');
@@ -12,59 +9,14 @@ const {
   getSensorReadings,
 } = require('../main');
 const { turnOnDeskLampIfNeeded } = require('../actions');
-const ir = require('../ir');
-const { clearDisplay, displayNextState } = require('../oled');
-const ifttt = require('../ifttt');
-const { getDevicePowerStateFromPayload } = require('../utils');
-
-const resetIn10Secs = debounce(() => {
-  clearDisplay(true);
-}, 10000);
-
-const smartBulbPowerCmndParser = (deviceName) => {
-  return async (payload) => {
-    const power = payload.toString().toLowerCase();
-    const isOn = getDevicePowerStateFromPayload(power);
-    const strState = isOn ? 'on' : 'off';
-    const intState = isOn ? '1' : '0';
-
-    try {
-      await ifttt.sendEvent(`${deviceName}:power:${strState}`);
-      client.publish(`stat/${deviceName}/POWER`, intState);
-    } catch (err) {
-      logger.error('error sending IFTTT event: %s', err.message);
-      console.error(err);
-    }
-  };
-};
-
-const smartBulbSceneCmndParser = (deviceName) => {
-  return async (payload) => {
-    try {
-      const scene = payload.toString().toLowerCase();
-      await ifttt.sendEvent(`${deviceName}:scene:${scene}`);
-    } catch (err) {
-      logger.error('error sending IFTTT event: %s', err.message);
-      console.error(err);
-    }
-  };
-};
 
 const parsers = {
-  [topics.heater1.stat]: async (payload) => {
-    await updateDeviceState('heater1', payload);
+  [topics.heaterPanel.stat]: async (payload) => {
+    await updateDeviceState('heaterPanel', payload);
   },
 
-  [topics.heater1.lwt]: async (payload) => {
-    await updateDeviceOnlineStatus('heater1', payload);
-  },
-
-  [topics.heater2.stat]: async (payload) => {
-    await updateDeviceState('heater2', payload);
-  },
-
-  [topics.heater2.lwt]: async (payload) => {
-    await updateDeviceOnlineStatus('heater2', payload);
+  [topics.heaterPanel.lwt]: async (payload) => {
+    await updateDeviceOnlineStatus('heaterPanel', payload);
   },
 
   [topics.deskLamp.stat]: async (payload) => {
@@ -75,11 +27,7 @@ const parsers = {
     await updateDeviceState('bathroom', payload);
   },
 
-  [topics.bulb1.stat]: async (payload) => {
-    await updateDeviceState('bulb1', payload);
-  },
-
-  [topics.heater1.sensor]: async (payload) => {
+  [topics.heaterPanel.sensor]: async (payload) => {
     const data = JSON.parse(payload.toString());
     const readings = getSensorReadings(data, 'SI7021');
 
@@ -89,7 +37,7 @@ const parsers = {
 
     logger.debug('Saving heater sensor readings: %j', readings);
 
-    await db.set('heater1.sensor', JSON.stringify(readings));
+    await db.set('heaterPanel.sensor', JSON.stringify(readings));
     const { autoMode } = await db.getHeaterConfig();
     if (autoMode) {
       await updateHeaterState();
@@ -115,7 +63,7 @@ const parsers = {
 
     const readings = { AM2301, BMP280, BH1750 };
 
-    logger.debug('Saving wemos1 sensor readings: %j', readings);
+    logger.debug('Saving sensor readings: %j', readings);
 
     await db.set('wemos1.sensor', JSON.stringify(readings));
     await updateReport();
@@ -149,18 +97,10 @@ const parsers = {
       },
     };
 
-    logger.debug('Saving nodemcu1 sensor readings: %j', { readings });
+    logger.debug('Saving sensor readings: %j', { readings });
 
     await db.set('nodemcu1.sensor', JSON.stringify(readings));
     await updateReport();
-  },
-
-  [topics.wemos1.result]: async (payload) => {
-    const data = JSON.parse(payload.toString());
-    const hexCode = (data && data.IrReceived && data.IrReceived.Data) || null;
-    if (hexCode) {
-      ir.receive(hexCode);
-    }
   },
 
   [topics.wemos1.switch1]: async (payload) => {
@@ -175,21 +115,21 @@ const parsers = {
     await updateReport();
   },
 
-  [topics.wemos1.switch3]: async (payload) => {
-    const state = payload.toString();
-    if (state === '1') {
-      clearDisplay();
-      displayNextState();
-      resetIn10Secs();
+  [topics.laundry.sensor]: async (payload) => {
+    const data = JSON.parse(payload.toString());
+    const DS18B20 = getSensorReadings(data, 'DS18B20');
+
+    if (!DS18B20) {
+      logger.error('Sensor DS18B20 not found!');
     }
+
+    const readings = { DS18B20 };
+
+    logger.debug('Saving sensor readings: %j', readings);
+
+    await db.set('laundry.sensor', JSON.stringify(readings));
+    await updateReport();
   },
-
-  // simulate Tuya-Tasmota device
-  [topics.bulb1.cmnd('POWER')]: smartBulbPowerCmndParser('bulb1'),
-  [topics.bulb1.cmnd('SCENE')]: smartBulbSceneCmndParser('bulb1'),
-
-  [topics.bulb2.cmnd('POWER')]: smartBulbPowerCmndParser('bulb2'),
-  [topics.bulb2.cmnd('SCENE')]: smartBulbSceneCmndParser('bulb2'),
 };
 
 module.exports = parsers;
