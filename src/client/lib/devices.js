@@ -50,6 +50,16 @@ export const devices = {
     power: null,
     online: null,
   },
+  garageLamp: {
+    topics: {
+      power: 'cmnd/sonoff-patio/power',
+      status: 'stat/sonoff-patio/POWER',
+      lwt: 'tele/sonoff-patio/LWT',
+    },
+    ipAddress: '192.168.0.26',
+    power: null,
+    online: null,
+  },
   poolPump: {
     topics: {
       power: 'cmnd/sonoff-pool-pump/power',

@@ -44,7 +44,7 @@ export default class Home extends React.Component {
               )}
             </Group>
 
-            <Group place="bedroom">
+            <Group place="smallRoom">
               <TemperatureMeter
                 title="Temp"
                 value={state.report.smallRoom.SI7021.temperature}
@@ -130,6 +130,14 @@ export default class Home extends React.Component {
                 title="Temp"
                 value={state.report.laundry.DS18B20.temperature}
                 lastUpdate={state.report.laundry.DS18B20.lastUpdate}
+              />
+            </Group>
+
+            <Group place="garage">
+              <Switcher
+                device={state.devices.garageLamp}
+                icon="illumination.svg"
+                onChange={(value) => state.sendCommand(state.devices.garageLamp.topics.power, value)}
               />
             </Group>
 

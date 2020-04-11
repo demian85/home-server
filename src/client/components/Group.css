@@ -49,6 +49,11 @@
   border-color: #1a9cf3;
 }
 
+.smallRoom {
+  background-image: url(/images/toys.svg);
+  border-color: #1ae5f3;
+}
+
 .lounge {
   background-image: url(/images/lounge.svg);
   border-color: #bba220;
@@ -57,6 +62,11 @@
 .laundry {
   background-image: url(/images/washing-machine.svg);
   border-color: #bb8a20;
+}
+
+.garage {
+  background-image: url(/images/garage.svg);
+  border-color: #bb2028;
 }
 
 .bathroom {
