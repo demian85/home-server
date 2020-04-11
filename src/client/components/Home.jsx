@@ -33,11 +33,6 @@ export default class Home extends React.Component {
                 value={state.report.room.AM2301.humidity}
                 lastUpdate={state.report.room.AM2301.lastUpdate}
               />
-              <TemperatureMeter
-                title="Feel"
-                value={state.report.room.AM2301.realFeel}
-                lastUpdate={state.report.room.AM2301.lastUpdate}
-              />
               {state.report.room.MQ135 && (
                 <SensorMeter
                   title="Air Quality"
@@ -50,6 +45,16 @@ export default class Home extends React.Component {
             </Group>
 
             <Group place="bedroom">
+              <TemperatureMeter
+                title="Temp"
+                value={state.report.smallRoom.SI7021.temperature}
+                lastUpdate={state.report.smallRoom.SI7021.lastUpdate}
+              />
+              <HumidityMeter
+                title="Hum"
+                value={state.report.smallRoom.SI7021.humidity}
+                lastUpdate={state.report.smallRoom.SI7021.lastUpdate}
+              />
               <AutoSwitcher
                 label={`~${state.report.config.setPoint} ˚C`}
                 value={state.config.autoMode}
@@ -71,11 +76,6 @@ export default class Home extends React.Component {
               <HumidityMeter
                 title="Hum"
                 value={state.report.lounge.AM2301.humidity}
-                lastUpdate={state.report.lounge.AM2301.lastUpdate}
-              />
-              <TemperatureMeter
-                title="Feel"
-                value={state.report.lounge.AM2301.realFeel}
                 lastUpdate={state.report.lounge.AM2301.lastUpdate}
               />
               <Switcher
