@@ -29,7 +29,7 @@ function Switcher(props) {
           className={`${styles.onlineStatus} ${onlineStatus ? styles.online : styles.offline}`}
         />
       )}
-      {device.sensor && device.sensor.ENERGY && <EnergyMeter value={device.sensor.ENERGY} />}
+      {device.sensor && device.sensor.energy && <EnergyMeter value={device.sensor.energy.power} />}
     </div>
   );
 }

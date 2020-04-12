@@ -23,16 +23,20 @@ export default class Home extends React.Component {
         {state.report && (
           <section className={styles.dashboard}>
             <Group place="bedroom">
-              <TemperatureMeter
-                title="Temp"
-                value={state.report.room.AM2301.temperature}
-                lastUpdate={state.report.room.AM2301.lastUpdate}
-              />
-              <HumidityMeter
-                title="Hum"
-                value={state.report.room.AM2301.humidity}
-                lastUpdate={state.report.room.AM2301.lastUpdate}
-              />
+              {state.report.room && (
+                <>
+                  <TemperatureMeter
+                    title="Temp"
+                    value={state.report.room.AM2301.temperature}
+                    lastUpdate={state.report.room.AM2301.lastUpdate}
+                  />
+                  <HumidityMeter
+                    title="Hum"
+                    value={state.report.room.AM2301.humidity}
+                    lastUpdate={state.report.room.AM2301.lastUpdate}
+                  />
+                </>
+              )}
               {state.report.room.MQ135 && (
                 <SensorMeter
                   title="Air Quality"
@@ -45,16 +49,20 @@ export default class Home extends React.Component {
             </Group>
 
             <Group place="smallRoom">
-              <TemperatureMeter
-                title="Temp"
-                value={state.report.smallRoom.SI7021.temperature}
-                lastUpdate={state.report.smallRoom.SI7021.lastUpdate}
-              />
-              <HumidityMeter
-                title="Hum"
-                value={state.report.smallRoom.SI7021.humidity}
-                lastUpdate={state.report.smallRoom.SI7021.lastUpdate}
-              />
+              {state.report.smallRoom && (
+                <>
+                  <TemperatureMeter
+                    title="Temp"
+                    value={state.report.smallRoom.SI7021.temperature}
+                    lastUpdate={state.report.smallRoom.SI7021.lastUpdate}
+                  />
+                  <HumidityMeter
+                    title="Hum"
+                    value={state.report.smallRoom.SI7021.humidity}
+                    lastUpdate={state.report.smallRoom.SI7021.lastUpdate}
+                  />
+                </>
+              )}
               <AutoSwitcher
                 label={`~${state.report.config.setPoint} ˚C`}
                 value={state.config.autoMode}
@@ -68,16 +76,20 @@ export default class Home extends React.Component {
             </Group>
 
             <Group place="lounge">
-              <TemperatureMeter
-                title="Temp"
-                value={state.report.lounge.AM2301.temperature}
-                lastUpdate={state.report.lounge.AM2301.lastUpdate}
-              />
-              <HumidityMeter
-                title="Hum"
-                value={state.report.lounge.AM2301.humidity}
-                lastUpdate={state.report.lounge.AM2301.lastUpdate}
-              />
+              {state.report.lounge && (
+                <>
+                  <TemperatureMeter
+                    title="Temp"
+                    value={state.report.lounge.AM2301.temperature}
+                    lastUpdate={state.report.lounge.AM2301.lastUpdate}
+                  />
+                  <HumidityMeter
+                    title="Hum"
+                    value={state.report.lounge.AM2301.humidity}
+                    lastUpdate={state.report.lounge.AM2301.lastUpdate}
+                  />
+                </>
+              )}
               <Switcher
                 device={state.devices.flameLamp}
                 icon="lantern.svg"
@@ -126,18 +138,24 @@ export default class Home extends React.Component {
                   state.sendCommand('shellies/shelly-laundry-lamp/relay/0/command', value ? 'on' : 'off')
                 }
               />
-              <TemperatureMeter
-                title="Temp"
-                value={state.report.laundry.DS18B20.temperature}
-                lastUpdate={state.report.laundry.DS18B20.lastUpdate}
-              />
+              {state.report.laundry && (
+                <>
+                  <TemperatureMeter
+                    title="Temp"
+                    value={state.report.laundry?.DS18B20?.temperature}
+                    lastUpdate={state.report.laundry?.DS18B20?.lastUpdate}
+                  />
+                </>
+              )}
             </Group>
 
             <Group place="garage">
               <Switcher
                 device={state.devices.garageLamp}
                 icon="illumination.svg"
-                onChange={(value) => state.sendCommand(state.devices.garageLamp.topics.power, value)}
+                onChange={(value) =>
+                  state.sendCommand('shellies/shelly-garage-lamp/relay/1/command', value ? 'on' : 'off')
+                }
               />
             </Group>
 

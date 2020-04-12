@@ -3,7 +3,6 @@ export const devices = {
     topics: {
       power: 'cmnd/sonoff-heater-panel/power',
       status: 'stat/sonoff-heater-panel/POWER',
-      sensor: 'tele/sonoff-heater-panel/SENSOR',
       lwt: 'tele/sonoff-heater-panel/LWT',
     },
     ipAddress: '192.168.0.30',
@@ -45,6 +44,7 @@ export const devices = {
       power: 'shellies/shelly-laundry-lamp/relay/0/command',
       status: 'shellies/shelly-laundry-lamp/relay/0',
       lwt: 'shellies/shelly-laundry-lamp/online',
+      sensor: 'shellies/shelly-laundry-lamp/relay/0/power',
     },
     ipAddress: '192.168.0.13',
     power: null,
@@ -52,11 +52,12 @@ export const devices = {
   },
   garageLamp: {
     topics: {
-      power: 'cmnd/sonoff-patio/power',
-      status: 'stat/sonoff-patio/POWER',
-      lwt: 'tele/sonoff-patio/LWT',
+      power: 'shellies/shelly-garage-lamp/relay/1/command',
+      status: 'shellies/shelly-garage-lamp/relay/1',
+      sensor: 'shellies/shelly-garage-lamp/relay/1/power',
+      lwt: 'shellies/shelly-garage-lamp/online',
     },
-    ipAddress: '192.168.0.26',
+    ipAddress: '192.168.0.22',
     power: null,
     online: null,
   },
@@ -64,6 +65,7 @@ export const devices = {
     topics: {
       power: 'cmnd/sonoff-pool-pump/power',
       status: 'stat/sonoff-pool-pump/POWER',
+      sensor: 'tele/sonoff-pool-pump/SENSOR',
       lwt: 'tele/sonoff-pool-pump/LWT',
     },
     ipAddress: '192.168.0.31',

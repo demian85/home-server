@@ -10,8 +10,8 @@ function SensorMeter(props) {
   const tree = (
     <>
       <div className={styles.value}>
-        {props.value}
-        {props.suffix && <span className={styles.suffix}>{props.suffix}</span>}
+        {props.value ?? '--'}
+        {props.value !== undefined && props.suffix && <span className={styles.suffix}>{props.suffix}</span>}
       </div>
       {props.lastUpdate && <TimeAgo date={props.lastUpdate} />}
     </>

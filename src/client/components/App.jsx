@@ -158,7 +158,16 @@ export default class App extends React.Component {
 
   buildSensorStatusParser(deviceName) {
     return (payload) => {
-      const sensor = JSON.parse(String(payload));
+      const sensorData = JSON.parse(String(payload));
+
+      let energy = {};
+
+      // parse payload for Tasmota & Shelly devices
+      if (typeof sensorData === 'object') {
+        energy.power = sensorData.ENERGY.Power;
+      } else {
+        energy.power = sensorData;
+      }
 
       this.setState((state) => {
         const { devices } = state;
@@ -167,7 +176,7 @@ export default class App extends React.Component {
             ...devices,
             [deviceName]: {
               ...devices[deviceName],
-              sensor,
+              sensor: { energy },
             },
           },
         };
