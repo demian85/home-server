@@ -85,17 +85,17 @@ async function turnOnDevice(deviceName, on) {
 async function updateHeaterState() {
   logger.debug(`updateHeaterState()`);
 
-  const sensor = await db.getSensorData('heaterPanel');
+  const roomSensor = await db.getSensorData('heaterPanel');
 
-  if (!sensor) {
-    logger.error(`not enough data! skipping...`);
+  if (!roomSensor || !roomSensor.SI7021) {
+    logger.error(`SI7021 sensor not available, skipping...`);
     return;
   }
 
   const { trigger, threshold } = await db.getHeaterConfig();
   const setPoint = await getRoomSetPoint();
   const patioSensor = await db.getSensorData('laundry');
-  const sensorValue = trigger === 'temp' ? sensor.temperature : sensor.realFeel;
+  const sensorValue = trigger === 'temp' ? roomSensor.SI7021.temperature : roomSensor.SI7021.realFeel;
   const outsideTempAvailable = patioSensor && patioSensor.DS18B20 && patioSensor.DS18B20.temperature !== null;
   const tempDiff = outsideTempAvailable ? setPoint - patioSensor.DS18B20.temperature : 0;
   const isTooCold = outsideTempAvailable && tempDiff >= 4;
