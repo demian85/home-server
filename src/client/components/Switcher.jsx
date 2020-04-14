@@ -17,7 +17,7 @@ function Switcher(props) {
 
   return (
     <div className={styles.root} style={{ backgroundImage }}>
-      {ipAddress && onlineStatus && (
+      {ipAddress && (
         <button className={styles.config} title="Config" onClick={() => window.open(`http://${ipAddress}`)} />
       )}
       {device.external && <img src="/images/ifttt.png" className={styles.external} />}
