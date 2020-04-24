@@ -59,6 +59,11 @@
   border-color: #bba220;
 }
 
+.kitchen {
+  background-image: url(/images/kitchen.svg);
+  border-color: #ccbfa3;
+}
+
 .laundry {
   background-image: url(/images/washing-machine.svg);
   border-color: #bb8a20;

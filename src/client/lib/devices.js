@@ -39,6 +39,16 @@ export const devices = {
     power: null,
     online: null,
   },
+  mosquitoTrap1: {
+    topics: {
+      power: 'cmnd/sonoff-mosquito-trap/power',
+      status: 'stat/sonoff-mosquito-trap/POWER',
+      lwt: 'tele/sonoff-mosquito-trap/LWT',
+    },
+    ipAddress: '192.168.0.15',
+    power: null,
+    online: null,
+  },
   laundryLamp: {
     topics: {
       power: 'shellies/shelly-laundry-lamp/relay/0/command',

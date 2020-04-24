@@ -130,13 +130,19 @@ export default class Home extends React.Component {
               )}
             </Group>
 
+            <Group place="kitchen">
+              <Switcher
+                device={state.devices.mosquitoTrap1}
+                icon="no-mosquito.svg"
+                onChange={(value) => state.sendCommand(state.devices.mosquitoTrap1.topics.power, value ? 'on' : 'off')}
+              />
+            </Group>
+
             <Group place="laundry">
               <Switcher
                 device={state.devices.laundryLamp}
                 icon="desk-lamp.svg"
-                onChange={(value) =>
-                  state.sendCommand('shellies/shelly-laundry-lamp/relay/0/command', value ? 'on' : 'off')
-                }
+                onChange={(value) => state.sendCommand(state.devices.laundryLamp.topics.power, value ? 'on' : 'off')}
               />
               {state.report.laundry && (
                 <>
@@ -153,9 +159,7 @@ export default class Home extends React.Component {
               <Switcher
                 device={state.devices.garageLamp}
                 icon="illumination.svg"
-                onChange={(value) =>
-                  state.sendCommand('shellies/shelly-garage-lamp/relay/1/command', value ? 'on' : 'off')
-                }
+                onChange={(value) => state.sendCommand(state.devices.garageLamp.topics.power, value ? 'on' : 'off')}
               />
             </Group>
 
