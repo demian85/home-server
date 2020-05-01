@@ -10,7 +10,7 @@ function SensorMeter(props) {
   const tree = (
     <>
       <div className={styles.value}>
-        {props.value ? (
+        {props.value !== undefined && props.value !== null ? (
           <>
             {props.value}
             {props.suffix && <span className={styles.suffix}>{props.suffix}</span>}
