@@ -13,7 +13,9 @@ function SensorMeter(props) {
         {props.value !== undefined && props.value !== null ? (
           <>
             {props.value}
-            {props.suffix && <span className={styles.suffix}>{props.suffix}</span>}
+            {props.suffix && (
+              <span className={styles.suffix}>{props.suffix}</span>
+            )}
           </>
         ) : (
           '--'

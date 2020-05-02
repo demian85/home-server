@@ -6,10 +6,16 @@ const { DateTime } = require('luxon');
 
 let currentStateIndex = -1;
 
-const displayStates = [getTemperatureInfo, getHumidityInfo, getSensorInfo, getTimeInfo];
+const displayStates = [
+  getTemperatureInfo,
+  getHumidityInfo,
+  getSensorInfo,
+  getTimeInfo,
+];
 
 async function displayNextState() {
-  currentStateIndex = currentStateIndex === displayStates.length - 1 ? 0 : currentStateIndex + 1;
+  currentStateIndex =
+    currentStateIndex === displayStates.length - 1 ? 0 : currentStateIndex + 1;
   const textLines = await displayStates[currentStateIndex]();
   displayText(textLines, 2);
 }

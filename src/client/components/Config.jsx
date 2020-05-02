@@ -14,7 +14,11 @@ export default class Config extends React.Component {
     this.state = cloneDeep(props.value);
     this.presets = {
       simple: [{ start: 0, end: 24, temp: 20.5 }],
-      default: [{ start: 0, end: 9, temp: 21 }, { start: 9, end: 18, temp: 19 }, { start: 18, end: 24, temp: 20.7 }],
+      default: [
+        { start: 0, end: 9, temp: 21 },
+        { start: 9, end: 18, temp: 19 },
+        { start: 18, end: 24, temp: 20.7 },
+      ],
       sleep: [
         { start: 0, end: 4, temp: 20.7 },
         { start: 4, end: 9, temp: 20.9 },
@@ -53,13 +57,22 @@ export default class Config extends React.Component {
           <p>Set desired set point for each time frame:</p>
           <div className={styles.presets}>
             <label>Presets: </label>
-            <button className={styles.presetBtn} onClick={() => this.onPresetClick('default')}>
+            <button
+              className={styles.presetBtn}
+              onClick={() => this.onPresetClick('default')}
+            >
               Default
             </button>
-            <button className={styles.presetBtn} onClick={() => this.onPresetClick('simple')}>
+            <button
+              className={styles.presetBtn}
+              onClick={() => this.onPresetClick('simple')}
+            >
               Simple
             </button>
-            <button className={styles.presetBtn} onClick={() => this.onPresetClick('sleep')}>
+            <button
+              className={styles.presetBtn}
+              onClick={() => this.onPresetClick('sleep')}
+            >
               Sleep
             </button>
           </div>
@@ -78,7 +91,10 @@ export default class Config extends React.Component {
         </div>
         <div className={styles.content}>
           <label>Trigger: </label>
-          <select value={this.state.trigger} onChange={(e) => this.setState({ trigger: e.target.value })}>
+          <select
+            value={this.state.trigger}
+            onChange={(e) => this.setState({ trigger: e.target.value })}
+          >
             <option value="temp">Temperature</option>
             <option value="feel">Real feel</option>
           </select>
@@ -91,7 +107,9 @@ export default class Config extends React.Component {
             max="30"
             step="1"
             value={this.state.minStateDurationSecs / 60}
-            onChange={(e) => this.setState({ minStateDurationSecs: e.target.value * 60 })}
+            onChange={(e) =>
+              this.setState({ minStateDurationSecs: e.target.value * 60 })
+            }
           />
         </div>
         <div className={styles.content}>
@@ -114,7 +132,11 @@ export default class Config extends React.Component {
         </div>
         <div className={styles.content}>
           <label>Bed time: </label>
-          <input type="time" value={this.state.bedTime} onChange={(e) => this.setState({ bedTime: e.target.value })} />
+          <input
+            type="time"
+            value={this.state.bedTime}
+            onChange={(e) => this.setState({ bedTime: e.target.value })}
+          />
         </div>
         <div className={styles.content}>
           <label>
@@ -122,9 +144,12 @@ export default class Config extends React.Component {
               type="checkbox"
               checked={!!this.state.autoTurnOnDeskLamp}
               style={{ marginRight: '5px' }}
-              onChange={(e) => this.setState({ autoTurnOnDeskLamp: e.target.checked })}
+              onChange={(e) =>
+                this.setState({ autoTurnOnDeskLamp: e.target.checked })
+              }
             />
-            Turn ON lounge lamp automatically when motion is detected (after night time)
+            Turn ON lounge lamp automatically when motion is detected (after
+            night time)
           </label>
         </div>
         <div className={styles.content}>
@@ -133,7 +158,9 @@ export default class Config extends React.Component {
               type="checkbox"
               checked={!!this.state.autoTurnOffDeskLamp}
               style={{ marginRight: '5px' }}
-              onChange={(e) => this.setState({ autoTurnOffDeskLamp: e.target.checked })}
+              onChange={(e) =>
+                this.setState({ autoTurnOffDeskLamp: e.target.checked })
+              }
             />
             Turn OFF lounge lamp automatically
             <input
@@ -143,7 +170,9 @@ export default class Config extends React.Component {
               min="0"
               max="3600"
               step="1"
-              onChange={(e) => this.setState({ autoTurnOffDeskLampDelay: e.target.value })}
+              onChange={(e) =>
+                this.setState({ autoTurnOffDeskLampDelay: e.target.value })
+              }
             />
             seconds after motion sensor went off (after bed time)
           </label>

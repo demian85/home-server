@@ -5,11 +5,11 @@ const defaultConfig = require('../config');
 
 const db = redis.createClient(process.env.REDIS_URI);
 
-db.on('connect', function() {
+db.on('connect', function () {
   logger.info('redis client connected');
 });
 
-db.on('error', function(err) {
+db.on('error', function (err) {
   logger.error('redis client error', err);
 });
 

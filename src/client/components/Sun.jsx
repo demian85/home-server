@@ -5,8 +5,12 @@ import { DateTime } from 'luxon';
 import SensorMeter from './SensorMeter';
 
 export default function Sun(props) {
-  const sunrise = DateTime.fromISO(props.data.sunrise).toLocaleString(DateTime.TIME_24_SIMPLE);
-  const sunset = DateTime.fromISO(props.data.sunset).toLocaleString(DateTime.TIME_24_SIMPLE);
+  const sunrise = DateTime.fromISO(props.data.sunrise).toLocaleString(
+    DateTime.TIME_24_SIMPLE
+  );
+  const sunset = DateTime.fromISO(props.data.sunset).toLocaleString(
+    DateTime.TIME_24_SIMPLE
+  );
 
   return (
     <>

@@ -53,9 +53,7 @@ export default class TimeAgo extends React.PureComponent {
     return (
       this.props.date &&
       Math.abs(
-        DateTime.fromMillis(this.props.date)
-          .diffNow()
-          .as('seconds'),
+        DateTime.fromMillis(this.props.date).diffNow().as('seconds')
       ).toFixed(0)
     );
   }

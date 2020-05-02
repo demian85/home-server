@@ -3,7 +3,12 @@ const { getWeather } = require('./weather');
 const db = require('./db');
 const topics = require('./mqtt/topics');
 const mqttClient = require('./mqtt/client');
-const { getRealFeel, getSolarCalc, getMotionSensorState, getRoomSetPoint } = require('./utils');
+const {
+  getRealFeel,
+  getSolarCalc,
+  getMotionSensorState,
+  getRoomSetPoint,
+} = require('./utils');
 
 function getSensorReadings(data, sensorName) {
   const sensor = data && data[sensorName];
@@ -12,11 +17,20 @@ function getSensorReadings(data, sensorName) {
     return;
   }
 
-  const temperature = sensor.Temperature !== undefined ? parseFloat(sensor.Temperature) : undefined;
-  const humidity = sensor.Humidity !== undefined ? parseFloat(sensor.Humidity) : undefined;
-  const pressure = sensor.Pressure !== undefined ? parseFloat(sensor.Pressure) : undefined;
-  const illuminance = sensor.Illuminance !== undefined ? parseFloat(sensor.Illuminance) : undefined;
-  const realFeel = temperature && humidity ? getRealFeel(temperature, humidity) : undefined;
+  const temperature =
+    sensor.Temperature !== undefined
+      ? parseFloat(sensor.Temperature)
+      : undefined;
+  const humidity =
+    sensor.Humidity !== undefined ? parseFloat(sensor.Humidity) : undefined;
+  const pressure =
+    sensor.Pressure !== undefined ? parseFloat(sensor.Pressure) : undefined;
+  const illuminance =
+    sensor.Illuminance !== undefined
+      ? parseFloat(sensor.Illuminance)
+      : undefined;
+  const realFeel =
+    temperature && humidity ? getRealFeel(temperature, humidity) : undefined;
 
   return {
     temperature,
@@ -67,7 +81,9 @@ async function turnOnDevice(deviceName, on) {
   // calculate how long the device has been in this state
   const stateDuration = Math.round((Date.now() - state.lastChange) / 1000);
 
-  logger.info(`${deviceName}: last state change was ${stateDuration} seconds ago`);
+  logger.info(
+    `${deviceName}: last state change was ${stateDuration} seconds ago`
+  );
 
   // keep the same state for at least X minutes
   if (stateDuration < heaterConfig.minStateDurationSecs) {
@@ -95,9 +111,17 @@ async function updateHeaterState() {
   const { trigger, threshold } = await db.getHeaterConfig();
   const setPoint = await getRoomSetPoint();
   const patioSensor = await db.getSensorData('laundry');
-  const sensorValue = trigger === 'temp' ? roomSensor.SI7021.temperature : roomSensor.SI7021.realFeel;
-  const outsideTempAvailable = patioSensor && patioSensor.DS18B20 && patioSensor.DS18B20.temperature !== null;
-  const tempDiff = outsideTempAvailable ? setPoint - patioSensor.DS18B20.temperature : 0;
+  const sensorValue =
+    trigger === 'temp'
+      ? roomSensor.SI7021.temperature
+      : roomSensor.SI7021.realFeel;
+  const outsideTempAvailable =
+    patioSensor &&
+    patioSensor.DS18B20 &&
+    patioSensor.DS18B20.temperature !== null;
+  const tempDiff = outsideTempAvailable
+    ? setPoint - patioSensor.DS18B20.temperature
+    : 0;
   const isTooCold = outsideTempAvailable && tempDiff >= 4;
 
   logger.info('updating heating: %j', {
@@ -150,7 +174,11 @@ async function updateReport() {
       weather: {
         temperature: Math.round(weather.main.temp * 10) / 10,
         humidity: weather.main.humidity,
-        realFeel: getRealFeel(weather.main.temp, weather.main.humidity, weather.wind.speed),
+        realFeel: getRealFeel(
+          weather.main.temp,
+          weather.main.humidity,
+          weather.wind.speed
+        ),
         windSpeedKmh: Math.round((weather.wind.speed / 1000) * 3600),
         lastUpdate: weather.dt ? weather.dt * 1000 : null,
       },

@@ -12,7 +12,7 @@ router.use(
   basicAuth({
     users: { admin: process.env.ADMIN_PASSWD },
     challenge: true,
-  }),
+  })
 );
 
 router.get('/init', async (req, res) => {
@@ -107,7 +107,7 @@ router.post('/config', bodyParser.json(), async (req, res) => {
         autoTurnOnDeskLamp,
         nightTime,
         bedTime,
-      }),
+      })
     );
     const newConfig = await db.getHeaterConfig();
     if (autoMode) {

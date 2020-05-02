@@ -18,7 +18,9 @@ class MqttStream extends Writable {
 
   _write(obj, encoding, callback) {
     const { level, message } = obj;
-    this.mqttClient.publish('stat/_logs', JSON.stringify({ level, message }), { qos: 0 });
+    this.mqttClient.publish('stat/_logs', JSON.stringify({ level, message }), {
+      qos: 0,
+    });
     callback();
   }
 }

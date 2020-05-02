@@ -8,7 +8,13 @@ export function initMqttClient(parsers = {}) {
   client.on('connect', () => {
     console.info('mqtt client connected');
 
-    client.subscribe(['stat/#', 'cmnd/#', 'tele/+/SENSOR', 'tele/+/LWT', 'shellies/#']);
+    client.subscribe([
+      'stat/#',
+      'cmnd/#',
+      'tele/+/SENSOR',
+      'tele/+/LWT',
+      'shellies/#',
+    ]);
   });
 
   client.on('message', async (topic, payload) => {

@@ -93,25 +93,46 @@ export default class Home extends React.Component {
               <Switcher
                 device={state.devices.flameLamp}
                 icon="lantern.svg"
-                onChange={(value) => state.sendCommand(state.devices.flameLamp.topics.power, value)}
+                onChange={(value) =>
+                  state.sendCommand(state.devices.flameLamp.topics.power, value)
+                }
               />
               <Switcher
                 device={state.devices.saltLamp}
                 icon="room-lamp.svg"
-                onChange={(value) => state.sendCommand(state.devices.saltLamp.topics.power, value)}
+                onChange={(value) =>
+                  state.sendCommand(state.devices.saltLamp.topics.power, value)
+                }
               />
               <Switcher
                 device={state.devices.heaterLight}
                 icon="chimney.svg"
-                onChange={(value) => state.sendCommand(state.devices.heaterLight.topics.power, value)}
+                onChange={(value) =>
+                  state.sendCommand(
+                    state.devices.heaterLight.topics.power,
+                    value
+                  )
+                }
               />
               {state.report.motionSensor && (
-                <SensorMeter
-                  title="Motion"
-                  icon="/images/motion-sensor.svg"
-                  value={state.report.motionSensor.on ? 'ON' : 'OFF'}
-                  lastUpdate={state.report.motionSensor.lastChange}
-                />
+                <>
+                  <SensorMeter
+                    title="Motion 1"
+                    icon="/images/motion-sensor.svg"
+                    value={
+                      state.report.motionSensor.sensors[0].on ? 'ON' : 'OFF'
+                    }
+                    lastUpdate={state.report.motionSensor.sensors[0].lastChange}
+                  />
+                  <SensorMeter
+                    title="Motion 2"
+                    icon="/images/motion-sensor.svg"
+                    value={
+                      state.report.motionSensor.sensors[1].on ? 'ON' : 'OFF'
+                    }
+                    lastUpdate={state.report.motionSensor.sensors[1].lastChange}
+                  />
+                </>
               )}
               {state.report.lounge.BMP280 && (
                 <SensorMeter
@@ -134,7 +155,12 @@ export default class Home extends React.Component {
               <Switcher
                 device={state.devices.mosquitoTrap1}
                 icon="no-mosquito.svg"
-                onChange={(value) => state.sendCommand(state.devices.mosquitoTrap1.topics.power, value ? 'on' : 'off')}
+                onChange={(value) =>
+                  state.sendCommand(
+                    state.devices.mosquitoTrap1.topics.power,
+                    value ? 'on' : 'off'
+                  )
+                }
               />
             </Group>
 
@@ -142,7 +168,12 @@ export default class Home extends React.Component {
               <Switcher
                 device={state.devices.laundryLamp}
                 icon="desk-lamp.svg"
-                onChange={(value) => state.sendCommand(state.devices.laundryLamp.topics.power, value ? 'on' : 'off')}
+                onChange={(value) =>
+                  state.sendCommand(
+                    state.devices.laundryLamp.topics.power,
+                    value ? 'on' : 'off'
+                  )
+                }
               />
               {state.report.laundry && (
                 <>
@@ -159,7 +190,12 @@ export default class Home extends React.Component {
               <Switcher
                 device={state.devices.garageLamp}
                 icon="illumination.svg"
-                onChange={(value) => state.sendCommand(state.devices.garageLamp.topics.power, value ? 'on' : 'off')}
+                onChange={(value) =>
+                  state.sendCommand(
+                    state.devices.garageLamp.topics.power,
+                    value ? 'on' : 'off'
+                  )
+                }
               />
             </Group>
 
@@ -167,7 +203,9 @@ export default class Home extends React.Component {
               <Switcher
                 device={state.devices.bathroom}
                 icon="towel-rail.svg"
-                onChange={(value) => state.sendCommand(state.devices.bathroom.topics.power, value)}
+                onChange={(value) =>
+                  state.sendCommand(state.devices.bathroom.topics.power, value)
+                }
               />
             </Group>
 
@@ -175,9 +213,15 @@ export default class Home extends React.Component {
               <Switcher
                 device={state.devices.poolPump}
                 icon="valve.svg"
-                onChange={(value) => state.sendCommand(state.devices.poolPump.topics.power, value)}
+                onChange={(value) =>
+                  state.sendCommand(state.devices.poolPump.topics.power, value)
+                }
               />
-              <SensorMeter icon="/images/wind.svg" value={state.report.weather.windSpeedKmh} suffix="km/h" />
+              <SensorMeter
+                icon="/images/wind.svg"
+                value={state.report.weather.windSpeedKmh}
+                suffix="km/h"
+              />
               {/* {state.report.room.SOIL && (
                 <SensorMeter
                   title="Soil Hum"

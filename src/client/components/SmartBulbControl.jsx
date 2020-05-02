@@ -21,11 +21,18 @@ function SmartBulbControl(props) {
   return (
     <div className={styles.root} style={{ backgroundImage }}>
       {title && <h3>{title}</h3>}
-      <Checkbox disabled={disabled} label="" value={isOn} onChange={(value) => onChange(value ? 1 : 0)} />
+      <Checkbox
+        disabled={disabled}
+        label=""
+        value={isOn}
+        onChange={(value) => onChange(value ? 1 : 0)}
+      />
       {onlineStatus !== null && (
         <span
           title={`${onlineStatus ? 'online' : 'offline'}`}
-          className={`${styles.onlineStatus} ${onlineStatus ? styles.online : styles.offline}`}
+          className={`${styles.onlineStatus} ${
+            onlineStatus ? styles.online : styles.offline
+          }`}
         />
       )}
       <select className={styles.sceneSelector} onChange={onSceneSelect}>

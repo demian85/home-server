@@ -28,7 +28,9 @@ export default class App extends React.Component {
       },
       setConfig: async (values) => {
         console.debug('setConfig', values);
-        const body = JSON.stringify(Object.assign({}, this.state.config, values));
+        const body = JSON.stringify(
+          Object.assign({}, this.state.config, values)
+        );
         await fetch('/config', {
           method: 'POST',
           credentials: 'include',
@@ -37,7 +39,10 @@ export default class App extends React.Component {
         });
       },
       manualHeaterSwitch: async (value) => {
-        this.state.sendCommand(`cmnd/sonoff-heater-panel/power`, value ? '1' : '0');
+        this.state.sendCommand(
+          `cmnd/sonoff-heater-panel/power`,
+          value ? '1' : '0'
+        );
         await this.state.setConfig({ autoMode: false });
       },
     };
@@ -109,7 +114,12 @@ export default class App extends React.Component {
           <Route exact path="/" render={() => <Home />} />
           <Route
             path="/config-view"
-            render={() => <Config value={this.state.config} onSave={(config) => this.state.setConfig(config)} />}
+            render={() => (
+              <Config
+                value={this.state.config}
+                onSave={(config) => this.state.setConfig(config)}
+              />
+            )}
           />
           <Route path="/logs" render={() => <Log />} />
         </Provider>

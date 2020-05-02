@@ -7,7 +7,11 @@ import styles from './Log.css';
 class Log extends React.Component {
   render() {
     return (
-      <div className={styles.root}>{this.context.logs.map((log) => `[${log.level}] ${log.message}`).join('\n')}</div>
+      <div className={styles.root}>
+        {this.context.logs
+          .map((log) => `[${log.level}] ${log.message}`)
+          .join('\n')}
+      </div>
     );
   }
 }
