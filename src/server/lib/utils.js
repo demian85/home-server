@@ -64,11 +64,12 @@ exports.getMotionSensorState = async function getMotionSensorState() {
 
   if (isOff) {
     const lastChange = Math.max(...sensors.map((v) => v.lastChange));
-    return { on: false, lastChange };
+    return { on: false, lastChange, sensors };
   }
 
   const onSensors = sensors.filter((v) => v.on);
   const lastChange = Math.min(...onSensors.map((v) => v.lastChange));
+
   return {
     on: true,
     lastChange,
