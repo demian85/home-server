@@ -114,26 +114,16 @@ export default class Home extends React.Component {
                   )
                 }
               />
-              {state.report.motionSensor && (
-                <>
+              {state.report.motionSensor?.sensors?.map((sensor, index) => {
+                return (
                   <SensorMeter
-                    title="Motion 1"
+                    title={`Motion ${index + 1}`}
                     icon="/images/motion-sensor.svg"
-                    value={
-                      state.report.motionSensor.sensors[0].on ? 'ON' : 'OFF'
-                    }
-                    lastUpdate={state.report.motionSensor.sensors[0].lastChange}
+                    value={sensor.on ? 'ON' : 'OFF'}
+                    lastUpdate={sensor.lastChange}
                   />
-                  <SensorMeter
-                    title="Motion 2"
-                    icon="/images/motion-sensor.svg"
-                    value={
-                      state.report.motionSensor.sensors[1].on ? 'ON' : 'OFF'
-                    }
-                    lastUpdate={state.report.motionSensor.sensors[1].lastChange}
-                  />
-                </>
-              )}
+                );
+              })}
               {state.report.lounge.BMP280 && (
                 <SensorMeter
                   title="Pressure"
