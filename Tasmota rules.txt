@@ -1,0 +1,28 @@
+# Tasmota Rules
+
+# Rules needed for wemos device to make motion sensors work
+
+  rule1 on Switch1#State do publish2 stat/wemos/SWITCH1 %value% endon on Switch2#State do publish2 stat/wemos/SWITCH2 %value% endon
+
+# Keypad Rules
+
+rule1
+  on System#Boot do backlog var1 7; var2 0 endon
+  on Rules#Timer=1 do power2 0 endon 
+  on Switch2#state=2 do backlog add1 1; scheme %var1%; Ruletimer1 10 endon 
+  on Var1#state==12 do var1 7 endon 
+
+rule2
+  on Switch3#state=2 do backlog add2 1; color2 %var2%; Ruletimer1 10 endon
+  on Var2#state==12 do var2=1 endon
+
+
+# Pool pump Rules to power off when running empty after 1 minute usage
+  rule1
+    on System#Boot do Rule2 0 endon
+    on Power#state=0 do Rule2 0 endon
+    on Power#state=1 do Ruletimer1 60 endon
+    on Rules#Timer=1 do Rule2 1 endon
+
+  rule2
+    on Energy#Power<450 do Power1 0 endon
