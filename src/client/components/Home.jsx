@@ -98,6 +98,24 @@ export default class Home extends React.Component {
                   />
                 </>
               )}
+              <AutoSwitcher
+                label={`~${state.report.heating.setPoints.livingRoom} ˚C`}
+                value={state.config.rooms.livingRoom.autoMode}
+                onChange={(value) =>
+                  state.setRoomConfig('livingRoom', { autoMode: !!value })
+                }
+              />
+              <Switcher
+                device={state.devices.mobileHeater}
+                icon="heater.svg"
+                onChange={(value) => {
+                  state.sendCommand(
+                    state.devices.mobileHeater.topics.power,
+                    value
+                  );
+                  state.setRoomConfig('livingRoom', { autoMode: false });
+                }}
+              />
               <Switcher
                 device={state.devices.flameLamp}
                 icon="lantern.svg"
@@ -121,24 +139,6 @@ export default class Home extends React.Component {
                     value
                   )
                 }
-              />
-              <AutoSwitcher
-                label={`~${state.report.heating.setPoints.livingRoom} ˚C`}
-                value={state.config.rooms.livingRoom.autoMode}
-                onChange={(value) =>
-                  state.setRoomConfig('livingRoom', { autoMode: !!value })
-                }
-              />
-              <Switcher
-                device={state.devices.mobileHeater}
-                icon="heater.svg"
-                onChange={(value) => {
-                  state.sendCommand(
-                    state.devices.mobileHeater.topics.power,
-                    value
-                  );
-                  state.setRoomConfig('livingRoom', { autoMode: false });
-                }}
               />
               {state.report.motionSensor?.sensors?.map((sensor, index) => {
                 return (

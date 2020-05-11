@@ -86,6 +86,7 @@ export const devices = {
     topics: {
       power: 'cmnd/sonoff-mobile-heater/power',
       status: 'stat/sonoff-mobile-heater/POWER',
+      sensor: 'tele/sonoff-mobile-heater/SENSOR',
       lwt: 'tele/sonoff-mobile-heater/LWT',
     },
     ipAddress: '192.168.0.34',
