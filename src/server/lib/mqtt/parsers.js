@@ -27,6 +27,10 @@ const parsers = {
     await updateDeviceState('bathroom', payload);
   },
 
+  [topics.mobileHeater.stat]: async (payload) => {
+    await updateDeviceState('mobileHeater', payload);
+  },
+
   [topics.heaterPanel.sensor]: async (payload) => {
     const data = JSON.parse(payload.toString());
     const SI7021 = getSensorReadings(data, 'SI7021');
