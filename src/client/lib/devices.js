@@ -82,13 +82,23 @@ export const devices = {
     power: null,
     online: null,
   },
+  mobileHeater: {
+    topics: {
+      power: 'cmnd/sonoff-mobile-heater/power',
+      status: 'stat/sonoff-mobile-heater/POWER',
+      lwt: 'tele/sonoff-mobile-heater/LWT',
+    },
+    ipAddress: '192.168.0.34',
+    power: null,
+    online: null,
+  },
   bathroom: {
     topics: {
       power: 'cmnd/sonoff-bathroom/power',
       status: 'stat/sonoff-bathroom/POWER',
       lwt: 'tele/sonoff-bathroom/LWT',
     },
-    ipAddress: '192.168.0.34',
+    ipAddress: '192.168.0.33',
     power: null,
     online: null,
   },

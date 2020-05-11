@@ -64,14 +64,22 @@ export default class Home extends React.Component {
                 </>
               )}
               <AutoSwitcher
-                label={`~${state.report.config.setPoint} ˚C`}
-                value={state.config.autoMode}
-                onChange={(value) => state.setConfig({ autoMode: !!value })}
+                label={`~${state.config.rooms.smallRoom.setPoint} ˚C`}
+                value={state.config.rooms.smallRoom.autoMode}
+                onChange={(value) =>
+                  state.setRoomConfig('smallRoom', { autoMode: !!value })
+                }
               />
               <Switcher
                 device={state.devices.heaterPanel}
                 icon="heater.svg"
-                onChange={(value) => state.manualHeaterSwitch(value)}
+                onChange={(value) => {
+                  state.sendCommand(
+                    state.devices.heaterPanel.topics.power,
+                    value
+                  );
+                  state.setRoomConfig('smallRoom', { autoMode: false });
+                }}
               />
             </Group>
 
@@ -113,6 +121,24 @@ export default class Home extends React.Component {
                     value
                   )
                 }
+              />
+              <AutoSwitcher
+                label={`~${state.config.rooms.livingRoom.setPoint} ˚C`}
+                value={state.config.rooms.livingRoom.autoMode}
+                onChange={(value) =>
+                  state.setRoomConfig('livingRoom', { autoMode: !!value })
+                }
+              />
+              <Switcher
+                device={state.devices.mobileHeater}
+                icon="heater.svg"
+                onChange={(value) => {
+                  state.sendCommand(
+                    state.devices.mobileHeater.topics.power,
+                    value
+                  );
+                  state.setRoomConfig('livingRoom', { autoMode: false });
+                }}
               />
               {state.report.motionSensor?.sensors?.map((sensor, index) => {
                 return (

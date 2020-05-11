@@ -35,6 +35,10 @@ const topics = {
     sensor: `tele/wemos-laundry/SENSOR`,
     result: `tele/wemos-laundry/RESULT`,
   },
+  mobileHeater: {
+    cmnd: (cmnd = 'power') => `cmnd/sonoff-mobile-heater/${cmnd}`,
+    stat: `stat/sonoff-mobile-heater/POWER`,
+  },
 };
 
 module.exports = topics;

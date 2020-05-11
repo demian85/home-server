@@ -9,6 +9,7 @@ import { getDevicePowerStateFromPayload } from '../lib/util';
 
 import Home from './Home';
 import Config from './Config';
+import RoomConfig from './RoomConfig';
 import Loader from './Loader';
 import Log from './Log';
 
@@ -26,11 +27,12 @@ export default class App extends React.Component {
         console.debug('command', topic, value);
         this.state.mqttClient.publish(topic, String(value));
       },
-      setConfig: async (values) => {
-        console.debug('setConfig', values);
-        const body = JSON.stringify(
-          Object.assign({}, this.state.config, values)
-        );
+      setRoomConfig: async (room, values) => {
+        console.debug('setRoomConfig', room, values);
+        const body = JSON.stringify({
+          ...this.state.config.rooms[room],
+          ...values,
+        });
         await fetch('/config', {
           method: 'POST',
           credentials: 'include',
@@ -38,12 +40,15 @@ export default class App extends React.Component {
           body,
         });
       },
-      manualHeaterSwitch: async (value) => {
-        this.state.sendCommand(
-          `cmnd/sonoff-heater-panel/power`,
-          value ? '1' : '0'
-        );
-        await this.state.setConfig({ autoMode: false });
+      setConfig: async (values) => {
+        console.debug('setConfig', values);
+        const body = JSON.stringify({ ...this.state.config, ...values });
+        await fetch('/config', {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body,
+        });
       },
     };
   }
@@ -58,7 +63,7 @@ export default class App extends React.Component {
     const parsers = {
       'stat/_report': (payload) => {
         const report = JSON.parse(payload);
-        this.setState({ report });
+        this.setState({ report, config: report.config });
       },
       'stat/_config': (payload) => {
         const config = JSON.parse(payload);
@@ -118,6 +123,17 @@ export default class App extends React.Component {
               <Config
                 value={this.state.config}
                 onSave={(config) => this.state.setConfig(config)}
+              />
+            )}
+          />
+          <Route
+            path="/room-config/:room"
+            render={(routeProps) => (
+              <RoomConfig
+                value={this.state.config.rooms[routeProps.match.params.room]}
+                onSave={(config) =>
+                  this.state.setRoomConfig(routeProps.match.params.room, config)
+                }
               />
             )}
           />

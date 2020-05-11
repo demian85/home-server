@@ -7,6 +7,7 @@ const {
   isBedTime,
   getMotionSensorState,
   getRoomSetPoint,
+  getOutsideTemperature,
 } = require('../utils');
 const { turnOnDevice } = require('../main');
 
@@ -25,7 +26,7 @@ async function turnOffDeskLampIfNeeded() {
   const {
     autoTurnOffDeskLamp,
     autoTurnOffDeskLampDelay,
-  } = await db.getHeaterConfig();
+  } = await db.getConfig();
   const motionSensorState = await getMotionSensorState();
   const bedTime = await isBedTime();
 
@@ -51,7 +52,7 @@ async function turnOffDeskLampIfNeeded() {
 
 // turn on desk lamp during night time when motion sensor goes ON
 async function turnOnDeskLampIfNeeded() {
-  const { autoTurnOnDeskLamp } = await db.getHeaterConfig();
+  const { autoTurnOnDeskLamp } = await db.getConfig();
   const motionSensorState = await getMotionSensorState();
 
   logger.debug(`turnOnDeskLampIfNeeded(): %j`, {
@@ -73,19 +74,19 @@ async function turnOnDeskLampIfNeeded() {
 
 // turn on/off bathroom heater automatically
 async function toggleBathroomHeaterIfNeeded() {
-  const patioSensor = await db.getSensorData('laundry');
-  const setPoint = await getRoomSetPoint();
-  const outsideSensorAvailable = patioSensor && patioSensor.DS18B20;
+  const outsideTemperature = await getOutsideTemperature();
+  const humidity = await db.getSensorData('heaterPanel');
+  const setPoint = await getRoomSetPoint('smallRoom');
   const currentHour = new Date().getHours();
 
   const shouldTurnOn =
-    outsideSensorAvailable &&
-    (patioSensor.DS18B20.humidity >= 75 ||
-      patioSensor.DS18B20.temperature < setPoint - 2) &&
+    outsideTemperature &&
+    (humidity >= 75 || outsideTemperature < setPoint - 2) &&
     (currentHour >= 18 || currentHour < 7);
 
   logger.debug(`toggleBathroomHeaterIfNeeded(): %j`, {
-    outsideSensorAvailable,
+    outsideTemperature,
+    humidity,
     setPoint,
     currentHour,
     shouldTurnOn,

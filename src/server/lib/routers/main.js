@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const basicAuth = require('express-basic-auth');
 const logger = require('../logger');
 const db = require('../db');
-const { updateHeaterState, updateReport } = require('../main');
+const { updateRoomHeating, updateReport } = require('../main');
 const client = require('../mqtt/client');
 
 const router = new Router();
@@ -22,7 +22,7 @@ router.get('/init', async (req, res) => {
   };
 
   try {
-    const config = await db.getHeaterConfig();
+    const config = await db.getConfig();
     res.json({ auth, config });
   } catch (err) {
     logger.error(err);
@@ -34,7 +34,7 @@ router.get('/config', async (req, res) => {
   logger.debug('GET /config');
 
   try {
-    const config = await db.getHeaterConfig();
+    const config = await db.getConfig();
     res.json(config);
   } catch (err) {
     logger.error(err);
@@ -94,7 +94,7 @@ router.post('/config', bodyParser.json(), async (req, res) => {
 
   try {
     await db.set(
-      'heater.config',
+      'config',
       JSON.stringify({
         defaultSetPoint,
         minStateDurationSecs,
@@ -109,9 +109,9 @@ router.post('/config', bodyParser.json(), async (req, res) => {
         bedTime,
       })
     );
-    const newConfig = await db.getHeaterConfig();
+    const newConfig = await db.getConfig();
     if (autoMode) {
-      await updateHeaterState();
+      await updateRoomHeating('change me');
     }
     await updateReport();
     client.publish('stat/_config', JSON.stringify(newConfig));
