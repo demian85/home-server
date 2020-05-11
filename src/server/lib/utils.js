@@ -83,21 +83,14 @@ exports.getDevicePowerStateFromPayload = (payload) => {
   return stateValue === 'on' || stateValue === '1';
 };
 
-exports.getRoomSetPoint = async function getRoomSetPoint(room) {
+exports.getRoomSetPoints = async () => {
   const config = await db.getConfig();
-  const roomConfig = config.rooms[room];
-
-  if (!roomConfig) {
-    throw new Error(`Config not found for room: ${room}`);
+  const rooms = Object.keys(config.rooms);
+  const setPoints = {};
+  for (const name of rooms) {
+    setPoints[name] = await getRoomSetPoint(name);
   }
-
-  const { defaultSetPoint, tempGroups } = config.rooms[room];
-  const currentHour = new Date().getHours();
-  const currentTempGroup = tempGroups.find(
-    (entry) => currentHour >= entry.start && currentHour < entry.end
-  );
-  const setPoint = currentTempGroup ? currentTempGroup.temp : defaultSetPoint;
-  return setPoint;
+  return setPoints;
 };
 
 exports.getOutsideTemperature = async () => {
@@ -125,3 +118,22 @@ exports.getWeatherReadings = async () => {
     return null;
   }
 };
+
+async function getRoomSetPoint(room) {
+  const config = await db.getConfig();
+  const roomConfig = config.rooms[room];
+
+  if (!roomConfig) {
+    throw new Error(`Config not found for room: ${room}`);
+  }
+
+  const { defaultSetPoint, tempGroups } = config.rooms[room];
+  const currentHour = new Date().getHours();
+  const currentTempGroup = tempGroups.find(
+    (entry) => currentHour >= entry.start && currentHour < entry.end
+  );
+  const setPoint = currentTempGroup ? currentTempGroup.temp : defaultSetPoint;
+  return setPoint;
+}
+
+exports.getRoomSetPoint = getRoomSetPoint;

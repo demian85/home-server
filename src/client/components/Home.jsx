@@ -64,7 +64,7 @@ export default class Home extends React.Component {
                 </>
               )}
               <AutoSwitcher
-                label={`~${state.config.rooms.smallRoom.setPoint} ˚C`}
+                label={`~${state.report.heating.setPoints.smallRoom} ˚C`}
                 value={state.config.rooms.smallRoom.autoMode}
                 onChange={(value) =>
                   state.setRoomConfig('smallRoom', { autoMode: !!value })
@@ -123,7 +123,7 @@ export default class Home extends React.Component {
                 }
               />
               <AutoSwitcher
-                label={`~${state.config.rooms.livingRoom.setPoint} ˚C`}
+                label={`~${state.report.heating.setPoints.livingRoom} ˚C`}
                 value={state.config.rooms.livingRoom.autoMode}
                 onChange={(value) =>
                   state.setRoomConfig('livingRoom', { autoMode: !!value })
@@ -143,6 +143,7 @@ export default class Home extends React.Component {
               {state.report.motionSensor?.sensors?.map((sensor, index) => {
                 return (
                   <SensorMeter
+                    key={index}
                     title={`Motion ${index + 1}`}
                     icon="/images/motion-sensor.svg"
                     value={sensor.on ? 'ON' : 'OFF'}

@@ -9,6 +9,7 @@ const {
   getRoomSetPoint,
   getOutsideTemperature,
   getWeatherReadings,
+  getRoomSetPoints,
 } = require('./utils');
 
 function getSensorReadings(data, sensorName) {
@@ -169,8 +170,13 @@ async function updateReport() {
   const { sunrise, sunset } = getSolarCalc();
   const weather = await getWeatherReadings();
 
+  const setPoints = await getRoomSetPoints();
+
   let report = {
     config,
+    heating: {
+      setPoints,
+    },
     room,
     smallRoom,
     lounge,
