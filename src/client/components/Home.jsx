@@ -217,13 +217,21 @@ export default class Home extends React.Component {
             </Group>
 
             <Group place="bathroom">
+              <AutoSwitcher
+                label={`~${state.report.heating.setPoints.bathRoom} ˚C`}
+                value={state.config.rooms.bathRoom.autoMode}
+                onChange={(value) =>
+                  state.setRoomConfig('bathRoom', { autoMode: !!value })
+                }
+              />
               <Switcher
                 device={state.devices.bathroom}
                 // icon="towel-rail.svg"
                 icon="heater.svg"
-                onChange={(value) =>
-                  state.sendCommand(state.devices.bathroom.topics.power, value)
-                }
+                onChange={(value) => {
+                  state.sendCommand(state.devices.bathroom.topics.power, value);
+                  state.setRoomConfig('bathRoom', { autoMode: false });
+                }}
               />
             </Group>
 
