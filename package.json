@@ -12,7 +12,7 @@
   },
   "scripts": {
     "postinstall": "npm run build",
-    "build": "webpack -p",
+    "build": "webpack -p --progress",
     "start": "node src/index.js",
     "dev-client": "webpack --progress --watch",
     "dev-server": "nodemon src/index.js",
