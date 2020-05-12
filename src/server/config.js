@@ -27,8 +27,8 @@ module.exports = {
       threshold: 0.3,
       tempGroups: [
         { start: 0, end: 4, temp: 21.7 },
-        { start: 4, end: 8, temp: 21.9 },
-        { start: 8, end: 18, temp: 17 },
+        { start: 4, end: 9, temp: 21.9 },
+        { start: 9, end: 18, temp: 17 },
         { start: 18, end: 24, temp: 21.5 },
       ],
     },
@@ -38,6 +38,22 @@ module.exports = {
         sensor: 'SI7021',
       },
       heatingDevice: 'heaterPanel',
+      defaultSetPoint: 20,
+      autoMode: true,
+      threshold: 0.3,
+      tempGroups: [
+        { start: 0, end: 4, temp: 21.7 },
+        { start: 4, end: 8, temp: 21.9 },
+        { start: 8, end: 18, temp: 17 },
+        { start: 18, end: 24, temp: 21.5 },
+      ],
+    },
+    bathRoom: {
+      source: {
+        device: 'heaterPanel',
+        sensor: 'SI7021',
+      },
+      heatingDevice: 'bathroomHeaterPanel',
       defaultSetPoint: 20,
       autoMode: true,
       threshold: 0.3,

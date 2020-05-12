@@ -219,7 +219,8 @@ export default class Home extends React.Component {
             <Group place="bathroom">
               <Switcher
                 device={state.devices.bathroom}
-                icon="towel-rail.svg"
+                // icon="towel-rail.svg"
+                icon="heater.svg"
                 onChange={(value) =>
                   state.sendCommand(state.devices.bathroom.topics.power, value)
                 }

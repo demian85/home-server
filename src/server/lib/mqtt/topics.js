@@ -14,9 +14,9 @@ const topics = {
     cmnd: (cmnd = 'power') => `cmnd/sonoff-flame-lamp/${cmnd}`,
     stat: `stat/sonoff-flame-lamp/POWER`,
   },
-  bathroom: {
-    cmnd: (cmnd = 'power') => `cmnd/sonoff-bathroom/${cmnd}`,
-    stat: `stat/sonoff-bathroom/POWER`,
+  bathroomHeaterPanel: {
+    cmnd: (cmnd = 'power') => `cmnd/sonoff-bathroom-heater/${cmnd}`,
+    stat: `stat/sonoff-bathroom-heater/POWER`,
   },
   wemos1: {
     cmnd: (cmnd = 'POWER') => `cmnd/wemos/${cmnd}`,

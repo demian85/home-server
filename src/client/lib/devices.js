@@ -95,9 +95,9 @@ export const devices = {
   },
   bathroom: {
     topics: {
-      power: 'cmnd/sonoff-bathroom/power',
-      status: 'stat/sonoff-bathroom/POWER',
-      lwt: 'tele/sonoff-bathroom/LWT',
+      power: 'cmnd/sonoff-bathroom-heater/power',
+      status: 'stat/sonoff-bathroom-heater/POWER',
+      lwt: 'tele/sonoff-bathroom-heater/LWT',
     },
     ipAddress: '192.168.0.33',
     power: null,

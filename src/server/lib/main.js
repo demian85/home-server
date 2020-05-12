@@ -101,7 +101,7 @@ async function turnOnDevice(deviceName, on) {
 }
 
 async function updateRoomHeating(room) {
-  logger.debug(`updateRoomHeating(%s), room`);
+  logger.debug(`updateRoomHeating(%s)`, room);
 
   const config = await db.getConfig();
 

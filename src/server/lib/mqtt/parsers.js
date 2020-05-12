@@ -23,8 +23,8 @@ const parsers = {
     await updateDeviceState('deskLamp', payload);
   },
 
-  [topics.bathroom.stat]: async (payload) => {
-    await updateDeviceState('bathroom', payload);
+  [topics.bathroomHeaterPanel.stat]: async (payload) => {
+    await updateDeviceState('bathroomHeaterPanel', payload);
   },
 
   [topics.mobileHeater.stat]: async (payload) => {
@@ -45,6 +45,7 @@ const parsers = {
 
     await db.setSensorData('heaterPanel', readings);
     await updateRoomHeating('smallRoom');
+    await updateRoomHeating('bathroomHeaterPanel');
     await updateReport();
   },
 
@@ -100,7 +101,7 @@ const parsers = {
     logger.debug('Saving sensor readings: %j', { readings });
 
     await db.setSensorData('nodemcu1', readings);
-    // await updateRoomHeating('bigRoom');
+    await updateRoomHeating('bigRoom');
     await updateReport();
   },
 

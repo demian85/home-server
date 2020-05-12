@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const basicAuth = require('express-basic-auth');
 const logger = require('../logger');
 const db = require('../db');
-const { updateRoomHeating, updateReport } = require('../main');
+const { updateReport } = require('../main');
 const client = require('../mqtt/client');
 
 const router = new Router();

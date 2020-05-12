@@ -16,7 +16,7 @@ exports.runScheduledActions = function runScheduledActions() {
 
   turnOnDeskLampIfNeeded();
   turnOffDeskLampIfNeeded();
-  toggleBathroomHeaterIfNeeded();
+  // toggleBathroomHeaterIfNeeded();
 
   setTimeout(runScheduledActions, 60000);
 };
@@ -72,7 +72,7 @@ async function turnOnDeskLampIfNeeded() {
   }
 }
 
-// turn on/off bathroom heater automatically
+// turn on/off bathroom heater rail automatically
 async function toggleBathroomHeaterIfNeeded() {
   const outsideTemperature = await getOutsideTemperature();
   const humidity = await db.getSensorData('heaterPanel');
@@ -92,7 +92,7 @@ async function toggleBathroomHeaterIfNeeded() {
     shouldTurnOn,
   });
 
-  turnOnDevice('bathroom', shouldTurnOn);
+  turnOnDevice('CHANGE ME', shouldTurnOn);
 }
 
 exports.turnOffDeskLampIfNeeded = turnOffDeskLampIfNeeded;
