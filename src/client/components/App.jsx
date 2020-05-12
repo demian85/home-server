@@ -27,11 +27,15 @@ export default class App extends React.Component {
         console.debug('command', topic, value);
         this.state.mqttClient.publish(topic, String(value));
       },
-      setRoomConfig: async (room, values) => {
-        console.debug('setRoomConfig', room, values);
+      setRoomConfig: async (room, newConfigValues) => {
+        const currentRoomConfig = this.state.config.rooms[room];
+        console.debug('setRoomConfig', room, newConfigValues);
         const body = JSON.stringify({
-          ...this.state.config.rooms[room],
-          ...values,
+          ...this.state.config,
+          rooms: {
+            ...this.state.config.rooms,
+            [room]: { ...currentRoomConfig, ...newConfigValues },
+          },
         });
         await fetch('/config', {
           method: 'POST',
@@ -40,9 +44,12 @@ export default class App extends React.Component {
           body,
         });
       },
-      setConfig: async (values) => {
-        console.debug('setConfig', values);
-        const body = JSON.stringify({ ...this.state.config, ...values });
+      setConfig: async (newConfigValues) => {
+        console.debug('setConfig', newConfigValues);
+        const body = JSON.stringify({
+          ...this.state.config,
+          ...newConfigValues,
+        });
         await fetch('/config', {
           method: 'POST',
           credentials: 'include',
