@@ -86,7 +86,9 @@ export default class RoomConfig extends React.Component {
             max="2"
             step="0.1"
             value={this.state.threshold}
-            onChange={(e) => this.setState({ threshold: e.target.value })}
+            onChange={(e) =>
+              this.setState({ threshold: Number(e.target.value) })
+            }
           />
         </div>
         <div className={styles.controls}>
