@@ -45,7 +45,7 @@ const parsers = {
 
     await db.setSensorData('heaterPanel', readings);
     await updateRoomHeating('smallRoom');
-    await updateRoomHeating('bathroomHeaterPanel');
+    await updateRoomHeating('bathRoom');
     await updateReport();
   },
 
