@@ -66,9 +66,9 @@ module.exports = {
     },
   },
   minStateDurationSecs: 60 * 5,
-  autoTurnOffDeskLamp: false,
+  autoTurnOffDeskLamp: true,
   autoTurnOffDeskLampDelay: 30, // in seconds
-  autoTurnOnDeskLamp: false,
+  autoTurnOnDeskLamp: true,
   nightTime: null,
   bedTime: '23:00',
 };

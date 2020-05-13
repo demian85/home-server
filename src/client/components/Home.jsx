@@ -22,7 +22,7 @@ export default class Home extends React.Component {
       <section className={styles.root}>
         {state.report && (
           <section className={styles.dashboard}>
-            <Group place="bedroom">
+            <Group place="bedroom" room="bigRoom">
               {state.report.room && (
                 <>
                   <TemperatureMeter
@@ -48,7 +48,7 @@ export default class Home extends React.Component {
               )}
             </Group>
 
-            <Group place="smallRoom">
+            <Group place="smallRoom" room="smallRoom">
               {state.report.smallRoom && (
                 <>
                   <TemperatureMeter
@@ -83,7 +83,7 @@ export default class Home extends React.Component {
               />
             </Group>
 
-            <Group place="bathroom">
+            <Group place="bathroom" room="bathRoom">
               <AutoSwitcher
                 label={`~${state.report.heating.setPoints.bathRoom} ˚C`}
                 value={state.config.rooms.bathRoom.autoMode}
@@ -102,7 +102,7 @@ export default class Home extends React.Component {
               />
             </Group>
 
-            <Group place="lounge">
+            <Group place="lounge" room="livingRoom">
               {state.report.lounge && (
                 <>
                   <TemperatureMeter
