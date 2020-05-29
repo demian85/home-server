@@ -1,5 +1,6 @@
 .root {
   display: grid;
+  position: relative;
   grid-gap: var(--spacing-compact);
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(auto-fit, minmax(60px, auto));
@@ -82,6 +83,22 @@
 .outside {
   background-image: url(/images/outside.svg);
   border-color: #25a84a;
+}
+
+.config {
+  width: 12px;
+  height: 12px;
+  position: absolute;
+  left: 3px;
+  bottom: 3px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 12px;
+  background-image: url(/images/config.svg);
+  background-color: transparent;
+  cursor: pointer;
+  border: 0;
+  padding: 0;
 }
 
 @media (min-width: 475px) {

@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const basicAuth = require('express-basic-auth');
 const logger = require('../logger');
 const db = require('../db');
-const { updateHeaterState, updateReport } = require('../main');
+const { updateReport } = require('../main');
 const client = require('../mqtt/client');
 
 const router = new Router();
@@ -22,7 +22,7 @@ router.get('/init', async (req, res) => {
   };
 
   try {
-    const config = await db.getHeaterConfig();
+    const config = await db.getConfig();
     res.json({ auth, config });
   } catch (err) {
     logger.error(err);
@@ -34,7 +34,7 @@ router.get('/config', async (req, res) => {
   logger.debug('GET /config');
 
   try {
-    const config = await db.getHeaterConfig();
+    const config = await db.getConfig();
     res.json(config);
   } catch (err) {
     logger.error(err);
@@ -50,17 +50,13 @@ router.post('/config', bodyParser.json(), async (req, res) => {
   logger.debug('POST /config %o', config);
 
   const validKeys = [
-    'defaultSetPoint',
-    'minStateDurationSecs',
-    'autoMode',
-    'tempGroups',
-    'trigger',
-    'threshold',
     'autoTurnOffDeskLamp',
     'autoTurnOffDeskLampDelay',
     'autoTurnOnDeskLamp',
-    'nightTime',
     'bedTime',
+    'minStateDurationSecs',
+    'nightTime',
+    'rooms',
   ];
   const newConfig = {};
 
@@ -70,52 +66,34 @@ router.post('/config', bodyParser.json(), async (req, res) => {
     }
   });
 
-  if (isNaN(newConfig.defaultSetPoint)) {
-    res.status(400).end();
-  }
   if (isNaN(newConfig.minStateDurationSecs)) {
     res.status(400).end();
   }
-  if (!['temp', 'feel'].includes(newConfig.trigger)) {
-    res.status(400).end();
-  }
 
-  const defaultSetPoint = Number(newConfig.defaultSetPoint);
-  const minStateDurationSecs = Number(newConfig.minStateDurationSecs);
-  const autoMode = Boolean(newConfig.autoMode);
-  const tempGroups = newConfig.tempGroups || [];
-  const trigger = newConfig.trigger;
+  const minStateDurationSecs = Number(newConfig.minStateDurationSecs || 300);
   const autoTurnOffDeskLamp = !!newConfig.autoTurnOffDeskLamp;
   const autoTurnOffDeskLampDelay = Number(newConfig.autoTurnOffDeskLampDelay);
   const autoTurnOnDeskLamp = !!newConfig.autoTurnOnDeskLamp;
   const nightTime = newConfig.nightTime;
   const bedTime = newConfig.bedTime;
-  const threshold = newConfig.threshold;
+
+  const outputConfig = {
+    ...newConfig,
+    autoTurnOffDeskLamp,
+    autoTurnOffDeskLampDelay,
+    autoTurnOnDeskLamp,
+    bedTime,
+    minStateDurationSecs,
+    nightTime,
+  };
+  const jsonConfig = JSON.stringify(outputConfig);
+
+  client.publish('stat/_config', jsonConfig);
 
   try {
-    await db.set(
-      'heater.config',
-      JSON.stringify({
-        defaultSetPoint,
-        minStateDurationSecs,
-        autoMode,
-        tempGroups,
-        trigger,
-        threshold,
-        autoTurnOffDeskLamp,
-        autoTurnOffDeskLampDelay,
-        autoTurnOnDeskLamp,
-        nightTime,
-        bedTime,
-      })
-    );
-    const newConfig = await db.getHeaterConfig();
-    if (autoMode) {
-      await updateHeaterState();
-    }
+    await db.set('config', jsonConfig);
     await updateReport();
-    client.publish('stat/_config', JSON.stringify(newConfig));
-    res.json(newConfig);
+    res.json(outputConfig);
   } catch (err) {
     logger.error(err);
     res.status(500);

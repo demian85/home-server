@@ -20,6 +20,7 @@ async function getWeather() {
 
     request.get({ url, json: true }, async (err, res, body) => {
       if (err) {
+        logger.error('error fetching weather report: %o', err);
         return reject(err);
       }
 
@@ -34,4 +35,4 @@ async function getWeather() {
   });
 }
 
-exports.getWeather = throttle(getWeather, 1000);
+exports.getWeather = throttle(getWeather, 5000);

@@ -6,13 +6,17 @@ const topics = {
     stat: `stat/sonoff-heater-panel/POWER`,
     sensor: `tele/sonoff-heater-panel/SENSOR`,
   },
+  mobileHeater: {
+    cmnd: (cmnd = 'power') => `cmnd/sonoff-mobile-heater/${cmnd}`,
+    stat: `stat/sonoff-mobile-heater/POWER`,
+  },
   deskLamp: {
     cmnd: (cmnd = 'power') => `cmnd/sonoff-flame-lamp/${cmnd}`,
     stat: `stat/sonoff-flame-lamp/POWER`,
   },
-  bathroom: {
-    cmnd: (cmnd = 'power') => `cmnd/sonoff-bathroom/${cmnd}`,
-    stat: `stat/sonoff-bathroom/POWER`,
+  bathroomHeaterPanel: {
+    cmnd: (cmnd = 'power') => `cmnd/sonoff-bathroom-heater/${cmnd}`,
+    stat: `stat/sonoff-bathroom-heater/POWER`,
   },
   wemos1: {
     cmnd: (cmnd = 'POWER') => `cmnd/wemos/${cmnd}`,

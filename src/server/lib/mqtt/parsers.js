@@ -4,7 +4,7 @@ const db = require('../db');
 const {
   updateDeviceOnlineStatus,
   updateDeviceState,
-  updateHeaterState,
+  updateRoomHeating,
   updateReport,
   getSensorReadings,
 } = require('../main');
@@ -23,8 +23,12 @@ const parsers = {
     await updateDeviceState('deskLamp', payload);
   },
 
-  [topics.bathroom.stat]: async (payload) => {
-    await updateDeviceState('bathroom', payload);
+  [topics.bathroomHeaterPanel.stat]: async (payload) => {
+    await updateDeviceState('bathroomHeaterPanel', payload);
+  },
+
+  [topics.mobileHeater.stat]: async (payload) => {
+    await updateDeviceState('mobileHeater', payload);
   },
 
   [topics.heaterPanel.sensor]: async (payload) => {
@@ -39,35 +43,30 @@ const parsers = {
 
     logger.debug('Saving heater sensor readings: %j', readings);
 
-    await db.set('heaterPanel.sensor', JSON.stringify(readings));
-    const { autoMode } = await db.getHeaterConfig();
-    if (autoMode) {
-      await updateHeaterState();
-    }
+    await db.setSensorData('heaterPanel', readings);
+    await updateRoomHeating('smallRoom');
+    await updateRoomHeating('bathRoom');
     await updateReport();
   },
 
   [topics.wemos1.sensor]: async (payload) => {
     const data = JSON.parse(payload.toString());
     const AM2301 = getSensorReadings(data, 'AM2301');
-    const BMP280 = getSensorReadings(data, 'BMP280');
     const BH1750 = getSensorReadings(data, 'BH1750');
 
     if (!AM2301) {
       logger.error('Sensor AM2301 not found!');
     }
-    if (!BMP280) {
-      logger.error('Sensor BMP280 not found!');
-    }
     if (!BH1750) {
       logger.error('Sensor BH1750 not found!');
     }
 
-    const readings = { AM2301, BMP280, BH1750 };
+    const readings = { AM2301, BH1750 };
 
     logger.debug('Saving sensor readings: %j', readings);
 
-    await db.set('wemos1.sensor', JSON.stringify(readings));
+    await db.setSensorData('wemos1', readings);
+    await updateRoomHeating('livingRoom');
     await updateReport();
   },
 
@@ -101,7 +100,8 @@ const parsers = {
 
     logger.debug('Saving sensor readings: %j', { readings });
 
-    await db.set('nodemcu1.sensor', JSON.stringify(readings));
+    await db.setSensorData('nodemcu1', readings);
+    await updateRoomHeating('bigRoom');
     await updateReport();
   },
 
@@ -129,7 +129,7 @@ const parsers = {
 
     logger.debug('Saving sensor readings: %j', readings);
 
-    await db.set('laundry.sensor', JSON.stringify(readings));
+    await db.setSensorData('laundry', readings);
     await updateReport();
   },
 };

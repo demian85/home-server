@@ -1,5 +1,4 @@
 const logger = require('./logger');
-const { getWeather } = require('./weather');
 const db = require('./db');
 const topics = require('./mqtt/topics');
 const mqttClient = require('./mqtt/client');
@@ -8,6 +7,9 @@ const {
   getSolarCalc,
   getMotionSensorState,
   getRoomSetPoint,
+  getOutsideTemperature,
+  getWeatherReadings,
+  getRoomSetPoints,
 } = require('./utils');
 
 function getSensorReadings(data, sensorName) {
@@ -76,7 +78,7 @@ async function turnOnDevice(deviceName, on) {
     return;
   }
 
-  const heaterConfig = await db.getHeaterConfig();
+  const config = await db.getConfig();
 
   // calculate how long the device has been in this state
   const stateDuration = Math.round((Date.now() - state.lastChange) / 1000);
@@ -86,7 +88,7 @@ async function turnOnDevice(deviceName, on) {
   );
 
   // keep the same state for at least X minutes
-  if (stateDuration < heaterConfig.minStateDurationSecs) {
+  if (stateDuration < config.minStateDurationSecs) {
     logger.info(`skipping...`);
     return;
   }
@@ -98,94 +100,94 @@ async function turnOnDevice(deviceName, on) {
   }
 }
 
-async function updateHeaterState() {
-  logger.debug(`updateHeaterState()`);
+async function updateRoomHeating(room) {
+  logger.debug(`updateRoomHeating(%s)`, room);
 
-  const roomSensor = await db.getSensorData('heaterPanel');
+  const config = await db.getConfig();
 
-  if (!roomSensor || !roomSensor.SI7021) {
-    logger.error(`SI7021 sensor not available, skipping...`);
+  const roomConfig = config.rooms[room];
+
+  if (!roomConfig) {
+    logger.error(`Config not found for room ${room}, skipping...`);
     return;
   }
 
-  const { trigger, threshold } = await db.getHeaterConfig();
-  const setPoint = await getRoomSetPoint();
-  const patioSensor = await db.getSensorData('laundry');
-  const sensorValue =
-    trigger === 'temp'
-      ? roomSensor.SI7021.temperature
-      : roomSensor.SI7021.realFeel;
-  const outsideTempAvailable =
-    patioSensor &&
-    patioSensor.DS18B20 &&
-    patioSensor.DS18B20.temperature !== null;
-  const tempDiff = outsideTempAvailable
-    ? setPoint - patioSensor.DS18B20.temperature
-    : 0;
+  if (!roomConfig.autoMode) {
+    logger.debug(`Auto mode disabled for room ${room}, skipping...`);
+    return;
+  }
+
+  const roomSensor = await db.getSensorData(roomConfig.source.device);
+
+  if (!roomSensor) {
+    logger.error(`Sensor data not found for room ${room}, skipping...`);
+    return;
+  }
+
+  const temperatureSensor = roomSensor[roomConfig.source.sensor];
+
+  if (!temperatureSensor) {
+    logger.error(
+      `Temperature data not available for sensor ${roomConfig.source.sensor}, skipping...`
+    );
+    return;
+  }
+
+  const setPoint = await getRoomSetPoint(room);
+  const outsideTemperature = await getOutsideTemperature();
+  const outsideTempAvailable = outsideTemperature !== null;
+  const sensorValue = temperatureSensor.temperature;
+  const tempDiff = outsideTempAvailable ? setPoint - outsideTemperature : 0;
   const isTooCold = outsideTempAvailable && tempDiff >= 4;
 
-  logger.info('updating heating: %j', {
-    trigger,
-    threshold,
-    setPoint,
+  logger.info('updating room heating: %j', {
+    room,
+    roomConfig,
     sensorValue,
-    outsideTempAvailable,
+    outsideTemperature,
     tempDiff,
     isTooCold,
   });
 
   if (sensorValue < setPoint) {
-    turnOnDevice('heaterPanel', true);
-  } else if (sensorValue >= setPoint + threshold) {
-    const maxSensorValue = setPoint + threshold + 0.2;
+    turnOnDevice(roomConfig.heatingDevice, true);
+  } else if (sensorValue >= setPoint + roomConfig.threshold) {
+    const maxSensorValue = setPoint + roomConfig.threshold + 0.2;
     const shouldTurnPanelOff = !isTooCold || sensorValue >= maxSensorValue;
-    turnOnDevice('heaterPanel', !shouldTurnPanelOff);
+    turnOnDevice(roomConfig.heatingDevice, !shouldTurnPanelOff);
   }
 }
 
 async function updateReport() {
   logger.debug(`updateReport()`);
 
-  const setPoint = await getRoomSetPoint();
-  const loungeSensor = await db.getSensorData('wemos1');
-  const roomSensor = await db.getSensorData('nodemcu1');
+  const config = await db.getConfig();
+  const lounge = await db.getSensorData('wemos1');
+  const room = await db.getSensorData('nodemcu1');
   const smallRoom = await db.getSensorData('heaterPanel');
-  const laundrySensor = await db.getSensorData('laundry');
+  const laundry = await db.getSensorData('laundry');
   const motionSensor = await getMotionSensorState();
   const { sunrise, sunset } = getSolarCalc();
+  const weather = await getWeatherReadings();
+
+  const setPoints = await getRoomSetPoints();
 
   let report = {
-    config: { setPoint },
-    room: roomSensor,
+    config,
+    heating: {
+      setPoints,
+    },
+    room,
     smallRoom,
-    lounge: loungeSensor,
-    laundry: laundrySensor,
+    lounge,
+    laundry,
     motionSensor,
+    weather,
     data: {
       sunrise: sunrise.toISOString(),
       sunset: sunset.toISOString(),
     },
   };
-
-  try {
-    const weather = await getWeather();
-
-    Object.assign(report, {
-      weather: {
-        temperature: Math.round(weather.main.temp * 10) / 10,
-        humidity: weather.main.humidity,
-        realFeel: getRealFeel(
-          weather.main.temp,
-          weather.main.humidity,
-          weather.wind.speed
-        ),
-        windSpeedKmh: Math.round((weather.wind.speed / 1000) * 3600),
-        lastUpdate: weather.dt ? weather.dt * 1000 : null,
-      },
-    });
-  } catch (err) {
-    logger.error('error parsing weather report: %o', err);
-  }
 
   logger.info('custom report: %j', report);
 
@@ -194,7 +196,7 @@ async function updateReport() {
 
 exports.updateDeviceState = updateDeviceState;
 exports.updateDeviceOnlineStatus = updateDeviceOnlineStatus;
-exports.updateHeaterState = updateHeaterState;
+exports.updateRoomHeating = updateRoomHeating;
 exports.updateReport = updateReport;
 exports.getRealFeel = getRealFeel;
 exports.getSensorReadings = getSensorReadings;

@@ -22,7 +22,7 @@ export default class Home extends React.Component {
       <section className={styles.root}>
         {state.report && (
           <section className={styles.dashboard}>
-            <Group place="bedroom">
+            <Group place="bedroom" room="bigRoom">
               {state.report.room && (
                 <>
                   <TemperatureMeter
@@ -48,7 +48,7 @@ export default class Home extends React.Component {
               )}
             </Group>
 
-            <Group place="smallRoom">
+            <Group place="smallRoom" room="smallRoom">
               {state.report.smallRoom && (
                 <>
                   <TemperatureMeter
@@ -64,18 +64,45 @@ export default class Home extends React.Component {
                 </>
               )}
               <AutoSwitcher
-                label={`~${state.report.config.setPoint} ˚C`}
-                value={state.config.autoMode}
-                onChange={(value) => state.setConfig({ autoMode: !!value })}
+                label={`~${state.report.heating.setPoints.smallRoom} ˚C`}
+                value={state.config.rooms.smallRoom.autoMode}
+                onChange={(value) =>
+                  state.setRoomConfig('smallRoom', { autoMode: !!value })
+                }
               />
               <Switcher
                 device={state.devices.heaterPanel}
                 icon="heater.svg"
-                onChange={(value) => state.manualHeaterSwitch(value)}
+                onChange={(value) => {
+                  state.sendCommand(
+                    state.devices.heaterPanel.topics.power,
+                    value
+                  );
+                  state.setRoomConfig('smallRoom', { autoMode: false });
+                }}
               />
             </Group>
 
-            <Group place="lounge">
+            <Group place="bathroom" room="bathRoom">
+              <AutoSwitcher
+                label={`~${state.report.heating.setPoints.bathRoom} ˚C`}
+                value={state.config.rooms.bathRoom.autoMode}
+                onChange={(value) =>
+                  state.setRoomConfig('bathRoom', { autoMode: !!value })
+                }
+              />
+              <Switcher
+                device={state.devices.bathroom}
+                // icon="towel-rail.svg"
+                icon="heater.svg"
+                onChange={(value) => {
+                  state.sendCommand(state.devices.bathroom.topics.power, value);
+                  state.setRoomConfig('bathRoom', { autoMode: false });
+                }}
+              />
+            </Group>
+
+            <Group place="lounge" room="livingRoom">
               {state.report.lounge && (
                 <>
                   <TemperatureMeter
@@ -90,6 +117,24 @@ export default class Home extends React.Component {
                   />
                 </>
               )}
+              <AutoSwitcher
+                label={`~${state.report.heating.setPoints.livingRoom} ˚C`}
+                value={state.config.rooms.livingRoom.autoMode}
+                onChange={(value) =>
+                  state.setRoomConfig('livingRoom', { autoMode: !!value })
+                }
+              />
+              <Switcher
+                device={state.devices.mobileHeater}
+                icon="heater.svg"
+                onChange={(value) => {
+                  state.sendCommand(
+                    state.devices.mobileHeater.topics.power,
+                    value
+                  );
+                  state.setRoomConfig('livingRoom', { autoMode: false });
+                }}
+              />
               <Switcher
                 device={state.devices.flameLamp}
                 icon="lantern.svg"
@@ -117,6 +162,7 @@ export default class Home extends React.Component {
               {state.report.motionSensor?.sensors?.map((sensor, index) => {
                 return (
                   <SensorMeter
+                    key={index}
                     title={`Motion ${index + 1}`}
                     icon="/images/motion-sensor.svg"
                     value={sensor.on ? 'ON' : 'OFF'}
@@ -185,16 +231,6 @@ export default class Home extends React.Component {
                     state.devices.garageLamp.topics.power,
                     value ? 'on' : 'off'
                   )
-                }
-              />
-            </Group>
-
-            <Group place="bathroom">
-              <Switcher
-                device={state.devices.bathroom}
-                icon="towel-rail.svg"
-                onChange={(value) =>
-                  state.sendCommand(state.devices.bathroom.topics.power, value)
                 }
               />
             </Group>
