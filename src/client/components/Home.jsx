@@ -243,11 +243,20 @@ export default class Home extends React.Component {
                   state.sendCommand(state.devices.poolPump.topics.power, value)
                 }
               />
-              <SensorMeter
-                icon="/images/wind.svg"
-                value={state.report.weather.windSpeedKmh}
-                suffix="km/h"
-              />
+              {state.report.weather && (
+                <>
+                  <TemperatureMeter
+                    title="Temp"
+                    value={state.report.weather.temperature}
+                    lastUpdate={state.report.weather.lastUpdate}
+                  />
+                  <SensorMeter
+                    icon="/images/wind.svg"
+                    value={state.report.weather.windSpeedKmh}
+                    suffix="km/h"
+                  />
+                </>
+              )}
               {/* {state.report.room.SOIL && (
                 <SensorMeter
                   title="Soil Hum"
