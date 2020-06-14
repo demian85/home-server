@@ -33,6 +33,11 @@ exports.getDeviceState = async (deviceName) => {
   return value ? JSON.parse(value) : null;
 };
 
+exports.getDeviceTelemetryData = async (deviceName) => {
+  const value = await exports.get(`${deviceName}.tele`);
+  return value ? JSON.parse(value) : null;
+};
+
 exports.getDeviceOnlineStatus = async (deviceName) => {
   const value = await exports.get(`${deviceName}.online`);
   return value ? JSON.parse(value) : null;

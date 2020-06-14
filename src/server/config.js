@@ -5,7 +5,7 @@ module.exports = {
         device: 'wemos1',
         sensor: 'AM2301',
       },
-      heatingDevice: 'mobileHeater',
+      heatingDevice: null, // null means dynamic based on function getHeatingDeviceForRoom()
       defaultSetPoint: 20,
       autoMode: true,
       threshold: 0.3,
@@ -18,7 +18,7 @@ module.exports = {
     },
     bigRoom: {
       source: {
-        device: 'nodemcu',
+        device: 'nodemcu1',
         sensor: 'AM2301',
       },
       heatingDevice: null,

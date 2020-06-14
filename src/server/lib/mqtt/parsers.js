@@ -5,6 +5,7 @@ const {
   updateDeviceOnlineStatus,
   updateDeviceState,
   updateRoomHeating,
+  updateDeviceTelemetryData,
   updateReport,
   getSensorReadings,
 } = require('../main');
@@ -29,6 +30,10 @@ const parsers = {
 
   [topics.mobileHeater.stat]: async (payload) => {
     await updateDeviceState('mobileHeater', payload);
+  },
+
+  [topics.mobileHeater.tele]: async (payload) => {
+    await updateDeviceTelemetryData('mobileHeater', payload);
   },
 
   [topics.heaterPanel.sensor]: async (payload) => {
@@ -98,7 +103,7 @@ const parsers = {
       },
     };
 
-    logger.debug('Saving sensor readings: %j', { readings });
+    logger.debug('Saving sensor readings: %j', readings);
 
     await db.setSensorData('nodemcu1', readings);
     await updateRoomHeating('bigRoom');

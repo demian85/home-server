@@ -15,6 +15,7 @@ client.on('connect', () => {
     'stat/+/SWITCH3',
     'cmnd/+/POWER',
     'tele/+/SENSOR',
+    'tele/+/STATE',
     'tele/+/RESULT',
     'tele/+/LWT',
   ]);

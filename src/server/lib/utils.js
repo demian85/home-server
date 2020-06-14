@@ -2,6 +2,7 @@ const Feels = require('feels');
 const { DateTime } = require('luxon');
 const SolarCalc = require('solar-calc');
 const { getWeather } = require('./weather');
+const logger = require('./logger');
 
 const db = require('./db');
 
@@ -136,4 +137,23 @@ async function getRoomSetPoint(room) {
   return setPoint;
 }
 
+async function getHeatingDeviceForRoom(room) {
+  const telemetryData = await db.getDeviceTelemetryData('mobileHeater');
+
+  if (!telemetryData) {
+    logger.warn(`No telemetry data found for device 'mobileHeater`);
+    return null;
+  }
+
+  const wifiSignal = telemetryData.Wifi.RSSI;
+  if (room === 'bigRoom' && wifiSignal < 70) {
+    return 'mobileHeater';
+  }
+  if (room === 'livingRoom' && wifiSignal >= 70) {
+    return 'mobileHeater';
+  }
+  return null;
+}
+
 exports.getRoomSetPoint = getRoomSetPoint;
+exports.getHeatingDeviceForRoom = getHeatingDeviceForRoom;

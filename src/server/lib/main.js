@@ -10,6 +10,7 @@ const {
   getOutsideTemperature,
   getWeatherReadings,
   getRoomSetPoints,
+  getHeatingDeviceForRoom,
 } = require('./utils');
 
 function getSensorReadings(data, sensorName) {
@@ -62,6 +63,14 @@ async function updateDeviceOnlineStatus(deviceName, payload) {
   await db.set(`${deviceName}.online`, JSON.stringify(isOnline));
 }
 
+async function updateDeviceTelemetryData(deviceName, payload) {
+  const data = JSON.parse(payload.toString());
+
+  logger.debug(`Saving ${deviceName} telemetry data: %j`, { data });
+
+  await db.set(`${deviceName}.tele`, JSON.stringify(data));
+}
+
 async function turnOnDevice(deviceName, on) {
   logger.debug(`turnOnDevice(): %j`, { deviceName, on });
 
@@ -112,6 +121,13 @@ async function updateRoomHeating(room) {
     return;
   }
 
+  const heatingDevice = await getHeatingDeviceForRoom(room);
+
+  if (!heatingDevice) {
+    logger.debug(`No heating device found for room ${room}, skipping...`);
+    return;
+  }
+
   if (!roomConfig.autoMode) {
     logger.debug(`Auto mode disabled for room ${room}, skipping...`);
     return;
@@ -143,6 +159,7 @@ async function updateRoomHeating(room) {
   logger.info('updating room heating: %j', {
     room,
     roomConfig,
+    heatingDevice,
     sensorValue,
     outsideTemperature,
     tempDiff,
@@ -150,11 +167,11 @@ async function updateRoomHeating(room) {
   });
 
   if (sensorValue < setPoint) {
-    turnOnDevice(roomConfig.heatingDevice, true);
+    turnOnDevice(heatingDevice, true);
   } else if (sensorValue >= setPoint + roomConfig.threshold) {
     const maxSensorValue = setPoint + roomConfig.threshold + 0.2;
     const shouldTurnPanelOff = !isTooCold || sensorValue >= maxSensorValue;
-    turnOnDevice(roomConfig.heatingDevice, !shouldTurnPanelOff);
+    turnOnDevice(heatingDevice, !shouldTurnPanelOff);
   }
 }
 
@@ -196,6 +213,7 @@ async function updateReport() {
 
 exports.updateDeviceState = updateDeviceState;
 exports.updateDeviceOnlineStatus = updateDeviceOnlineStatus;
+exports.updateDeviceTelemetryData = updateDeviceTelemetryData;
 exports.updateRoomHeating = updateRoomHeating;
 exports.updateReport = updateReport;
 exports.getRealFeel = getRealFeel;

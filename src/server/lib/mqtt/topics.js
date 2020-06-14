@@ -9,6 +9,7 @@ const topics = {
   mobileHeater: {
     cmnd: (cmnd = 'power') => `cmnd/sonoff-mobile-heater/${cmnd}`,
     stat: `stat/sonoff-mobile-heater/POWER`,
+    tele: `tele/sonoff-mobile-heater/STATE`,
   },
   deskLamp: {
     cmnd: (cmnd = 'power') => `cmnd/sonoff-flame-lamp/${cmnd}`,
