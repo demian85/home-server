@@ -43,7 +43,7 @@ function Switcher(props) {
           }`}
         />
       )}
-      {device.sensor && device.sensor.energy && (
+      {device?.sensor?.energy && (
         <EnergyMeter value={device.sensor.energy.power} />
       )}
       {device?.tele?.Wifi.RSSI && (
