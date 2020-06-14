@@ -13,17 +13,17 @@ export default class RoomConfig extends React.Component {
 
     this.state = cloneDeep(props.value);
     this.presets = {
-      simple: [{ start: 0, end: 24, temp: 20.5 }],
-      default: [
-        { start: 0, end: 9, temp: 21 },
+      simple: [{ start: 0, end: 24, temp: 20 }],
+      day: [
+        { start: 0, end: 9, temp: 15 },
         { start: 9, end: 18, temp: 19 },
-        { start: 18, end: 24, temp: 20.7 },
+        { start: 18, end: 24, temp: 20 },
       ],
       sleep: [
         { start: 0, end: 4, temp: 20.7 },
-        { start: 4, end: 9, temp: 20.9 },
-        { start: 9, end: 18, temp: 18 },
-        { start: 18, end: 24, temp: 20.7 },
+        { start: 4, end: 9, temp: 21 },
+        { start: 9, end: 18, temp: 15 },
+        { start: 18, end: 24, temp: 20.5 },
       ],
     };
   }
