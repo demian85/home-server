@@ -46,6 +46,12 @@ function Switcher(props) {
       {device.sensor && device.sensor.energy && (
         <EnergyMeter value={device.sensor.energy.power} />
       )}
+      {device?.tele?.Wifi.RSSI && (
+        <span className={styles.wifiSignal}>
+          <img src="/images/wifi-connection.svg" />
+          {device.tele.Wifi.RSSI}%
+        </span>
+      )}
     </div>
   );
 }

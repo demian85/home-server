@@ -3,6 +3,7 @@ export const devices = {
     topics: {
       power: 'cmnd/sonoff-heater-panel/power',
       status: 'stat/sonoff-heater-panel/POWER',
+      tele: 'tele/sonoff-heater-panel/STATE',
       lwt: 'tele/sonoff-heater-panel/LWT',
     },
     ipAddress: '192.168.0.30',
@@ -13,6 +14,7 @@ export const devices = {
     topics: {
       power: 'cmnd/sonoff-salt-lamp/power',
       status: 'stat/sonoff-salt-lamp/POWER',
+      tele: 'tele/sonoff-salt-lamp/STATE',
       lwt: 'tele/sonoff-salt-lamp/LWT',
     },
     ipAddress: '192.168.0.14',
@@ -23,6 +25,7 @@ export const devices = {
     topics: {
       power: 'cmnd/sonoff-flame-lamp/power',
       status: 'stat/sonoff-flame-lamp/POWER',
+      tele: 'tele/sonoff-flame-lamp/STATE',
       lwt: 'tele/sonoff-flame-lamp/LWT',
     },
     ipAddress: '192.168.0.17',
@@ -33,6 +36,7 @@ export const devices = {
     topics: {
       power: 'cmnd/sonoff-heater-light/power',
       status: 'stat/sonoff-heater-light/POWER',
+      tele: 'tele/sonoff-heater-light/STATE',
       lwt: 'tele/sonoff-heater-light/LWT',
     },
     ipAddress: '192.168.0.24',
@@ -43,6 +47,7 @@ export const devices = {
     topics: {
       power: 'cmnd/sonoff-mosquito-trap/power',
       status: 'stat/sonoff-mosquito-trap/POWER',
+      tele: 'tele/sonoff-mosquitto-trap/STATE',
       lwt: 'tele/sonoff-mosquito-trap/LWT',
     },
     ipAddress: '192.168.0.15',
@@ -76,6 +81,7 @@ export const devices = {
       power: 'cmnd/sonoff-pool-pump/power',
       status: 'stat/sonoff-pool-pump/POWER',
       sensor: 'tele/sonoff-pool-pump/SENSOR',
+      tele: 'tele/sonoff-pool-pump/STATE',
       lwt: 'tele/sonoff-pool-pump/LWT',
     },
     ipAddress: '192.168.0.31',
@@ -87,6 +93,7 @@ export const devices = {
       power: 'cmnd/sonoff-mobile-heater/power',
       status: 'stat/sonoff-mobile-heater/POWER',
       sensor: 'tele/sonoff-mobile-heater/SENSOR',
+      tele: 'tele/sonoff-mobile-heater/STATE',
       lwt: 'tele/sonoff-mobile-heater/LWT',
     },
     ipAddress: '192.168.0.34',
@@ -97,6 +104,7 @@ export const devices = {
     topics: {
       power: 'cmnd/sonoff-bathroom-heater/power',
       status: 'stat/sonoff-bathroom-heater/POWER',
+      tele: 'tele/sonoff-bathroom-heater/STATE',
       lwt: 'tele/sonoff-bathroom-heater/LWT',
     },
     ipAddress: '192.168.0.33',

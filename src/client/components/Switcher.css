@@ -1,5 +1,5 @@
 .root {
-  min-height: 70px;
+  min-height: 80px;
   position: relative;
   display: flex;
   flex-flow: column nowrap;
@@ -55,6 +55,21 @@
   cursor: pointer;
   border: 0;
   padding: 0;
+}
+
+.wifiSignal {
+  position: absolute;
+  left: 3px;
+  bottom: 3px;
+  white-space: nowrap;
+  font-size: 0.7em;
+}
+
+.wifiSignal img {
+  width: 12px;
+  height: 12px;
+  margin-right: 3px;
+  vertical-align: top;
 }
 
 @media (min-width: 475px) {

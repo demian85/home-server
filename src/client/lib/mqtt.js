@@ -12,6 +12,7 @@ export function initMqttClient(parsers = {}) {
       'stat/#',
       'cmnd/#',
       'tele/+/SENSOR',
+      'tele/+/STATE',
       'tele/+/LWT',
       'shellies/#',
     ]);
