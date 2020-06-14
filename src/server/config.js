@@ -10,9 +10,9 @@ module.exports = {
       autoMode: true,
       threshold: 0.3,
       tempGroups: [
-        { start: 0, end: 7, temp: 15 },
+        { start: 0, end: 7, temp: 10 },
         { start: 7, end: 10, temp: 20 },
-        { start: 10, end: 18, temp: 15 },
+        { start: 10, end: 18, temp: 18 },
         { start: 18, end: 24, temp: 20 },
       ],
     },
@@ -25,7 +25,12 @@ module.exports = {
       defaultSetPoint: 20,
       autoMode: true,
       threshold: 0.3,
-      tempGroups: [],
+      tempGroups: [
+        { start: 0, end: 4, temp: 20.5 },
+        { start: 4, end: 9, temp: 20.7 },
+        { start: 9, end: 18, temp: 15 },
+        { start: 18, end: 24, temp: 20 },
+      ],
     },
     smallRoom: {
       source: {
@@ -40,7 +45,7 @@ module.exports = {
         { start: 0, end: 4, temp: 21.8 },
         { start: 4, end: 9, temp: 22 },
         { start: 9, end: 18, temp: 15 },
-        { start: 18, end: 24, temp: 21.7 },
+        { start: 18, end: 24, temp: 21.5 },
       ],
     },
     bathRoom: {
@@ -56,7 +61,7 @@ module.exports = {
         { start: 0, end: 4, temp: 21.8 },
         { start: 4, end: 9, temp: 22 },
         { start: 9, end: 18, temp: 15 },
-        { start: 18, end: 24, temp: 21.7 },
+        { start: 18, end: 24, temp: 21.5 },
       ],
     },
   },
