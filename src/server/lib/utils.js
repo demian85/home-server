@@ -5,6 +5,7 @@ const { getWeather } = require('./weather');
 const logger = require('./logger');
 
 const db = require('./db');
+const { get } = require('lodash');
 
 const LATITUDE = Number(process.env.LATITUDE);
 const LONGITUDE = Number(process.env.LONGITUDE);
@@ -137,22 +138,51 @@ async function getRoomSetPoint(room) {
   return setPoint;
 }
 
-async function getHeatingDeviceForRoom(room) {
-  const telemetryData = await db.getDeviceTelemetryData('mobileHeater');
+/**
+ *
+ * @param {object|string} heatingDeviceValue
+ * @returns {Promise<string|null>}
+ */
+async function getHeatingDeviceForRoom(heatingDeviceValue) {
+  if (heatingDeviceValue === null) {
+    return null;
+  }
+
+  if (typeof heatingDeviceValue === 'string') {
+    return heatingDeviceValue;
+  }
+
+  const telemetryData = await db.getDeviceTelemetryData(
+    heatingDeviceValue.name
+  );
 
   if (!telemetryData) {
     logger.warn(`No telemetry data found for device 'mobileHeater`);
     return null;
   }
 
-  const wifiSignal = telemetryData.Wifi.RSSI;
-  if (room === 'bigRoom' && wifiSignal < 90) {
-    return 'mobileHeater';
-  }
-  if (room === 'livingRoom' && wifiSignal >= 90) {
-    return 'mobileHeater';
-  }
-  return null;
+  const conditions = heatingDeviceValue.conditions;
+  const conditionsApply = Object.keys(conditions).every((conditionId) => {
+    const conditionIdValue = get(telemetryData, conditionId);
+    const conditionOperators = Object.keys(conditions[conditionId]);
+    return conditionOperators.every((op) => {
+      const opValue = conditions[conditionId][op];
+      switch (op) {
+        case '$eq':
+          return conditionIdValue === opValue;
+        case '$lt':
+          return conditionIdValue < opValue;
+        case '$lte':
+          return conditionIdValue <= opValue;
+        case '$gt':
+          return conditionIdValue > opValue;
+        case '$gte':
+          return conditionIdValue >= opValue;
+      }
+    });
+  });
+
+  return conditionsApply ? heatingDeviceValue.name : null;
 }
 
 exports.getRoomSetPoint = getRoomSetPoint;

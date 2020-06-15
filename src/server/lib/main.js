@@ -121,8 +121,7 @@ async function updateRoomHeating(room) {
     return;
   }
 
-  const heatingDevice =
-    roomConfig.heatingDevice || (await getHeatingDeviceForRoom(room));
+  const heatingDevice = await getHeatingDeviceForRoom(roomConfig.heatingDevice);
 
   if (!heatingDevice) {
     logger.debug(`No heating device found for room ${room}, skipping...`);
