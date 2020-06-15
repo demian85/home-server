@@ -1,5 +1,5 @@
 {
-  "name": "home-server",
+  "name": "@demian85/home-server",
   "version": "2.0.0",
   "description": "Smart Home server",
   "main": "src/index.js",
