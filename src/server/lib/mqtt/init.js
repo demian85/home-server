@@ -22,7 +22,7 @@ client.on('connect', () => {
 });
 
 client.on('message', async (topic, payload) => {
-  logger.debug(`message for topic "${topic}": %s`, payload.toString());
+  logger.debug(`message for topic "${topic}"`, { payload: payload.toString() });
 
   const parser = parsers[topic];
 
@@ -30,11 +30,10 @@ client.on('message', async (topic, payload) => {
     try {
       await parser(payload);
     } catch (err) {
-      logger.error(
-        'unexpected error executing parser for topic %s: %s',
+      logger.error('unexpected error executing parser for topic', {
         topic,
-        err
-      );
+        err,
+      });
       console.error(err);
     }
   }

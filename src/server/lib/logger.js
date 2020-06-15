@@ -27,7 +27,7 @@ class MqttStream extends Writable {
 
 const logger = createLogger({
   level: process.env.LOG_LEVEL || 'info',
-  format: combine(splat(), myFormat),
+  format: combine(splat(), format.json()),
   transports: [
     new transports.Console(),
     new transports.Stream({

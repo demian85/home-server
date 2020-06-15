@@ -46,7 +46,7 @@ const parsers = {
 
     const readings = { SI7021 };
 
-    logger.debug('Saving heater sensor readings: %j', readings);
+    logger.debug('Saving heater sensor readings', readings);
 
     await db.setSensorData('heaterPanel', readings);
     await updateRoomHeating('smallRoom');
@@ -68,7 +68,7 @@ const parsers = {
 
     const readings = { AM2301, BH1750 };
 
-    logger.debug('Saving sensor readings: %j', readings);
+    logger.debug('Saving sensor readings', readings);
 
     await db.setSensorData('wemos1', readings);
     await updateRoomHeating('livingRoom');
@@ -103,7 +103,7 @@ const parsers = {
       },
     };
 
-    logger.debug('Saving sensor readings: %j', readings);
+    logger.debug('Saving sensor readings', readings);
 
     await db.setSensorData('nodemcu1', readings);
     await updateRoomHeating('bigRoom');
@@ -132,7 +132,7 @@ const parsers = {
 
     const readings = { DS18B20 };
 
-    logger.debug('Saving sensor readings: %j', readings);
+    logger.debug('Saving sensor readings', readings);
 
     await db.setSensorData('laundry', readings);
     await updateReport();

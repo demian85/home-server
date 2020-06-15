@@ -21,7 +21,7 @@ async function displayNextState() {
 }
 
 function clearDisplay(resetState = false) {
-  logger.debug(`clearDisplay(): %j`, { resetState });
+  logger.debug(`clearDisplay()`, { resetState });
 
   mqttClient.publish(topics.wemos1.cmnd('DisplayText'), '[z]');
 
@@ -31,7 +31,7 @@ function clearDisplay(resetState = false) {
 }
 
 function displayText(textLines = [], size = 1) {
-  logger.debug(`displayText(): %j`, { textLines, size });
+  logger.debug(`displayText()`, { textLines, size });
 
   const cmnd = textLines
     .map((text, index) => {

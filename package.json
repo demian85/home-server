@@ -16,7 +16,7 @@
     "start": "node src/index.js",
     "dev-client": "webpack --progress --watch",
     "dev-server": "nodemon src/index.js",
-    "dev": "concurrently -k -c 'green,magenta' 'npm:dev-client' 'npm:dev-server'",
+    "dev": "concurrently -k -c 'green,magenta' 'npm:dev-client' 'npm:dev-server | pino-pretty'",
     "lint": "eslint ./src",
     "init:config": "node src/server/init.js",
     "format": "prettier --write './src/**/*.{js,jsx,ts,tsx}'"
@@ -75,6 +75,7 @@
     "eslint-plugin-react": "^7.19.0",
     "mini-css-extract-plugin": "^0.9.0",
     "nodemon": "^2.0.3",
+    "pino-pretty": "^4.0.0",
     "prettier": "^2.0.5",
     "style-loader": "^1.2.1",
     "webpack": "^4.43.0",

@@ -30,7 +30,7 @@ async function turnOffDeskLampIfNeeded() {
   const motionSensorState = await getMotionSensorState();
   const bedTime = await isBedTime();
 
-  logger.debug(`turnOffDeskLampIfNeeded(): %j`, {
+  logger.debug(`turnOffDeskLampIfNeeded()`, {
     autoTurnOffDeskLamp,
     motionSensorState,
     isBedTime: bedTime,
@@ -55,7 +55,7 @@ async function turnOnDeskLampIfNeeded() {
   const { autoTurnOnDeskLamp } = await db.getConfig();
   const motionSensorState = await getMotionSensorState();
 
-  logger.debug(`turnOnDeskLampIfNeeded(): %j`, {
+  logger.debug(`turnOnDeskLampIfNeeded()`, {
     autoTurnOnDeskLamp,
     motionSensorState,
     isNightTime: isNightTime(),
@@ -84,7 +84,7 @@ async function toggleBathroomHeaterIfNeeded() {
     (humidity >= 75 || outsideTemperature < setPoint - 2) &&
     (currentHour >= 18 || currentHour < 7);
 
-  logger.debug(`toggleBathroomHeaterIfNeeded(): %j`, {
+  logger.debug(`toggleBathroomHeaterIfNeeded()`, {
     outsideTemperature,
     humidity,
     setPoint,

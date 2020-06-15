@@ -50,7 +50,7 @@ async function updateDeviceState(deviceName, payload) {
   const on = stateValue === 'on' || stateValue === '1';
   const lastChange = Date.now();
 
-  logger.debug(`Saving ${deviceName} state data: %j`, { on, lastChange });
+  logger.debug(`Saving ${deviceName} state data`, { on, lastChange });
 
   await db.set(`${deviceName}.state`, JSON.stringify({ on, lastChange }));
 }
@@ -58,7 +58,7 @@ async function updateDeviceState(deviceName, payload) {
 async function updateDeviceOnlineStatus(deviceName, payload) {
   const isOnline = String(payload).toLowerCase() === 'online';
 
-  logger.debug(`Saving ${deviceName} online status: %j`, { isOnline });
+  logger.debug(`Saving ${deviceName} online status`, { isOnline });
 
   await db.set(`${deviceName}.online`, JSON.stringify(isOnline));
 }
@@ -66,13 +66,13 @@ async function updateDeviceOnlineStatus(deviceName, payload) {
 async function updateDeviceTelemetryData(deviceName, payload) {
   const data = JSON.parse(payload.toString());
 
-  logger.debug(`Saving ${deviceName} telemetry data: %j`, { data });
+  logger.debug(`Saving ${deviceName} telemetry data`, { data });
 
   await db.set(`${deviceName}.tele`, JSON.stringify(data));
 }
 
 async function turnOnDevice(deviceName, on) {
-  logger.debug(`turnOnDevice(): %j`, { deviceName, on });
+  logger.debug(`turnOnDevice()`, { deviceName, on });
 
   const state = await db.getDeviceState(deviceName);
   const stateStr = on ? 'on' : 'off';
@@ -110,7 +110,7 @@ async function turnOnDevice(deviceName, on) {
 }
 
 async function updateRoomHeating(room) {
-  logger.debug(`updateRoomHeating(%s)`, room);
+  logger.debug(`updateRoomHeating()`, { room });
 
   const config = await db.getConfig();
 
@@ -122,7 +122,7 @@ async function updateRoomHeating(room) {
   }
 
   const heatingDevice =
-    roomConfig.heatingDevice ?? (await getHeatingDeviceForRoom(room));
+    roomConfig.heatingDevice || (await getHeatingDeviceForRoom(room));
 
   if (!heatingDevice) {
     logger.debug(`No heating device found for room ${room}, skipping...`);
@@ -157,7 +157,7 @@ async function updateRoomHeating(room) {
   const tempDiff = outsideTempAvailable ? setPoint - outsideTemperature : 0;
   const isTooCold = outsideTempAvailable && tempDiff >= 4;
 
-  logger.info('updating room heating: %j', {
+  logger.info('updating room heating', {
     room,
     roomConfig,
     heatingDevice,
@@ -207,7 +207,7 @@ async function updateReport() {
     },
   };
 
-  logger.info('custom report: %j', report);
+  logger.info('custom report', report);
 
   mqttClient.publish(topics.report, JSON.stringify(report), { retain: true });
 }
