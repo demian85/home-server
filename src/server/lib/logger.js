@@ -1,14 +1,8 @@
-const { DateTime } = require('luxon');
 const { createLogger, format, transports } = require('winston');
 const { Writable } = require('stream');
 const mqttClient = require('./mqtt/client');
 
-const { combine, printf, splat } = format;
-
-const myFormat = printf((info) => {
-  const dateString = DateTime.local().toFormat('yyyy-LL-dd HH:mm:ss');
-  return `${dateString} [${info.level}]: ${info.message}`;
-});
+const { combine, splat } = format;
 
 class MqttStream extends Writable {
   constructor(options) {
@@ -17,8 +11,7 @@ class MqttStream extends Writable {
   }
 
   _write(obj, encoding, callback) {
-    const { level, message } = obj;
-    this.mqttClient.publish('stat/_logs', JSON.stringify({ level, message }), {
+    this.mqttClient.publish('stat/_logs', JSON.stringify(obj), {
       qos: 0,
     });
     callback();

@@ -22,7 +22,7 @@ client.on('connect', () => {
 });
 
 client.on('message', async (topic, payload) => {
-  logger.debug(`message for topic "${topic}"`, { payload: payload.toString() });
+  logger.debug('message received', { topic, payload: payload.toString() });
 
   const parser = parsers[topic];
 
