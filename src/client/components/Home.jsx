@@ -37,6 +37,13 @@ export default class Home extends React.Component {
                   />
                 </>
               )}
+              <AutoSwitcher
+                label={`~${state.report.heating.setPoints.bigRoom} ˚C`}
+                value={state.config.rooms.bigRoom.autoMode}
+                onChange={(value) =>
+                  state.setRoomConfig('bigRoom', { autoMode: !!value })
+                }
+              />
               {state.report.room.MQ135 && (
                 <SensorMeter
                   title="Air Quality"
