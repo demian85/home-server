@@ -35,6 +35,27 @@
   justify-content: space-evenly;
 }
 
+.tempGroup {
+  flex: 1 1 auto;
+  padding: 0.5em;
+  text-align: center;
+}
+
+.tempGroupControls {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+}
+
+.tempGroupControls .tempControlButton {
+  font-size: 0.8em;
+}
+
+.tempGroupButtons {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
 .presets {
   display: flex;
   flex-flow: row nowrap;
@@ -45,21 +66,13 @@
   margin-right: 1em;
 }
 
-.tempGroup {
-  flex: 1 1 auto;
-  padding: 0.5em;
-  text-align: center;
-}
-
 .root input {
   font-size: 1.25em;
   border: 1px solid var(--color-border);
-  padding: 0.2em 0.5em;
   border-radius: 3px;
 }
 
 .root button {
-  font-size: 1.25em;
   border: 0;
   padding: 0.2em 0.5em;
   border-radius: 3px;
@@ -89,10 +102,21 @@
 }
 
 @media (min-width: 475px) {
-
   .root {
     padding: calc(var(--spacing-normal) * 2);
     border: 1px solid var(--color-border);
     margin: var(--spacing-normal) auto;
+  }
+
+  .tempGroupButtons {
+    display: none;
+  }
+
+  .root input {
+    padding: 0.2em 0.5em;
+  }
+
+  .root button {
+    font-size: 1.25em;
   }
 }

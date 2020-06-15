@@ -34,19 +34,36 @@ export default class RoomConfig extends React.Component {
     }
 
     const tempGroups = this.state.tempGroups.map((item, key) => {
+      const value = item.temp;
       return (
         <div className={styles.tempGroup} key={key}>
           <div>
             {item.start} - {item.end} hs.
           </div>
-          <input
-            type="number"
-            min="10"
-            max="30"
-            step="0.1"
-            value={item.temp}
-            onChange={(e) => this.handleTempChange(key, e.target.value)}
-          />
+          <div className={styles.tempGroupControls}>
+            <input
+              type="number"
+              min="10"
+              max="30"
+              step="0.5"
+              value={item.temp}
+              onChange={(e) => this.handleTempChange(key, e.target.value)}
+            />
+            <div className={styles.tempGroupButtons}>
+              <button
+                className={styles.tempControlButton}
+                onClick={(e) => this.handleTempChange(key, value + 0.5)}
+              >
+                ⬆︎
+              </button>
+              <button
+                className={styles.tempControlButton}
+                onClick={(e) => this.handleTempChange(key, value - 0.5)}
+              >
+                ⬇︎
+              </button>
+            </div>
+          </div>
         </div>
       );
     });
@@ -59,15 +76,15 @@ export default class RoomConfig extends React.Component {
             <label>Presets: </label>
             <button
               className={styles.presetBtn}
-              onClick={() => this.onPresetClick('default')}
-            >
-              Default
-            </button>
-            <button
-              className={styles.presetBtn}
               onClick={() => this.onPresetClick('simple')}
             >
               Simple
+            </button>
+            <button
+              className={styles.presetBtn}
+              onClick={() => this.onPresetClick('day')}
+            >
+              Default
             </button>
             <button
               className={styles.presetBtn}
