@@ -84,7 +84,7 @@ export default class RoomConfig extends React.Component {
               className={styles.presetBtn}
               onClick={() => this.onPresetClick('day')}
             >
-              Default
+              Day
             </button>
             <button
               className={styles.presetBtn}
