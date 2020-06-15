@@ -146,10 +146,10 @@ async function getHeatingDeviceForRoom(room) {
   }
 
   const wifiSignal = telemetryData.Wifi.RSSI;
-  if (room === 'bigRoom' && wifiSignal < 70) {
+  if (room === 'bigRoom' && wifiSignal < 90) {
     return 'mobileHeater';
   }
-  if (room === 'livingRoom' && wifiSignal >= 70) {
+  if (room === 'livingRoom' && wifiSignal >= 90) {
     return 'mobileHeater';
   }
   return null;
