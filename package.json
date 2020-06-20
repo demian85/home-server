@@ -1,6 +1,6 @@
 {
   "name": "@demian85/home-server",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Smart Home server",
   "main": "src/index.js",
   "engines": {
@@ -18,9 +18,9 @@
     "dev-server": "nodemon src/index.js",
     "dev": "concurrently -k -c 'green,magenta' 'npm:dev-client' 'npm:dev-server | pino-pretty'",
     "lint": "eslint ./src",
-    "init:config": "node src/server/init.js",
     "format": "prettier --write './src/**/*.{js,jsx,ts,tsx}'",
-    "test": "jest --forceExit"
+    "test": "jest --forceExit",
+    "init:config": "node src/server/init.js"
   },
   "keywords": [
     "sonoff",
@@ -77,7 +77,9 @@
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.3",
     "eslint-plugin-react": "^7.19.0",
+    "husky": "^4.2.5",
     "jest": "^26.0.1",
+    "lint-staged": "^10.2.11",
     "mini-css-extract-plugin": "^0.9.0",
     "nodemon": "^2.0.3",
     "pino-pretty": "^4.0.0",
@@ -90,5 +92,15 @@
     "transform": {
       "^.+\\.js$": "babel-jest"
     }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm test"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,css}": "eslint --cache --fix",
+    "*.{js,jsx,json,css,md}": "prettier --write"
   }
 }
