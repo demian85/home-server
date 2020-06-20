@@ -11,12 +11,18 @@ const {
 } = require('../utils');
 const { turnOnDevice } = require('../main');
 
+const actions = [
+  turnOnDeskLampIfNeeded,
+  turnOffDeskLampIfNeeded,
+  // toggleBathroomHeaterIfNeeded,
+];
+
 exports.runScheduledActions = function runScheduledActions() {
   logger.debug(`runScheduledActions()`);
 
-  turnOnDeskLampIfNeeded();
-  turnOffDeskLampIfNeeded();
-  // toggleBathroomHeaterIfNeeded();
+  for (const action of actions) {
+    action();
+  }
 
   setTimeout(runScheduledActions, 60000);
 };
@@ -94,7 +100,3 @@ async function toggleBathroomHeaterIfNeeded() {
 
   turnOnDevice('CHANGE ME', shouldTurnOn);
 }
-
-exports.turnOffDeskLampIfNeeded = turnOffDeskLampIfNeeded;
-exports.turnOnDeskLampIfNeeded = turnOnDeskLampIfNeeded;
-exports.toggleBathroomHeaterIfNeeded = toggleBathroomHeaterIfNeeded;
