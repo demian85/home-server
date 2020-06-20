@@ -95,13 +95,22 @@ exports.getRoomSetPoints = async () => {
   return setPoints;
 };
 
+/**
+ * @returns {Promise<number|null>}
+ */
 exports.getOutsideTemperature = async () => {
+  const weather = await getWeatherReadings();
+
+  if (weather !== null) {
+    return weather.temperature;
+  }
+
   const data = await db.getSensorData('laundry');
 
   return data && data.DS18B20 ? data.DS18B20.temperature : null;
 };
 
-exports.getWeatherReadings = async () => {
+async function getWeatherReadings() {
   try {
     const weather = await getWeather();
 
@@ -119,7 +128,7 @@ exports.getWeatherReadings = async () => {
   } catch (err) {
     return null;
   }
-};
+}
 
 async function getRoomSetPoint(room) {
   const config = await db.getConfig();
@@ -187,3 +196,4 @@ async function getHeatingDeviceForRoom(heatingDeviceValue) {
 
 exports.getRoomSetPoint = getRoomSetPoint;
 exports.getHeatingDeviceForRoom = getHeatingDeviceForRoom;
+exports.getWeatherReadings = getWeatherReadings;

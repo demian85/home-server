@@ -154,7 +154,7 @@ async function updateRoomHeating(room) {
   const outsideTempAvailable = outsideTemperature !== null;
   const sensorValue = temperatureSensor.temperature;
   const tempDiff = outsideTempAvailable ? setPoint - outsideTemperature : 0;
-  const isTooCold = outsideTempAvailable && tempDiff >= 4;
+  const isTooCold = outsideTempAvailable && tempDiff >= 6;
 
   logger.info('updating room heating', {
     room,
