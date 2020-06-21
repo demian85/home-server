@@ -47,7 +47,7 @@ export const devices = {
     topics: {
       power: 'cmnd/sonoff-mosquito-trap/power',
       status: 'stat/sonoff-mosquito-trap/POWER',
-      tele: 'tele/sonoff-mosquitto-trap/STATE',
+      tele: 'tele/sonoff-mosquito-trap/STATE',
       lwt: 'tele/sonoff-mosquito-trap/LWT',
     },
     ipAddress: '192.168.0.15',
