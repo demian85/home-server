@@ -5,6 +5,15 @@
   --spacing-normal: 0.5rem;
   --color-text: #666;
   --color-border: #eee;
+  --color-background: #fff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-text: #eee;
+    --color-border: #444;
+    --color-background: #333;
+  }
 }
 
 * {
@@ -18,10 +27,10 @@ html {
 
 body {
   height: 100%;
-  background: #fff;
+  background: var(--color-background);
   color: var(--color-text);
   font-size: 14px;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   cursor: default;
 }
 
@@ -30,15 +39,23 @@ body {
   margin: auto;
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   font-size: 1rem;
   font-weight: normal;
 }
 
-input, select, label, button {
+input,
+select,
+label,
+button {
   font-size: 14px;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   vertical-align: middle;
+  background-color: var(--color-background);
+  color: var(--color-text);
 }
 
 label > span {

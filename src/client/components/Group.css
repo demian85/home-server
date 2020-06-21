@@ -16,7 +16,7 @@
 
 .root > div {
   border-radius: 6px;
-  border: 1px solid #eee;
+  border: 1px solid var(--color-border);
 }
 
 /*.bedroom.root > div:nth-child(4) {
