@@ -9,7 +9,7 @@
   animation: lds-spinner 1.2s linear infinite;
 }
 .root div:after {
-  content: " ";
+  content: ' ';
   display: block;
   position: absolute;
   top: 3px;
@@ -17,7 +17,7 @@
   width: 5px;
   height: 14px;
   border-radius: 20%;
-  background: #333;
+  background: var(--color-text);
 }
 .root div:nth-child(1) {
   transform: rotate(0deg);
