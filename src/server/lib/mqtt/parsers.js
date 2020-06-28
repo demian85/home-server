@@ -58,6 +58,7 @@ const parsers = {
     const data = JSON.parse(payload.toString());
     const AM2301 = getSensorReadings(data, 'AM2301');
     const BH1750 = getSensorReadings(data, 'BH1750');
+    const IAQ = data.IAQ;
 
     if (!AM2301) {
       logger.error('Sensor AM2301 not found!');
@@ -65,8 +66,11 @@ const parsers = {
     if (!BH1750) {
       logger.error('Sensor BH1750 not found!');
     }
+    if (!IAQ) {
+      logger.error('Sensor IAQ not found!');
+    }
 
-    const readings = { AM2301, BH1750 };
+    const readings = { AM2301, BH1750, IAQ };
 
     logger.debug('Saving sensor readings', readings);
 
@@ -122,7 +126,7 @@ const parsers = {
     await updateReport();
   },
 
-  [topics.laundry.sensor]: async (payload) => {
+  [topics.garden.sensor]: async (payload) => {
     const data = JSON.parse(payload.toString());
     const DS18B20 = getSensorReadings(data, 'DS18B20');
 
@@ -134,7 +138,7 @@ const parsers = {
 
     logger.debug('Saving sensor readings', readings);
 
-    await db.setSensorData('laundry', readings);
+    await db.setSensorData('garden', readings);
     await updateReport();
   },
 };

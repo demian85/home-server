@@ -182,7 +182,7 @@ async function updateReport() {
   const lounge = await db.getSensorData('wemos1');
   const room = await db.getSensorData('nodemcu1');
   const smallRoom = await db.getSensorData('heaterPanel');
-  const laundry = await db.getSensorData('laundry');
+  const garden = await db.getSensorData('garden');
   const motionSensor = await getMotionSensorState();
   const { sunrise, sunset } = getSolarCalc();
   const weather = await getWeatherReadings();
@@ -197,7 +197,7 @@ async function updateReport() {
     room,
     smallRoom,
     lounge,
-    laundry,
+    garden,
     motionSensor,
     weather,
     data: {

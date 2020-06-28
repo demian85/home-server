@@ -192,6 +192,24 @@ export default class Home extends React.Component {
                   lastUpdate={state.report.lounge.BH1750.lastUpdate}
                 />
               )}
+              {state.report.lounge.IAQ && (
+                <>
+                  <SensorMeter
+                    title="eCO2"
+                    icon="images/co2.svg"
+                    suffix="ppm"
+                    value={state.report.lounge.IAQ.eCO2}
+                    lastUpdate={state.report.lounge.IAQ.lastUpdate}
+                  />
+                  <SensorMeter
+                    title="TVOC"
+                    icon="images/air-quality.svg"
+                    suffix="ppb"
+                    value={state.report.lounge.IAQ.TVOC}
+                    lastUpdate={state.report.lounge.IAQ.lastUpdate}
+                  />
+                </>
+              )}
             </Group>
 
             <Group place="kitchen">
@@ -205,6 +223,47 @@ export default class Home extends React.Component {
                   )
                 }
               />
+            </Group>
+
+            <Group place="outside">
+              <Switcher
+                device={state.devices.treeLight}
+                icon="ornament.svg"
+                onChange={(value) =>
+                  state.sendCommand(state.devices.treeLight.topics.power, value)
+                }
+              />
+              {state.report.garden && (
+                <TemperatureMeter
+                  title="Temp"
+                  value={state.report.garden.DS18B20.temperature}
+                  lastUpdate={state.report.garden.DS18B20.lastUpdate}
+                />
+              )}
+              {state.report.weather && (
+                <>
+                  <TemperatureMeter
+                    title="Weather temp"
+                    value={state.report.weather.temperature}
+                    lastUpdate={state.report.weather.lastUpdate}
+                  />
+                  <SensorMeter
+                    icon="/images/wind.svg"
+                    value={state.report.weather.windSpeedKmh}
+                    suffix="km/h"
+                  />
+                </>
+              )}
+              {/* {state.report.room.SOIL && (
+                <SensorMeter
+                  title="Soil Hum"
+                  icon="images/soil.svg"
+                  suffix="%"
+                  value={state.report.room.SOIL.value}
+                  lastUpdate={state.report.room.SOIL.lastUpdate}
+                />
+              )} */}
+              <Sun data={state.report.data} />
             </Group>
 
             <Group place="laundry">
@@ -240,40 +299,6 @@ export default class Home extends React.Component {
                   )
                 }
               />
-            </Group>
-
-            <Group place="outside">
-              <Switcher
-                device={state.devices.poolPump}
-                icon="valve.svg"
-                onChange={(value) =>
-                  state.sendCommand(state.devices.poolPump.topics.power, value)
-                }
-              />
-              {state.report.weather && (
-                <>
-                  <TemperatureMeter
-                    title="Temp"
-                    value={state.report.weather.temperature}
-                    lastUpdate={state.report.weather.lastUpdate}
-                  />
-                  <SensorMeter
-                    icon="/images/wind.svg"
-                    value={state.report.weather.windSpeedKmh}
-                    suffix="km/h"
-                  />
-                </>
-              )}
-              {/* {state.report.room.SOIL && (
-                <SensorMeter
-                  title="Soil Hum"
-                  icon="images/soil.svg"
-                  suffix="%"
-                  value={state.report.room.SOIL.value}
-                  lastUpdate={state.report.room.SOIL.lastUpdate}
-                />
-              )} */}
-              <Sun data={state.report.data} />
             </Group>
           </section>
         )}

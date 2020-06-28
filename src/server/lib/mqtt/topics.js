@@ -34,11 +34,11 @@ const topics = {
     sensor: `tele/nodemcu/SENSOR`,
     result: `tele/nodemcu/RESULT`,
   },
-  laundry: {
-    cmnd: (cmnd = 'POWER') => `cmnd/wemos-laundry/${cmnd}`,
-    stat: `stat/wemos-laundry/POWER`,
-    sensor: `tele/wemos-laundry/SENSOR`,
-    result: `tele/wemos-laundry/RESULT`,
+  garden: {
+    cmnd: (cmnd = 'POWER') => `cmnd/wemos-garden/${cmnd}`,
+    stat: `stat/wemos-garden/POWER`,
+    sensor: `tele/wemos-garden/SENSOR`,
+    result: `tele/wemos-garden/RESULT`,
   },
 };
 

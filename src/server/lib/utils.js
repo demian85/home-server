@@ -99,15 +99,19 @@ exports.getRoomSetPoints = async () => {
  * @returns {Promise<number|null>}
  */
 exports.getOutsideTemperature = async () => {
+  const data = await db.getSensorData('garden');
+
+  if (data && data.DS18B20) {
+    return data.DS18B20.temperature;
+  }
+
   const weather = await getWeatherReadings();
 
   if (weather !== null) {
     return weather.temperature;
   }
 
-  const data = await db.getSensorData('laundry');
-
-  return data && data.DS18B20 ? data.DS18B20.temperature : null;
+  return null;
 };
 
 async function getWeatherReadings() {
