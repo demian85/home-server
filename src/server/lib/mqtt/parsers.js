@@ -129,12 +129,28 @@ const parsers = {
   [topics.garden.sensor]: async (payload) => {
     const data = JSON.parse(payload.toString());
     const DS18B20 = getSensorReadings(data, 'DS18B20');
+    const analogReadings = data.ADS1115;
 
     if (!DS18B20) {
       logger.error('Sensor DS18B20 not found!');
     }
+    if (!analogReadings) {
+      logger.error('ADS1115 not found!');
+    }
 
-    const readings = { DS18B20 };
+    const volts0 = (analogReadings.A0 * 0.1875) / 1000;
+    const volts1 = (analogReadings.A1 * 0.1875) / 1000;
+    const readings = {
+      DS18B20,
+      solarPanelVolts: {
+        value: volts0,
+        lastUpdate: Date.now(),
+      },
+      batteryVolts: {
+        value: volts1,
+        lastUpdate: Date.now(),
+      },
+    };
 
     logger.debug('Saving sensor readings', readings);
 

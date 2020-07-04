@@ -233,12 +233,33 @@ export default class Home extends React.Component {
                   state.sendCommand(state.devices.treeLight.topics.power, value)
                 }
               />
+              <Switcher
+                device={state.devices.poolPump}
+                icon="valve.svg"
+                onChange={(value) =>
+                  state.sendCommand(state.devices.poolPump.topics.power, value)
+                }
+              />
               {state.report.garden && (
-                <TemperatureMeter
-                  title="Temp"
-                  value={state.report.garden.DS18B20.temperature}
-                  lastUpdate={state.report.garden.DS18B20.lastUpdate}
-                />
+                <>
+                  <TemperatureMeter
+                    title="Temp"
+                    value={state.report.garden.DS18B20.temperature}
+                    lastUpdate={state.report.garden.DS18B20.lastUpdate}
+                  />
+                  <SensorMeter
+                    icon="/images/solar-panel.svg"
+                    value={state.report.garden.solarPanelVolts?.value.toFixed(
+                      2
+                    )}
+                    suffix="V"
+                  />
+                  <SensorMeter
+                    icon="/images/battery.svg"
+                    value={state.report.garden.batteryVolts?.value.toFixed(2)}
+                    suffix="V"
+                  />
+                </>
               )}
               {state.report.weather && (
                 <>
