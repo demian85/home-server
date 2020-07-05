@@ -42,7 +42,7 @@ export default class TimeAgo extends React.PureComponent {
 
     const css = [styles.root];
 
-    if (timeDiffSecs >= 600) {
+    if (timeDiffSecs >= 900) {
       css.push(styles.old);
     }
 

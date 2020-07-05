@@ -50,6 +50,7 @@ export default class Home extends React.Component {
                   icon="images/air-quality.svg"
                   suffix="%"
                   value={state.report.room.MQ135.airQuality}
+                  normalRange={[70, 100]}
                   lastUpdate={state.report.room.MQ135.lastUpdate}
                 />
               )}
@@ -199,6 +200,7 @@ export default class Home extends React.Component {
                     icon="images/co2.svg"
                     suffix="ppm"
                     value={state.report.lounge.IAQ.eCO2}
+                    normalRange={[300, 1500]}
                     lastUpdate={state.report.lounge.IAQ.lastUpdate}
                   />
                   <SensorMeter
@@ -206,6 +208,7 @@ export default class Home extends React.Component {
                     icon="images/air-quality.svg"
                     suffix="ppb"
                     value={state.report.lounge.IAQ.TVOC}
+                    normalRange={[100, 800]}
                     lastUpdate={state.report.lounge.IAQ.lastUpdate}
                   />
                 </>
@@ -252,11 +255,15 @@ export default class Home extends React.Component {
                     value={state.report.garden.solarPanelVolts?.value.toFixed(
                       2
                     )}
+                    normalRange={[4.4, 6]}
+                    lastUpdate={state.report.garden.solarPanelVolts?.lastUpdate}
                     suffix="V"
                   />
                   <SensorMeter
                     icon="/images/battery.svg"
                     value={state.report.garden.batteryVolts?.value.toFixed(2)}
+                    normalRange={[3.6, 4.2]}
+                    lastUpdate={state.report.garden.batteryVolts?.lastUpdate}
                     suffix="V"
                   />
                 </>

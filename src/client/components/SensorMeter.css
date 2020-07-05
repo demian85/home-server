@@ -36,8 +36,11 @@
   font-size: 0.8em;
 }
 
-@media (min-width: 475px) {
+.notInRange {
+  color: red;
+}
 
+@media (min-width: 475px) {
   .root h3 {
     min-height: 24px;
     padding-left: 28px;
@@ -48,4 +51,3 @@
     font-size: 1.25em;
   }
 }
-
