@@ -229,13 +229,13 @@ export default class Home extends React.Component {
             </Group>
 
             <Group place="outside">
-              <Switcher
+              {/* <Switcher
                 device={state.devices.treeLight}
                 icon="ornament.svg"
                 onChange={(value) =>
                   state.sendCommand(state.devices.treeLight.topics.power, value)
                 }
-              />
+              /> */}
               <Switcher
                 device={state.devices.poolPump}
                 icon="valve.svg"
@@ -243,7 +243,7 @@ export default class Home extends React.Component {
                   state.sendCommand(state.devices.poolPump.topics.power, value)
                 }
               />
-              {state.report.garden && (
+              {/* {state.report.garden && (
                 <>
                   <TemperatureMeter
                     title="Temp"
@@ -267,7 +267,7 @@ export default class Home extends React.Component {
                     suffix="V"
                   />
                 </>
-              )}
+              )} */}
               {state.report.weather && (
                 <>
                   <TemperatureMeter
