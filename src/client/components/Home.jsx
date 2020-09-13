@@ -327,6 +327,16 @@ export default class Home extends React.Component {
                   )
                 }
               />
+              <Switcher
+                device={state.devices.wellWaterPump}
+                icon="water-pump.svg"
+                onChange={(value) =>
+                  state.sendCommand(
+                    state.devices.wellWaterPump.topics.power,
+                    value
+                  )
+                }
+              />
             </Group>
           </section>
         )}

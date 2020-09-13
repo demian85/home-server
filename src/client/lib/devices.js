@@ -122,4 +122,15 @@ export const devices = {
     power: null,
     online: null,
   },
+  wellWaterPump: {
+    topics: {
+      power: 'shellies/shelly-water-pumps/relay/1/command',
+      status: 'shellies/shelly-water-pumps/relay/1',
+      sensor: 'shellies/shelly-water-pumps/relay/1/power',
+      lwt: 'shellies/shelly-water-pumps/online',
+    },
+    ipAddress: '192.168.0.34',
+    power: null,
+    online: null,
+  },
 };
