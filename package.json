@@ -12,9 +12,9 @@
   },
   "scripts": {
     "postinstall": "npm run build",
-    "build": "webpack -p --progress",
+    "build": "webpack -p --progress --env.production",
     "start": "node src/index.js",
-    "dev-client": "webpack --progress --watch --env development -d",
+    "dev-client": "webpack -d --progress --watch --env.development",
     "dev-server": "nodemon src/index.js",
     "dev": "concurrently -k -c 'green,magenta' 'npm:dev-client' 'npm:dev-server | pino-pretty'",
     "lint": "eslint ./src",

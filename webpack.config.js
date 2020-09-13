@@ -4,9 +4,12 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = (env = {}) => {
   const prodMode = env.production || process.env.NODE_ENV === 'production';
+  const mode = prodMode ? 'production' : 'development';
+
+  console.log('Building for mode:', mode);
 
   return {
-    mode: process.env.NODE_ENV || 'development',
+    mode,
     entry: './src/client/index.jsx',
     devtool: !prodMode ? 'cheap-module-eval-source-map' : 'source-map',
     output: {
