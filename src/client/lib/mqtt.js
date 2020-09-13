@@ -3,7 +3,10 @@ import mqtt from 'mqtt';
 export function initMqttClient(parsers = {}) {
   console.info('initializing mqtt client...');
 
-  const client = mqtt.connect(localStorage.mqttUrl);
+  const client = mqtt.connect(localStorage.mqttUrl, {
+    clean: true,
+    keepalive: 120,
+  });
 
   client.on('connect', () => {
     console.info('mqtt client connected');
