@@ -54,6 +54,16 @@ export default class Home extends React.Component {
                   lastUpdate={state.report.room.MQ135.lastUpdate}
                 />
               )}
+              <Switcher
+                device={state.devices.bedRoomSocket}
+                icon="no-mosquito.svg"
+                onChange={(value) =>
+                  state.sendCommand(
+                    state.devices.bedRoomSocket.topics.power,
+                    value ? 'on' : 'off'
+                  )
+                }
+              />
             </Group>
 
             <Group place="smallRoom" room="smallRoom">
@@ -88,6 +98,16 @@ export default class Home extends React.Component {
                   );
                   state.setRoomConfig('smallRoom', { autoMode: false });
                 }}
+              />
+              <Switcher
+                device={state.devices.smallRoomSocket}
+                icon="no-mosquito.svg"
+                onChange={(value) =>
+                  state.sendCommand(
+                    state.devices.smallRoomSocket.topics.power,
+                    value ? 'on' : 'off'
+                  )
+                }
               />
             </Group>
 
@@ -333,7 +353,7 @@ export default class Home extends React.Component {
                 onChange={(value) =>
                   state.sendCommand(
                     state.devices.wellWaterPump.topics.power,
-                    value
+                    value ? 'on' : 'off'
                   )
                 }
               />
