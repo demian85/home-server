@@ -135,9 +135,9 @@ export const devices = {
   },
   bedRoomSocket: {
     topics: {
-      power: 'shellies/shelly-bedroom-socket/relay/1/command',
-      status: 'shellies/shelly-bedroom-socket/relay/1',
-      sensor: 'shellies/shelly-bedroom-socket/relay/1/power',
+      power: 'shellies/shelly-bedroom-socket/relay/0/command',
+      status: 'shellies/shelly-bedroom-socket/relay/0',
+      sensor: 'shellies/shelly-bedroom-socket/relay/0/power',
       lwt: 'shellies/shelly-bedroom-socket/online',
     },
     ipAddress: '192.168.0.35',
@@ -146,9 +146,9 @@ export const devices = {
   },
   smallRoomSocket: {
     topics: {
-      power: 'shellies/shelly-smallroom-socket/relay/1/command',
-      status: 'shellies/shelly-smallroom-socket/relay/1',
-      sensor: 'shellies/shelly-smallroom-socket/relay/1/power',
+      power: 'shellies/shelly-smallroom-socket/relay/0/command',
+      status: 'shellies/shelly-smallroom-socket/relay/0',
+      sensor: 'shellies/shelly-smallroom-socket/relay/0/power',
       lwt: 'shellies/shelly-smallroom-socket/online',
     },
     ipAddress: '192.168.0.23',
