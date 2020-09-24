@@ -18,6 +18,7 @@ client.on('connect', () => {
     'tele/+/STATE',
     'tele/+/RESULT',
     'tele/+/LWT',
+    'shellies/+/online',
   ]);
 });
 
@@ -35,6 +36,13 @@ client.on('message', async (topic, payload) => {
         err,
       });
       console.error(err);
+    }
+  } else {
+    const shelliesMatch = topic.match(/^shellies\/(.+?)\/online$/);
+    if (shelliesMatch) {
+      client.publish(`shellies/${shelliesMatch[1]}/online_retained`, payload, {
+        retain: true,
+      });
     }
   }
 });
