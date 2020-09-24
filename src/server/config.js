@@ -5,11 +5,8 @@ module.exports = {
         device: 'wemos1',
         sensor: 'AM2301',
       },
-      // Can be string | null | { name: string, conditions: Record<string, {$eq: number, $lt: number, $gt: number, $lte: number, $gte: number}> }
-      heatingDevice: {
-        name: 'mobileHeater',
-        conditions: { 'Wifi.RSSI': { $gte: 85 } },
-      },
+      // Can be string | null | { name: string, conditions: Record<string, {$eq?: number, $lt?: number, $gt?: number, $lte?: number, $gte?: number}> }
+      heatingDevice: 'mobileHeater',
       defaultSetPoint: 20,
       autoMode: true,
       threshold: 0.3,
@@ -25,10 +22,7 @@ module.exports = {
         device: 'nodemcu1',
         sensor: 'AM2301',
       },
-      heatingDevice: {
-        name: 'mobileHeater',
-        conditions: { 'Wifi.RSSI': { $lt: 85 } },
-      },
+      heatingDevice: null,
       defaultSetPoint: 20,
       autoMode: true,
       threshold: 0.3,
