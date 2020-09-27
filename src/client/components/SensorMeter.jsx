@@ -6,7 +6,6 @@ import TimeAgo from './TimeAgo';
 import styles from './SensorMeter.css';
 
 function SensorMeter(props) {
-  const css = { backgroundImage: `url(${props.icon})` };
   const treeCss = [styles.value];
 
   if (
@@ -37,21 +36,19 @@ function SensorMeter(props) {
   if (props.title) {
     return (
       <div className={styles.root}>
-        <h3 style={css}>{props.title}</h3>
+        <h3>
+          {props.icon} {props.title}
+        </h3>
         {tree}
       </div>
     );
   }
 
-  return (
-    <div className={`${styles.root} ${styles.noTitle}`} style={css}>
-      {tree}
-    </div>
-  );
+  return <div className={`${styles.root} ${styles.noTitle}`}>{tree}</div>;
 }
 
 SensorMeter.propTypes = {
-  icon: PropTypes.string.isRequired,
+  icon: PropTypes.node,
   title: PropTypes.string,
   value: PropTypes.node,
   suffix: PropTypes.string,

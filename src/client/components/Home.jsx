@@ -13,6 +13,7 @@ import Sun from './Sun';
 import StoreProvider from '../lib/store';
 
 import styles from './Home.css';
+import AirQuality from './icons/AirQuality';
 
 export default class Home extends React.Component {
   render() {
@@ -47,7 +48,7 @@ export default class Home extends React.Component {
               {state.report.room.MQ135 && (
                 <SensorMeter
                   title="Air Quality"
-                  icon="images/air-quality.svg"
+                  icon={<AirQuality />}
                   suffix="%"
                   value={state.report.room.MQ135.airQuality}
                   normalRange={[70, 100]}

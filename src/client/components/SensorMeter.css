@@ -17,12 +17,9 @@
 }
 
 .root h3 {
-  min-height: 20px;
   margin-bottom: 0.5em;
-  padding-left: 24px;
-  background-repeat: no-repeat;
-  background-position: left top;
-  background-size: 20px;
+  display: flex;
+  justify-content: space-around;
 }
 
 .value {
@@ -41,12 +38,6 @@
 }
 
 @media (min-width: 475px) {
-  .root h3 {
-    min-height: 24px;
-    padding-left: 28px;
-    background-size: 24px;
-  }
-
   .value {
     font-size: 1.25em;
   }
