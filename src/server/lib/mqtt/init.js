@@ -38,6 +38,7 @@ client.on('message', async (topic, payload) => {
       console.error(err);
     }
   } else {
+    // Hack for Shelly devices not retaining LWT payload
     const shelliesMatch = topic.match(/^shellies\/(.+?)\/online$/);
     if (shelliesMatch) {
       client.publish(`shellies/${shelliesMatch[1]}/online_retained`, payload, {

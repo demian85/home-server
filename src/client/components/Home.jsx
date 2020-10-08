@@ -348,6 +348,16 @@ export default class Home extends React.Component {
                 }
               />
               <Switcher
+                device={state.devices.garageMosquitoTrap}
+                icon="no-mosquito.svg"
+                onChange={(value) =>
+                  state.sendCommand(
+                    state.devices.garageMosquitoTrap.topics.power,
+                    value ? 'on' : 'off'
+                  )
+                }
+              />
+              <Switcher
                 device={state.devices.wellWaterPump}
                 icon="water-pump.svg"
                 onChange={(value) =>
