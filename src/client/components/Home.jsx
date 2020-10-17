@@ -304,6 +304,13 @@ export default class Home extends React.Component {
             </Group>
 
             <Group place="garden">
+              <Switcher
+                device={state.devices.poolPump}
+                icon="valve.svg"
+                onChange={(value) =>
+                  state.sendCommand(state.devices.poolPump.topics.power, value)
+                }
+              />
               <TemperatureMeter
                 title="Temp"
                 value={state.report.garden.AM2301?.temperature}
