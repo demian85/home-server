@@ -311,6 +311,16 @@ export default class Home extends React.Component {
                   state.sendCommand(state.devices.poolPump.topics.power, value)
                 }
               />
+              <Switcher
+                device={state.devices.gardenMosquitoTrap}
+                icon="no-mosquito.svg"
+                onChange={(value) =>
+                  state.sendCommand(
+                    state.devices.gardenMosquitoTrap.topics.power,
+                    value ? 'on' : 'off'
+                  )
+                }
+              />
               <TemperatureMeter
                 title="Temp"
                 value={state.report.garden.AM2301?.temperature}
