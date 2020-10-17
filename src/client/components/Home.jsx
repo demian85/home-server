@@ -248,72 +248,6 @@ export default class Home extends React.Component {
               />
             </Group>
 
-            <Group place="outside">
-              {/* <Switcher
-                device={state.devices.treeLight}
-                icon="ornament.svg"
-                onChange={(value) =>
-                  state.sendCommand(state.devices.treeLight.topics.power, value)
-                }
-              /> */}
-              <Switcher
-                device={state.devices.poolPump}
-                icon="valve.svg"
-                onChange={(value) =>
-                  state.sendCommand(state.devices.poolPump.topics.power, value)
-                }
-              />
-              {/* {state.report.garden && (
-                <>
-                  <TemperatureMeter
-                    title="Temp"
-                    value={state.report.garden.DS18B20.temperature}
-                    lastUpdate={state.report.garden.DS18B20.lastUpdate}
-                  />
-                  <SensorMeter
-                    icon="/images/solar-panel.svg"
-                    value={state.report.garden.solarPanelVolts?.value.toFixed(
-                      2
-                    )}
-                    normalRange={[4.4, 6]}
-                    lastUpdate={state.report.garden.solarPanelVolts?.lastUpdate}
-                    suffix="V"
-                  />
-                  <SensorMeter
-                    icon="/images/battery.svg"
-                    value={state.report.garden.batteryVolts?.value.toFixed(2)}
-                    normalRange={[3.6, 4.2]}
-                    lastUpdate={state.report.garden.batteryVolts?.lastUpdate}
-                    suffix="V"
-                  />
-                </>
-              )} */}
-              {state.report.weather && (
-                <>
-                  <TemperatureMeter
-                    title="Weather temp"
-                    value={state.report.weather.temperature}
-                    lastUpdate={state.report.weather.lastUpdate}
-                  />
-                  <SensorMeter
-                    icon="/images/wind.svg"
-                    value={state.report.weather.windSpeedKmh}
-                    suffix="km/h"
-                  />
-                </>
-              )}
-              {/* {state.report.room.SOIL && (
-                <SensorMeter
-                  title="Soil Hum"
-                  icon="images/soil.svg"
-                  suffix="%"
-                  value={state.report.room.SOIL.value}
-                  lastUpdate={state.report.room.SOIL.lastUpdate}
-                />
-              )} */}
-              <Sun data={state.report.data} />
-            </Group>
-
             <Group place="laundry">
               <Switcher
                 device={state.devices.laundryLamp}
@@ -367,6 +301,66 @@ export default class Home extends React.Component {
                   )
                 }
               />
+            </Group>
+
+            <Group place="garden">
+              <TemperatureMeter
+                title="Temp"
+                value={state.report.garden.AM2301?.temperature}
+                lastUpdate={state.report.garden.AM2301?.lastUpdate}
+              />
+              <HumidityMeter
+                title="Hum"
+                value={state.report.garden.AM2301?.humidity}
+                lastUpdate={state.report.garden.AM2301?.lastUpdate}
+              />
+              <IlluminanceMeter
+                value={state.report.garden.APDS9960?.illuminance}
+                lastUpdate={state.report.garden.APDS9960?.lastUpdate}
+              />
+              {/* <SensorMeter
+                    icon="/images/solar-panel.svg"
+                    value={state.report.garden.solarPanelVolts?.value.toFixed(
+                      2
+                    )}
+                    normalRange={[4.4, 6]}
+                    lastUpdate={state.report.garden.solarPanelVolts?.lastUpdate}
+                    suffix="V"
+                  />
+                  <SensorMeter
+                    icon="/images/battery.svg"
+                    value={state.report.garden.batteryVolts?.value.toFixed(2)}
+                    normalRange={[3.6, 4.2]}
+                    lastUpdate={state.report.garden.batteryVolts?.lastUpdate}
+                    suffix="V"
+                  /> */}
+              {/* {state.report.room.SOIL && (
+                <SensorMeter
+                  title="Soil Hum"
+                  icon="images/soil.svg"
+                  suffix="%"
+                  value={state.report.room.SOIL.value}
+                  lastUpdate={state.report.room.SOIL.lastUpdate}
+                />
+              )} */}
+            </Group>
+
+            <Group place="outside">
+              {state.report.weather && (
+                <>
+                  <TemperatureMeter
+                    title="Temp"
+                    value={state.report.weather.temperature}
+                    lastUpdate={state.report.weather.lastUpdate}
+                  />
+                  <SensorMeter
+                    icon="/images/wind.svg"
+                    value={state.report.weather.windSpeedKmh}
+                    suffix="km/h"
+                  />
+                </>
+              )}
+              <Sun data={state.report.data} />
             </Group>
           </section>
         )}

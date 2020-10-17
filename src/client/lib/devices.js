@@ -122,14 +122,14 @@ export const devices = {
     power: null,
     online: null,
   },
-  treeLight: {
+  gardenMosquitoTrap: {
     topics: {
       power: 'cmnd/wemos-garden/power',
       status: 'stat/wemos-garden/POWER',
       tele: 'tele/wemos-garden/STATE',
       lwt: 'tele/wemos-garden/LWT',
     },
-    ipAddress: '192.168.0.29',
+    ipAddress: '192.168.0.28',
     power: null,
     online: null,
   },

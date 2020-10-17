@@ -9,6 +9,7 @@ function HumidityMeter(props) {
       icon="/images/humidity.svg"
       value={props.value}
       suffix="%"
+      normalRange={[0, 80]}
       lastUpdate={props.lastUpdate}
     />
   );

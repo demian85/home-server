@@ -101,8 +101,8 @@ exports.getRoomSetPoints = async () => {
 exports.getOutsideTemperature = async () => {
   const data = await db.getSensorData('garden');
 
-  if (data && data.DS18B20) {
-    return data.DS18B20.temperature;
+  if (data && data.AM2301) {
+    return data.AM2301.temperature;
   }
 
   const weather = await getWeatherReadings();

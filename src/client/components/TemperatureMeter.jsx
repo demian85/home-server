@@ -9,6 +9,7 @@ function TemperatureMeter(props) {
       icon="/images/temperature.svg"
       value={props.value}
       suffix="˚C"
+      normalRange={[0, 28]}
       lastUpdate={props.lastUpdate}
     />
   );
