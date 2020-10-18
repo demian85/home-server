@@ -14,6 +14,7 @@ import StoreProvider from '../lib/store';
 
 import styles from './Home.css';
 import AirQuality from './icons/AirQuality';
+import Mosquito from './icons/Mosquito';
 
 export default class Home extends React.Component {
   render() {
@@ -57,7 +58,7 @@ export default class Home extends React.Component {
               )}
               <Switcher
                 device={state.devices.bedRoomSocket}
-                icon="no-mosquito.svg"
+                icon={<Mosquito />}
                 onChange={(value) =>
                   state.sendCommand(
                     state.devices.bedRoomSocket.topics.power,

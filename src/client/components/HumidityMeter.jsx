@@ -1,4 +1,5 @@
 import React from 'react';
+import Humidity from './icons/Humidity';
 
 import SensorMeter from './SensorMeter';
 
@@ -6,7 +7,7 @@ function HumidityMeter(props) {
   return (
     <SensorMeter
       title={props.title}
-      icon="/images/humidity.svg"
+      icon={<Humidity />}
       value={props.value}
       suffix="%"
       normalRange={[0, 80]}

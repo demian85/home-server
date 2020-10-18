@@ -4,7 +4,6 @@ import Checkbox from './Checkbox';
 import styles from './AutoSwitcher.css';
 
 function AutoSwitcher(props) {
-  // eslint-disable-next-line
   const { value, label, onChange } = props;
 
   const isOn = value === 'on' || value === true || value == 1;

@@ -13,11 +13,11 @@ function Switcher(props) {
   const ipAddress = device ? device.ipAddress : null;
   const isOn =
     powerStatus === 'on' || powerStatus === true || powerStatus === 1;
-  const backgroundImage = `url(/images/${icon})`;
   const disabled = onlineStatus === false;
 
   return (
-    <div className={styles.root} style={{ backgroundImage }}>
+    <div className={styles.root}>
+      {icon && <span className={styles.icon}>{icon}</span>}
       {ipAddress && (
         <button
           className={styles.config}

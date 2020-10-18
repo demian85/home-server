@@ -6,9 +6,6 @@
   justify-content: center;
   border: 1px solid #eee;
   padding: 0.5em 1em 0.5em 30px;
-  background-repeat: no-repeat;
-  background-position: left 0.5em center;
-  background-size: 20px;
 }
 
 .root h3 {
@@ -72,12 +69,13 @@
   vertical-align: top;
 }
 
-@media (min-width: 475px) {
-  .root {
-    padding-left: 34px;
-    background-size: 24px;
-  }
+.icon {
+  position: absolute;
+  left: 0.5em;
+  top: 0.5em;
+}
 
+@media (min-width: 475px) {
   .root h3 {
     font-size: 1em;
   }
