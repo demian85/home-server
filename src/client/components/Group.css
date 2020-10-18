@@ -80,6 +80,11 @@
   border-color: maroon;
 }
 
+.garden {
+  background-image: url(/images/garden.svg);
+  border-color: #25a84a;
+}
+
 .outside {
   background-image: url(/images/outside.svg);
   border-color: #25a84a;

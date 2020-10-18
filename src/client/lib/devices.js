@@ -65,11 +65,22 @@ export const devices = {
     power: null,
     online: null,
   },
-  garageLamp: {
+  garageMosquitoTrap: {
     topics: {
       power: 'shellies/shelly-garage-lamp/relay/1/command',
       status: 'shellies/shelly-garage-lamp/relay/1',
       sensor: 'shellies/shelly-garage-lamp/relay/1/power',
+      lwt: 'shellies/shelly-garage-lamp/online_retained',
+    },
+    ipAddress: '192.168.0.22',
+    power: null,
+    online: null,
+  },
+  garageLamp: {
+    topics: {
+      power: 'shellies/shelly-garage-lamp/relay/0/command',
+      status: 'shellies/shelly-garage-lamp/relay/0',
+      sensor: 'shellies/shelly-garage-lamp/relay/0/power',
       lwt: 'shellies/shelly-garage-lamp/online_retained',
     },
     ipAddress: '192.168.0.22',
@@ -111,14 +122,14 @@ export const devices = {
     power: null,
     online: null,
   },
-  treeLight: {
+  gardenMosquitoTrap: {
     topics: {
       power: 'cmnd/wemos-garden/power',
       status: 'stat/wemos-garden/POWER',
       tele: 'tele/wemos-garden/STATE',
       lwt: 'tele/wemos-garden/LWT',
     },
-    ipAddress: '192.168.0.29',
+    ipAddress: '192.168.0.28',
     power: null,
     online: null,
   },
