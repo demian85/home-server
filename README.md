@@ -63,3 +63,7 @@ I'll keep experimenting with dev boards like Arduino, NodeMCU, ESP8266 and Sonof
 - Automatic plant watering for my garden 🌻
 - OLED display screen showing sensor data 📺
 - Remote controled car 🚙
+
+### Fix Redis AOF file if needed
+
+- `redis-check-aof --fix /var/lib/redis/appendonly.aof`
