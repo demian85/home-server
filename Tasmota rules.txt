@@ -26,3 +26,36 @@ rule2
 
   rule2
     on Energy#Power<450 do Power1 0 endon
+
+
+########################## Water pump rules
+
+# v1
+
+rule1
+  on System#Boot do BackLog publish cmnd/sonoff-water-valve/pulsetime 90; publish cmnd/sonoff-water-valve/power 1; TelePeriod 10 endon   
+  on Tele-Energy#Power<600 do publish cmnd/sonoff-water-valve/power 1 endon   
+  on Tele-Energy#Power>=600 do publish cmnd/sonoff-water-valve/power 0 endon
+
+# v2
+
+rule1
+  on System#Boot do BackLog Rule2 1; Ruletimer1 240; publish cmnd/sonoff-water-valve/pulsetime 90; publish cmnd/sonoff-water-valve/power 1; TelePeriod 10 endon
+  on Power1#state=1 do Backlog Rule2 1; Ruletimer1 240 endon
+  on Rules#Timer=1 do Backlog Power 0; Ruletimer2 14400; Rule2 0 endon
+  on Rules#timer=2 do Power 1 endon
+
+rule2
+  on Tele-Energy#Power<600 do publish cmnd/sonoff-water-valve/power 1 endon
+  on Tele-Energy#Power>=600 do publish cmnd/sonoff-water-valve/power 0 endon
+  
+
+########################## Mobile heater rules
+
+rule1
+  on Tele-SI7021#Temperature<21 do Power 1 endon
+  on Tele-SI7021#Temperature>21.5 do Power 0 endon
+
+rule1
+  on Tele-AM2301#Temperature<20 do Power 1 endon
+  on Tele-AM2301#Temperature>20.5 do Power 0 endon
