@@ -4,3 +4,4 @@ node_modules/
 .vscode
 .eslintcache
 build
+dist
