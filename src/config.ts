@@ -1,9 +1,9 @@
 export default {
   devices: [
     {
-      name: 'garden-led',
+      name: "bulb-1",
       powerOn() {},
-      powerOff(){}
-    }
-  ]
-}
+      powerOff() {},
+    },
+  ],
+};
