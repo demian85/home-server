@@ -1,21 +1,32 @@
 import { client } from './client'
-import { getRgbState } from './shelly'
+import { getBulbPayload, getBulbState } from './shelly'
 
-export type Parser = (data: string) => void
+type Parser = (data: string) => void
+
 interface ShellyEvent {
   event: string
   event_cnt: number
 }
 
 const parsers: Record<string, Parser> = {
+  'shellies/shelly-i3-buttons/input_event/0': (payload: unknown) => {
+    const data = payload as ShellyEvent
+    if (data.event === 'S') {
+      // toggle state
+      const turn = data.event_cnt % 2 ? 'off' : 'on'
+      client.publish(
+        'shellies/shelly-bulb-1/light/0/set',
+        getBulbPayload({ turn })
+      )
+    }
+  },
   'shellies/shelly-i3-buttons/input_event/1': (payload: unknown) => {
     const data = payload as ShellyEvent
     if (data.event === 'S') {
-      // toggle color
       const stateIndex = data.event_cnt % 3
       client.publish(
         'shellies/shelly-bulb-1/light/0/set',
-        JSON.stringify(getRgbState(stateIndex))
+        getBulbPayload(getBulbState(stateIndex))
       )
     }
   },

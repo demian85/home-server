@@ -4,7 +4,14 @@ import logger from './lib/logger'
 import parsers from './lib/parsers'
 
 client.once('connect', () => {
-  client.subscribe(['shellies/#'])
+  logger.info('Client connected')
+  const topics = ['shellies/#']
+  client.subscribe(topics, (err, granted) => {
+    if (err) {
+      logger.error(err)
+    }
+    logger.info({ topics }, 'Subscribed to topics')
+  })
 })
 
 client.on('message', (topic, payload) => {
