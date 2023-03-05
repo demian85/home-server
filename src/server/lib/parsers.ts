@@ -1,15 +1,9 @@
 import { client } from './client'
-import { getBulbPayload, getBulbState } from './shelly'
-
-type Parser = (data: string) => void
-
-interface ShellyEvent {
-  event: string
-  event_cnt: number
-}
+import { getBulbPayload, getBulbState, ShellyEvent } from './shelly'
+import { Parser } from './types'
 
 const parsers: Record<string, Parser> = {
-  'shellies/shelly-i3-buttons/input_event/0': (payload: unknown) => {
+  'shellies/shelly-i3-buttons/input_event/0': (payload) => {
     const data = payload as ShellyEvent
     if (data.event === 'S') {
       // toggle state
@@ -20,7 +14,7 @@ const parsers: Record<string, Parser> = {
       )
     }
   },
-  'shellies/shelly-i3-buttons/input_event/1': (payload: unknown) => {
+  'shellies/shelly-i3-buttons/input_event/1': (payload) => {
     const data = payload as ShellyEvent
     if (data.event === 'S') {
       const stateIndex = data.event_cnt % 3
@@ -30,6 +24,7 @@ const parsers: Record<string, Parser> = {
       )
     }
   },
+  'shellies/': (payload) => {},
 }
 
 export default parsers

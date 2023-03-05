@@ -1,11 +1,18 @@
 import 'dotenv/config'
-import { client } from './lib/client'
-import logger from './lib/logger'
-import parsers from './lib/parsers'
+
+import { client } from '@lib/client'
+import logger from '@lib/logger'
+import parsers from '@lib/parsers'
+import config from '../config'
 
 client.once('connect', () => {
   logger.info('Client connected')
-  const topics = ['shellies/#']
+
+  const topics = config.devices.reduce((prev, curr) => {
+    prev.concat(curr.subscriptions)
+    return prev
+  }, [] as string[])
+
   client.subscribe(topics, (err, granted) => {
     if (err) {
       logger.error(err)

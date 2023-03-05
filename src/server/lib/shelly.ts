@@ -75,6 +75,11 @@ const bulbStates: BulbState[] = [
   },
 ]
 
+export interface ShellyEvent {
+  event: string
+  event_cnt: number
+}
+
 export const getRgbState = (index: number) => rgbStates[index] ?? rgbStates[0]
 export const getBulbState = (index: number) =>
   bulbStates[index] ?? bulbStates[0]
