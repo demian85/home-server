@@ -37,19 +37,32 @@ rule1
   on Tele-Energy#Power<600 do publish cmnd/sonoff-water-valve/power 1 endon   
   on Tele-Energy#Power>=600 do publish cmnd/sonoff-water-valve/power 0 endon
 
-# v2
+# v2 - open water valve to vacuum air off the system
 
 rule1
-  on System#Boot do BackLog Rule2 1; Ruletimer1 240; publish cmnd/sonoff-water-valve/pulsetime 90; publish cmnd/sonoff-water-valve/power 1; TelePeriod 10 endon
-  on Power1#state=1 do Backlog Rule2 1; Ruletimer1 240 endon
+  on System#Boot do BackLog Rule2 1; Ruletimer1 480; publish cmnd/sonoff-water-valve/pulsetime 90; publish cmnd/sonoff-water-valve/power 1; TelePeriod 10 endon
+  on Power1#state=1 do Backlog Rule2 1; Ruletimer1 480 endon
+  on Power1#state=0 do Rule2 0 endon
   on Rules#Timer=1 do Backlog Power 0; Ruletimer2 14400; Rule2 0 endon
   on Rules#timer=2 do Power 1 endon
 
 rule2
   on Tele-Energy#Power<600 do publish cmnd/sonoff-water-valve/power 1 endon
   on Tele-Energy#Power>=600 do publish cmnd/sonoff-water-valve/power 0 endon
-  
 
+# v3 - power off after X seconds if power < 600w or after 8 minutes
+
+rule1
+  on System#Boot do BackLog Rule2 0; Ruletimer1 5; Ruletimer2 60; TelePeriod 10 endon
+  on Power1#state=1 do BackLog Rule2 0; Ruletimer1 5; Ruletimer2 60 endon
+  on Power1#state=0 do Ruletimer3 3600 endon
+  on Rules#Timer=1 do Rule2 1 endon
+  on Rules#Timer=2 do Power 0 endon
+  on Rules#Timer=3 do Power 1 endon
+
+rule2
+  on Tele-Energy#Power>600 do Backlog Ruletimer2 480 endon
+  
 ########################## Mobile heater rules
 
 rule1
@@ -59,3 +72,13 @@ rule1
 rule1
   on Tele-AM2301#Temperature<20 do Power 1 endon
   on Tele-AM2301#Temperature>20.5 do Power 0 endon
+
+  ########################## Power management rules for devices always on
+
+rule1 
+  on System#Boot do BackLog Rule2 1 endon
+  on Rules#Timer=1 do Backlog Rule2 1 endon
+
+rule2
+  on ENERGY#Voltage<205 do Backlog Power 0; Ruletimer1 120; Rule2 0 endon
+  on ENERGY#Voltage>=208 do Power 1 endon
