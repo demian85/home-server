@@ -17,6 +17,8 @@ export async function callWebhook(
     url.searchParams.append('value3', value3)
   }
 
+  console.debug('Calling webhook:', url.toString())
+
   const res = await fetch(url.toString())
 
   if (!res.ok) {

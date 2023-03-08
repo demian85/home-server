@@ -1,7 +1,7 @@
 import { Config } from '@lib/types'
 
 const config: Config = {
-  subscriptions: ['tele/+/SENSOR'],
+  subscriptions: ['tele/+/SENSOR', 'tele/+/LWT'],
   devices: [
     // {
     //   name: 'bulb-1',
