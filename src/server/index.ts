@@ -8,10 +8,12 @@ import config from '../config'
 client.once('connect', () => {
   logger.info('Client connected')
 
-  const topics = config.devices.reduce((prev, curr) => {
-    prev.concat(curr.subscriptions)
-    return prev
-  }, [] as string[])
+  const topics = config.subscriptions.concat(
+    config.devices.reduce((prev, curr) => {
+      prev = prev.concat(curr.subscriptions)
+      return prev
+    }, [] as string[])
+  )
 
   client.subscribe(topics, (err, granted) => {
     if (err) {
@@ -25,7 +27,9 @@ client.on('message', (topic, payload) => {
   let data
   try {
     data = JSON.parse(payload.toString().trim())
-  } catch (err) {}
+  } catch (err) {
+    data = payload.toString()
+  }
   logger.info({ topic, data })
 
   const parser = parsers[topic]

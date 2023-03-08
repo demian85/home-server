@@ -1,4 +1,5 @@
 import { client } from './client'
+import { callWebhook } from './ifttt'
 import { getBulbPayload, getBulbState, ShellyEvent } from './shelly'
 import { Parser } from './types'
 
@@ -24,7 +25,16 @@ const parsers: Record<string, Parser> = {
       )
     }
   },
-  'shellies/': (payload) => {},
+  'tele/sonoff-pool-pump/LWT': async (payload) => {
+    if (String(payload).toLowerCase() === 'offline') {
+      await callWebhook('device_event', 'Pool Pump', 'Device is offline')
+    }
+  },
+  'tele/sonoff-water-pump/LWT': async (payload) => {
+    if (String(payload).toLowerCase() === 'offline') {
+      await callWebhook('device_event', 'Water Pump', 'Device is offline')
+    }
+  },
 }
 
 export default parsers

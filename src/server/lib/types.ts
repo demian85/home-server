@@ -7,6 +7,7 @@ export interface Device {
 }
 
 export interface Config {
+  subscriptions: string[]
   devices: Device[]
 }
 

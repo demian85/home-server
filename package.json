@@ -12,8 +12,9 @@
   },
   "scripts": {
     "postinstall": "npm run build",
-    "build": "webpack -p --progress --env.production",
-    "start": "ts-node src/server/index.ts | pino-pretty",
+    "build": "tsc",
+    "start": "node ./build/server/index.js",
+    "start:dev": "ts-node -r tsconfig-paths/register src/server/index.ts | pino-pretty",
     "dev": "tsc --watch",
     "lint": "eslint ./src",
     "format": "prettier --write './src/**/*.{js,jsx,ts,tsx}'",
@@ -33,6 +34,11 @@
   ],
   "author": "Demian Rodriguez",
   "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.2",
+    "mqtt": "^4.3.7",
+    "pino": "^8.4.2"
+  },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "@typescript-eslint/parser": "^5.36.1",
@@ -40,16 +46,12 @@
     "pino-pretty": "^9.1.0",
     "prettier": "^2.7.1",
     "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.1.2",
     "typescript": "^4.8.2"
   },
   "jest": {
     "transform": {
       "^.+\\.js$": "babel-jest"
     }
-  },
-  "dependencies": {
-    "dotenv": "^16.0.2",
-    "mqtt": "^4.3.7",
-    "pino": "^8.4.2"
   }
 }
