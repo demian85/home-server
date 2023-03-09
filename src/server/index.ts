@@ -15,7 +15,7 @@ client.once('connect', () => {
     }, [] as string[])
   )
 
-  client.subscribe(topics, (err, granted) => {
+  client.subscribe(topics, (err, _granted) => {
     if (err) {
       logger.error(err)
     }

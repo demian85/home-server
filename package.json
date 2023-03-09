@@ -13,7 +13,7 @@
   "scripts": {
     "postinstall": "npm run build",
     "build": "tsc",
-    "start": "node ./build/server/index.js",
+    "start": "ts-node -r tsconfig-paths/register src/server/index.ts",
     "start:dev": "ts-node -r tsconfig-paths/register src/server/index.ts | pino-pretty",
     "dev": "tsc --watch",
     "lint": "eslint ./src",
