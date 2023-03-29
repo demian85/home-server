@@ -1,5 +1,6 @@
 node_modules/
 docs/mosquitto
+docs/Tasmota rules.txt
 .env
 .DS_Store
 .vscode
