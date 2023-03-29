@@ -12,3 +12,20 @@ export interface Config {
 }
 
 export type Parser = (data: unknown) => void
+
+export interface TasmotaSensorPayload {
+  Time: string
+  ENERGY?: {
+    TotalStartTime: string
+    Total: number
+    Yesterday: number
+    Today: number
+    Period: number
+    Power: number
+    ApparentPower: number
+    ReactivePower: number
+    Factor: number
+    Voltage: number
+    Current: number
+  }
+}
