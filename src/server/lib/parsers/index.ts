@@ -1,7 +1,11 @@
-import { client } from './client'
-import { callWebhook } from './ifttt'
-import { getBulbPayload, getBulbState, ShellyEvent } from './shelly'
-import { Parser, TasmotaSensorPayload } from './types'
+import { client } from '../client'
+import { callWebhook } from '../ifttt'
+import { getBulbPayload, getBulbState, ShellyEvent } from '../shelly'
+import { Parser } from '../types'
+import {
+  sensorParser as sonoffPoolPumpSensorParser,
+  lwtParser as sonoffPoolPumpLwtParser,
+} from './sonoff-pool-pump'
 
 const parsers: Record<string, Parser> = {
   'shellies/shelly-i3-buttons/input_event/0': (payload) => {
@@ -25,31 +29,8 @@ const parsers: Record<string, Parser> = {
       )
     }
   },
-  'tele/sonoff-pool-pump/LWT': (payload) => {
-    if (String(payload).toLowerCase() === 'offline') {
-      callWebhook('device_event', 'Pool Pump', 'Device is offline')
-    }
-  },
-  'tele/sonoff-pool-pump/SENSOR': (payload) => {
-    const data = payload as TasmotaSensorPayload
-    const voltage = data?.ENERGY?.Voltage ?? null
-    if (voltage === null) {
-      return
-    }
-    if (voltage <= 205) {
-      callWebhook(
-        'device_event',
-        'Energy watcher',
-        `Voltage is LOW: ${voltage}`
-      )
-    } else if (voltage >= 212) {
-      callWebhook(
-        'device_event',
-        'Energy watcher',
-        `Voltage is NORMAL: ${voltage}`
-      )
-    }
-  },
+  'tele/sonoff-pool-pump/LWT': sonoffPoolPumpLwtParser,
+  'tele/sonoff-pool-pump/SENSOR': sonoffPoolPumpSensorParser,
   'tele/sonoff-water-pump/LWT': (payload) => {
     if (String(payload).toLowerCase() === 'offline') {
       callWebhook('device_event', 'Water Pump', 'Device is offline')
