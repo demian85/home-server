@@ -12,7 +12,7 @@ export const sensorParser: Parser = (payload) => {
   }
 
   if (voltage <= 205 && (voltageIsLow === false || voltageIsLow === null)) {
-    callWebhook('device_event', 'Energy watcher', `Voltage is LOW: ${voltage}`)
+    callWebhook('device_event', 'Energy watcher', `Voltage is LOW: ${voltage}v`)
     voltageIsLow = true
   } else if (
     voltage >= 212 &&
@@ -21,7 +21,7 @@ export const sensorParser: Parser = (payload) => {
     callWebhook(
       'device_event',
       'Energy watcher',
-      `Voltage is NORMAL: ${voltage}`
+      `Voltage is NORMAL: ${voltage}v`
     )
     voltageIsLow = false
   }
