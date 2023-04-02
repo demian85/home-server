@@ -1,41 +1,17 @@
-import { client } from '../client'
-import { callWebhook } from '../ifttt'
-import { getBulbPayload, getBulbState, ShellyEvent } from '../shelly'
 import { Parser } from '../types'
-import {
-  sensorParser as sonoffPoolPumpSensorParser,
-  lwtParser as sonoffPoolPumpLwtParser,
-} from './sonoff-pool-pump'
+import { readdir } from 'fs/promises'
+import { join } from 'path'
 
-const parsers: Record<string, Parser> = {
-  'shellies/shelly-i3-buttons/input_event/0': (payload) => {
-    const data = payload as ShellyEvent
-    if (data.event === 'S') {
-      // toggle state
-      const turn = data.event_cnt % 2 ? 'off' : 'on'
-      client.publish(
-        'shellies/shelly-bulb-1/light/0/set',
-        getBulbPayload({ turn })
-      )
-    }
-  },
-  'shellies/shelly-i3-buttons/input_event/1': (payload) => {
-    const data = payload as ShellyEvent
-    if (data.event === 'S') {
-      const stateIndex = data.event_cnt % 3
-      client.publish(
-        'shellies/shelly-bulb-1/light/0/set',
-        getBulbPayload(getBulbState(stateIndex))
-      )
-    }
-  },
-  'tele/sonoff-pool-pump/LWT': sonoffPoolPumpLwtParser,
-  'tele/sonoff-pool-pump/SENSOR': sonoffPoolPumpSensorParser,
-  'tele/sonoff-water-pump/LWT': (payload) => {
-    if (String(payload).toLowerCase() === 'offline') {
-      callWebhook('device_event', 'Water Pump', 'Device is offline')
-    }
-  },
+export async function loadParsers() {
+  const baseDir = join(__dirname, 'devices')
+  const files = await readdir(baseDir)
+  const parserEntries: [string, Parser][] = []
+
+  for (const file of files) {
+    const parsers: Record<string, Parser> = (await import(join(baseDir, file)))
+      .default
+    parserEntries.push(...Object.entries(parsers))
+  }
+
+  return Object.fromEntries(parserEntries)
 }
-
-export default parsers
