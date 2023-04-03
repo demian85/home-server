@@ -29,3 +29,25 @@ export interface TasmotaSensorPayload {
     Current: number
   }
 }
+
+export interface TasmotaStatePayload {
+  Time: string
+  Uptime: string
+  UptimeSec: number
+  Heap: number
+  SleepMode: string
+  Sleep: number
+  LoadAvg: number
+  MqttCount: number
+  POWER: 'ON' | 'OFF'
+  Wifi?: {
+    AP: number
+    SSId: string
+    BSSId: string
+    Channel: number
+    RSSI: number
+    Signal: number
+    LinkCount: number
+    Downtime: string
+  }
+}
