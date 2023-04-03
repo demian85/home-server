@@ -15,19 +15,31 @@ export type Parser = (data: unknown) => void
 
 export interface TasmotaSensorPayload {
   Time: string
-  ENERGY?: {
-    TotalStartTime: string
-    Total: number
-    Yesterday: number
-    Today: number
-    Period: number
-    Power: number
-    ApparentPower: number
-    ReactivePower: number
-    Factor: number
-    Voltage: number
-    Current: number
-  }
+  TempUnit?: string
+  ENERGY?: TasmotaEnergyValues
+  DS18B20?: TasmotaTempSensorValues
+  AM2301?: TasmotaTempSensorValues
+}
+
+interface TasmotaEnergyValues {
+  TotalStartTime: string
+  Total: number
+  Yesterday: number
+  Today: number
+  Period: number
+  Power: number
+  ApparentPower: number
+  ReactivePower: number
+  Factor: number
+  Voltage: number
+  Current: number
+}
+
+interface TasmotaTempSensorValues {
+  Id: string
+  Temperature: number
+  Humidity?: number
+  DewPoint?: number
 }
 
 export interface TasmotaStatePayload {
