@@ -4,6 +4,7 @@ import { client } from '@lib/client'
 import logger from '@lib/logger'
 import { loadParsers } from '@lib/parsers'
 import config from '../config'
+/////------------------------------------
 ;(async function init() {
   const parsers = await loadParsers()
 

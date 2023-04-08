@@ -21,20 +21,6 @@ const config: Config = {
       powerOn() {},
       powerOff() {},
     },
-    {
-      name: 'shelly-garage',
-      type: 'switch',
-      subscriptions: [],
-      powerOn() {},
-      powerOff() {},
-    },
-    {
-      name: 'shelly-bedroom2-socket',
-      type: 'switch',
-      subscriptions: [],
-      powerOn() {},
-      powerOff() {},
-    },
   ],
 }
 
