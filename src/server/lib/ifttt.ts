@@ -19,9 +19,11 @@ export async function callWebhook(
 
   console.debug('Calling webhook:', url.toString())
 
-  const res = await fetch(url.toString())
+  if (process.env.NODE_ENV !== 'development') {
+    const res = await fetch(url.toString())
 
-  if (!res.ok) {
-    throw new Error(`HTTP request failed with status code: ${res.status}`)
+    if (!res.ok) {
+      throw new Error(`HTTP request failed with status code: ${res.status}`)
+    }
   }
 }

@@ -4,6 +4,8 @@ import { client } from '@lib/client'
 import logger from '@lib/logger'
 import { loadParsers } from '@lib/parsers'
 import config from '../config'
+import telegramBot from '@lib/telegram'
+
 /////------------------------------------
 ;(async function init() {
   const parsers = await loadParsers()
@@ -24,7 +26,7 @@ import config from '../config'
       if (err) {
         logger.error(err)
       }
-      logger.info({ topics }, 'Subscribed to topics')
+      logger.debug({ topics }, 'Subscribed to topics')
     })
   })
 
@@ -35,10 +37,12 @@ import config from '../config'
     } catch (err) {
       data = payload.toString()
     }
-    logger.info({ topic, data })
+    logger.debug({ topic, data })
 
     const parser = parsers[topic]
 
     parser?.(data)
   })
+
+  telegramBot.launch()
 })()

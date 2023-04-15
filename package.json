@@ -1,6 +1,6 @@
 {
   "name": "@demian85/home-server",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Smart Home server",
   "main": "build/index.js",
   "engines": {
@@ -37,10 +37,17 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.0.2",
+    "lodash": "^4.17.21",
+    "luxon": "^3.3.0",
     "mqtt": "^4.3.7",
-    "pino": "^8.4.2"
+    "openai": "^3.2.1",
+    "pino": "^8.4.2",
+    "redis": "^4.6.5",
+    "telegraf": "^4.12.2"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.194",
+    "@types/luxon": "^3.3.0",
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "@typescript-eslint/parser": "^5.36.1",
     "eslint": "^8.23.0",
