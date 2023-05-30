@@ -1,6 +1,6 @@
 import 'dotenv/config'
 
-import { client } from '@lib/client'
+import { client } from '@lib/mqtt'
 import logger from '@lib/logger'
 import { loadParsers } from '@lib/parsers'
 import config from '../config'

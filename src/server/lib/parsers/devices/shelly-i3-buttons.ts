@@ -1,4 +1,4 @@
-import { client } from '@lib/client'
+import { client } from '@lib/mqtt'
 import { ShellyEvent, getBulbPayload, getBulbState } from '@lib/shelly'
 import { Parser } from '@lib/types'
 

@@ -36,6 +36,7 @@
   "author": "Demian Rodriguez",
   "license": "ISC",
   "dependencies": {
+    "@telegraf/session": "^2.0.0-beta.6",
     "dotenv": "^16.0.2",
     "lodash": "^4.17.21",
     "luxon": "^3.3.0",

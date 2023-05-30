@@ -1,9 +1,16 @@
+import { MqttClient } from 'mqtt'
+
 export interface Device {
+  id: string
   name: string
   type: 'rgb' | 'switch' | 'input'
   subscriptions: string[]
-  powerOn: () => void
-  powerOff: () => void
+  sendCommand: (
+    mqttClient: MqttClient,
+    cmd: string,
+    value: string
+  ) => Promise<void>
+  setTemperature?: (mqttClient: MqttClient, temp: number) => Promise<void>
 }
 
 export interface Config {

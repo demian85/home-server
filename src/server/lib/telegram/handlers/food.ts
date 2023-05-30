@@ -1,58 +1,23 @@
-import { Telegraf } from 'telegraf'
-import { message } from 'telegraf/filters'
+import { redisClient } from '@lib/db'
 import logger from '@lib/logger'
-import { redisClient } from './db'
-import { DEFAULT_MODEL, chatCompletion } from './openai'
-import { capitalize, groupBy } from 'lodash'
+import { chatCompletion, DEFAULT_MODEL } from '@lib/openai'
 import { DateTime } from 'luxon'
+import { ContextWithSession, FoodStockList } from '../types'
+import { groupBy, capitalize } from 'lodash'
 
-interface FoodStockItem {
-  name: string
-  category: string
-  stock: number
-  expiry: string
-}
+export default {
+  message: [
+    async (ctx: ContextWithSession) => {
+      ctx.session.currentCommand = { id: 'food', step: 0 }
+      const list = await getFoodStock()
+      const listStr = formatFoodStock(list)
+      logger.debug({ list })
+      await ctx.reply(`This is your current stock:\n${listStr}`)
+    },
+    async (ctx: ContextWithSession) => {
+      const currentFoodStock = await getFoodStock()
 
-type FoodStockList = FoodStockItem[]
-
-const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN!)
-
-bot.start((ctx) => ctx.reply(`Welcome! I'm your home assistant`))
-bot.help((ctx) => ctx.reply('What do you need?'))
-
-bot.use((ctx, _next) => {
-  logger.debug({ message: ctx.message }, 'Middleware call')
-
-  if (ctx.chat?.type !== 'private') {
-    throw new Error('Bot not allowed in groups')
-  }
-  if (
-    !ctx.chat.username ||
-    !['demian85', 'SilvanaFontana'].includes(ctx.chat.username)
-  ) {
-    throw new Error('Forbidden')
-  }
-  _next()
-})
-
-bot.command('food', async (ctx) => {
-  const list = await getFoodStock()
-  const listStr = formatFoodStock(list)
-  logger.debug({ list })
-  await ctx.reply(`This is your current stock:\n${listStr}`)
-})
-
-bot.on(message('text'), async (ctx) => {
-  const prompt = ctx.message.text
-
-  if (!prompt) {
-    ctx.reply(`I can't do anything with an empty command`)
-    return
-  }
-
-  const currentFoodStock = await getFoodStock()
-
-  const openAIprompt = `
+      const openAIprompt = `
   Actúa como un experto desarrollador full-stack. Debes interpretar y modificar el JSON recibido (que representa un inventario de items con sus respectivas propiedades).
   Debes responder solamente con un JSON idéntico al recibido entre corchetes [], pero con el estado final del inventario, basándote en la acción efectuada entre paréntesis ()
   Las acciones posibles son:
@@ -68,32 +33,29 @@ bot.on(message('text'), async (ctx) => {
   ${JSON.stringify(currentFoodStock)}
   (${prompt})`
 
-  const completion = await chatCompletion({
-    model: DEFAULT_MODEL,
-    messages: [{ role: 'user', content: openAIprompt }],
-  })
+      const completion = await chatCompletion({
+        model: DEFAULT_MODEL,
+        messages: [{ role: 'user', content: openAIprompt }],
+      })
 
-  try {
-    const finalItems = JSON.parse(completion.trim()) as FoodStockList
-    const finalItemsStr = formatFoodStock(finalItems)
-    await redisClient.set('home_server:food:list', JSON.stringify(finalItems))
-    ctx.reply(`${finalItemsStr}`)
-  } catch (err) {
-    logger.error({ err }, 'An error occurred while parsing the response JSON')
-  }
-})
-
-bot.on('callback_query', async (ctx) => {
-  await ctx.answerCbQuery()
-})
-
-bot.on('inline_query', async (ctx) => {
-  await ctx.answerInlineQuery([])
-})
-
-// Enable graceful stop
-process.once('SIGINT', () => bot.stop('SIGINT'))
-process.once('SIGTERM', () => bot.stop('SIGTERM'))
+      try {
+        const finalItems = JSON.parse(completion.trim()) as FoodStockList
+        const finalItemsStr = formatFoodStock(finalItems)
+        await redisClient.set(
+          'home_server:food:list',
+          JSON.stringify(finalItems)
+        )
+        ctx.reply(`${finalItemsStr}`)
+      } catch (err) {
+        logger.error(
+          { err },
+          'An error occurred while parsing the response JSON'
+        )
+      }
+    },
+  ],
+  callbackQuery: [],
+}
 
 function formatFoodStock(inputItems: FoodStockList): string {
   const groupedItems = groupBy(inputItems, (v) => capitalize(v.category))
@@ -129,5 +91,3 @@ async function getFoodStock(): Promise<FoodStockList> {
   const list: FoodStockList = stock ? JSON.parse(stock) : []
   return list
 }
-
-export default bot
