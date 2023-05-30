@@ -1,12 +1,11 @@
 import { highTemperatureHandler } from '@lib/actions'
-import { callWebhook } from '@lib/ifttt'
+import { sendNotification } from '@lib/telegram'
 import { Parser, TasmotaSensorPayload } from '@lib/types'
 
 const parsers: Record<string, Parser> = {
   'tele/wemos-living-room/LWT': (payload) => {
-    if (String(payload).toLowerCase() === 'offline') {
-      callWebhook('device_event', 'Living Room', 'Device is offline')
-    }
+    const online = String(payload).toLowerCase() === 'online'
+    sendNotification(`*Living Room* is ${online ? 'online' : 'offline'}`)
   },
   'tele/wemos-living-room/SENSOR': (payload) => {
     const data = payload as TasmotaSensorPayload

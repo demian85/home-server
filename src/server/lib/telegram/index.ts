@@ -88,7 +88,8 @@ process.once('SIGTERM', () => bot.stop('SIGTERM'))
 export async function sendNotification(text: string) {
   return bot.telegram.sendMessage(
     process.env.TELEGRAM_NOTIFICATIONS_TARGET!,
-    text
+    text,
+    { parse_mode: 'MarkdownV2' }
   )
 }
 

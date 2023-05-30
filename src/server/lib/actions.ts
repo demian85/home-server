@@ -1,4 +1,5 @@
 import { callWebhook } from './ifttt'
+import { sendNotification } from './telegram'
 
 let voltageIsLow: boolean | null = null
 let tempIsHigh = false
@@ -9,16 +10,14 @@ export function voltageHandler(voltage: number) {
   }
 
   if (voltage <= 205 && (voltageIsLow === false || voltageIsLow === null)) {
-    callWebhook('device_event', 'Energy watcher', `Voltage is LOW: ${voltage}v`)
+    sendNotification(`*Energy Watcher* reported: Voltage is LOW: ${voltage}v`)
     voltageIsLow = true
   } else if (
     voltage >= 212 &&
     (voltageIsLow === true || voltageIsLow === null)
   ) {
-    callWebhook(
-      'device_event',
-      'Energy watcher',
-      `Voltage is NORMAL: ${voltage}v`
+    sendNotification(
+      `*Energy Watcher* reported: Voltage is NORMAL: ${voltage}v`
     )
     voltageIsLow = false
   }
@@ -30,7 +29,9 @@ export function highTemperatureHandler(source: string, temp: number | null) {
   }
 
   if (temp > 30 && !tempIsHigh) {
-    callWebhook('device_event', source, `Temperature is HIGH: ${temp} C`)
+    sendNotification(
+      `*Temperature Watcher* reported: Temperature is HIGH: ${temp} C`
+    )
     tempIsHigh = true
   } else {
     tempIsHigh = false
