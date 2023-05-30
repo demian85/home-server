@@ -5,12 +5,13 @@ import { Parser, TasmotaSensorPayload } from '@lib/types'
 const parsers: Record<string, Parser> = {
   'tele/wemos-living-room/LWT': (payload) => {
     const online = String(payload).toLowerCase() === 'online'
-    sendNotification(`*Living Room* is ${online ? 'online' : 'offline'}`)
+    sendNotification(
+      `🛋 *Living Room* is ${online ? 'online 🟢' : 'offline 🔴'}`
+    )
   },
   'tele/wemos-living-room/SENSOR': (payload) => {
     const data = payload as TasmotaSensorPayload
     const temp = data.AM2301?.Temperature ?? null
-
     highTemperatureHandler('Living Room', temp)
   },
 }

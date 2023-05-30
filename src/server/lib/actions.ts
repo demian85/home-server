@@ -1,4 +1,5 @@
 import { sendNotification } from './telegram'
+import config from '../../config'
 
 let voltageIsLow: boolean | null = null
 let tempIsHigh = false
@@ -22,7 +23,10 @@ export function voltageHandler(voltage: number) {
   }
 }
 
-export function highTemperatureHandler(source: string, temp: number | null) {
+export function highTemperatureHandler(
+  deviceName: string,
+  temp: number | null
+) {
   if (temp === null) {
     return
   }
