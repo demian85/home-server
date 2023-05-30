@@ -2,7 +2,7 @@ import { Config } from '@lib/types'
 import { MqttClient } from 'mqtt'
 
 const config: Config = {
-  subscriptions: ['tele/+/SENSOR', 'tele/+/LWT'],
+  subscriptions: ['tele/+/SENSOR', 'tele/+/LWT', 'stat/+/POWER'],
   devices: [
     {
       id: 'bulb-1',

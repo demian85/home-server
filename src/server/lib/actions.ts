@@ -1,4 +1,3 @@
-import { callWebhook } from './ifttt'
 import { sendNotification } from './telegram'
 
 let voltageIsLow: boolean | null = null
