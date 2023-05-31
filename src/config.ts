@@ -30,6 +30,7 @@ const config: Config = {
         mqttClient.publish(`cmnd/wemos-living-room/${cmd.toUpperCase()}`, value)
       },
       async setTemperature(mqttClient, temp) {
+        const nightModeTemp = Math.max(1, temp - 10)
         await this.sendCommand(
           mqttClient,
           'Rule1',
@@ -37,13 +38,38 @@ const config: Config = {
             on AM2301#Temperature<${temp} do Power 1 endon
             on AM2301#Temperature>${temp + 0.5} do Power 0 endon`
         )
-        const nightModeTemp = Math.max(1, temp - 10)
         await this.sendCommand(
           mqttClient,
           'Rule2',
           ` on Clock#Timer=2 do Backlog Rule1 1; Rule2 0 break
             on AM2301#Temperature<${nightModeTemp} do Power 1 endon
             on AM2301#Temperature>${nightModeTemp + 0.5} do Power 0 endon`
+        )
+      },
+    },
+    {
+      id: 'mobile-heater-1',
+      name: 'Mobile Heater',
+      type: 'switch',
+      subscriptions: [],
+      async sendCommand(mqttClient, cmd, value) {
+        mqttClient.publish(`cmnd/mobile-heater-1/${cmd.toUpperCase()}`, value)
+      },
+      async setTemperature(mqttClient, temp) {
+        const dayModeTemp = Math.max(1, temp - 5)
+        await this.sendCommand(
+          mqttClient,
+          'Rule1',
+          ` on Clock#Timer=1 do Backlog Rule2 1; Rule1 0 break
+            on SI7021#Temperature<${dayModeTemp} do Power 1 endon
+            on SI7021#Temperature>${dayModeTemp + 0.5} do Power 0 endon`
+        )
+        await this.sendCommand(
+          mqttClient,
+          'Rule2',
+          ` on Clock#Timer=2 do Backlog Rule1 1; Rule2 0 break
+            on SI7021#Temperature<${temp} do Power 1 endon
+            on SI7021#Temperature>${temp + 0.5} do Power 0 endon`
         )
       },
     },
