@@ -36,3 +36,8 @@ export interface CurrentCommand {
   step: number
   data?: string
 }
+
+export interface Handler {
+  message: Array<(ctx: MessageContext) => Promise<void>>
+  callbackQuery: Array<(ctx: CallbackQueryContext) => Promise<void>>
+}

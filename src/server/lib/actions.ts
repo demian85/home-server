@@ -9,15 +9,13 @@ export function voltageHandler(voltage: number) {
   }
 
   if (voltage <= 205 && (voltageIsLow === false || voltageIsLow === null)) {
-    sendNotification(`*Energy Watcher* reported: Voltage is LOW: ${voltage}v`)
+    sendNotification(`*Energy Watcher*: Voltage is LOW \\(${voltage}v\\)`)
     voltageIsLow = true
   } else if (
     voltage >= 212 &&
     (voltageIsLow === true || voltageIsLow === null)
   ) {
-    sendNotification(
-      `⚡ *Energy Watcher* reported: Voltage is NORMAL: ${voltage}v`
-    )
+    sendNotification(`⚡ *Energy Watcher*: Voltage is NORMAL \\(${voltage}v\\)`)
     voltageIsLow = false
   }
 }
@@ -32,7 +30,7 @@ export function highTemperatureHandler(
 
   if (temp > 30 && !tempIsHigh) {
     sendNotification(
-      `🌡️ *Temperature Watcher* reported: Temperature is HIGH: ${temp} C`
+      `🌡️ *Temperature Watcher*: Temperature is HIGH \\(${temp} C\\)`
     )
     tempIsHigh = true
   } else {

@@ -18,7 +18,12 @@ bot.use(
 
 bot.use((ctx, _next) => {
   logger.debug(
-    { message: ctx.message, session: ctx.session },
+    {
+      message: ctx.message,
+      session: ctx.session,
+      update: ctx.update,
+      updateType: ctx.updateType,
+    },
     'Middleware call'
   )
 
@@ -33,14 +38,18 @@ bot.use((ctx, _next) => {
   ) {
     throw new Error('Forbidden')
   }
-  _next()
+
+  return _next()
 })
 
-bot.start((ctx) => {
-  ctx.reply(`Welcome! I'm your home assistant`)
-})
+bot.start((ctx) => ctx.reply(`Welcome! I'm your home assistant`))
 
 bot.help((ctx) => ctx.reply('What do you need?'))
+
+bot.command('abort', async (ctx) => {
+  ctx.session.currentCommand = null
+  await ctx.reply(`Current operation aborted`)
+})
 
 bot.command('food', async (ctx) => {
   await handlers.food.message[0](ctx)
@@ -54,8 +63,7 @@ bot.on(message('text'), async (ctx) => {
   const prompt = ctx.message.text
 
   if (!prompt) {
-    ctx.reply(`I can't do anything with an empty command`)
-    return
+    return ctx.reply(`I can't do anything with an empty command`)
   }
 
   const cmd = ctx.session.currentCommand
@@ -70,11 +78,18 @@ bot.on('callback_query', async (ctx) => {
   const cmd = ctx.session.currentCommand
 
   if (!cmd) {
-    return
+    return ctx.answerCbQuery()
   }
 
   const cmdId = cmd.id as keyof typeof handlers
-  await handlers?.[cmdId].callbackQuery[cmd.step](ctx)
+  const handler = handlers?.[cmdId].callbackQuery[cmd.step]
+
+  // @ts-ignore
+  if (handler) {
+    return handler(ctx)
+  }
+
+  return ctx.answerCbQuery()
 })
 
 bot.on('inline_query', async (ctx) => {

@@ -4,7 +4,7 @@ import { client } from '@lib/mqtt'
 import logger from '@lib/logger'
 import { loadParsers } from '@lib/parsers'
 import config from '../config'
-import telegramBot from '@lib/telegram'
+import telegramBot, { sendNotification } from '@lib/telegram'
 
 /////------------------------------------
 ;(async function init() {
@@ -37,12 +37,13 @@ import telegramBot from '@lib/telegram'
     } catch (err) {
       data = payload.toString()
     }
-    logger.debug({ topic, data })
+    logger.trace({ topic, data })
 
     const parser = parsers[topic]
 
     parser?.(data)
   })
 
-  telegramBot.launch()
+  await telegramBot.launch()
+  await sendNotification('Server initialized')
 })()

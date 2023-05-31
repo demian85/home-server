@@ -23,7 +23,22 @@ export default {
     async (ctx: MessageContext) => {
       const cmd = ctx.session.currentCommand!
       const device = config.devices.find((d) => d.id === cmd.data)
-      await device?.setTemperature?.(mqttClient, 0)
+      const temp = +ctx.message.text
+
+      if (isNaN(temp)) {
+        ctx.reply(`${temp} is not a valid number`)
+        return
+      }
+
+      if (device) {
+        await device.setTemperature?.(mqttClient, temp)
+        await ctx.reply(
+          `New temperature set for device _${device.name}_: ${temp} C`,
+          { parse_mode: 'MarkdownV2' }
+        )
+      }
+
+      ctx.session.currentCommand = null
     },
   ],
   callbackQuery: [
