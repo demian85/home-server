@@ -1,18 +1,14 @@
-import { highTemperatureHandler } from '@lib/actions'
-import { sendNotification } from '@lib/telegram'
+import { highTemperatureHandler, lwtHandler } from '@lib/actions'
 import { Parser, TasmotaSensorPayload } from '@lib/types'
 
 const parsers: Record<string, Parser> = {
   'tele/wemos-living-room/LWT': (payload) => {
-    const online = String(payload).toLowerCase() === 'online'
-    sendNotification(
-      `🛋 *Living Room* is ${online ? 'online 🟢' : 'offline 🔴'}`
-    )
+    lwtHandler('🛋 *Living Room*', payload)
   },
   'tele/wemos-living-room/SENSOR': (payload) => {
     const data = payload as TasmotaSensorPayload
     const temp = data.AM2301?.Temperature ?? null
-    highTemperatureHandler('Living Room', temp)
+    highTemperatureHandler('🛋 *Living Room*', temp)
   },
 }
 
