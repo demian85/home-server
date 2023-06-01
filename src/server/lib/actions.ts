@@ -10,7 +10,7 @@ export function voltageHandler(voltage: number) {
   }
 
   if (voltage <= 205 && (voltageIsLow === false || voltageIsLow === null)) {
-    sendNotification(`*Energy Watcher*: Voltage is LOW \\(${voltage}v\\)`)
+    sendNotification(`⚡ *Energy Watcher*: Voltage is LOW \\(${voltage}v\\)`)
     voltageIsLow = true
   } else if (
     voltage >= 212 &&

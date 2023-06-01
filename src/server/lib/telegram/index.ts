@@ -78,7 +78,7 @@ bot.on('callback_query', async (ctx) => {
   const cmd = ctx.session.currentCommand
 
   if (!cmd) {
-    return ctx.answerCbQuery()
+    return ctx.answerCbQuery('Invalid callback')
   }
 
   const cmdId = cmd.id as keyof typeof handlers
@@ -89,7 +89,7 @@ bot.on('callback_query', async (ctx) => {
     return handler(ctx)
   }
 
-  return ctx.answerCbQuery()
+  return ctx.answerCbQuery('Invalid callback')
 })
 
 bot.on('inline_query', async (ctx) => {
