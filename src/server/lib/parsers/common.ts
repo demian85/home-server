@@ -16,9 +16,10 @@ export function lwtParser(deviceId: string, deviceName: string): Parser {
     if (newStatus !== currStatus?.value) {
       await setDeviceStatus(deviceId, newStatus)
       await sendNotification(
-        `${deviceName} is ${
+        `<b>${deviceName}</b> is ${
           newStatus === 'online' ? 'online 🟢' : 'offline 🔴'
-        }`
+        }`,
+        'HTML'
       )
     }
   }
@@ -31,7 +32,10 @@ export function powerParser(deviceId: string, deviceName: string): Parser {
     const powerValue = payload as string
     if (newStatus !== currStatus?.value) {
       await setDevicePower(deviceId, newStatus)
-      await sendNotification(`${deviceName} reported: Power ${powerValue}`)
+      await sendNotification(
+        `<b>${deviceName}</b> reported: Power ${powerValue}`,
+        'HTML'
+      )
     }
   }
 }
@@ -53,14 +57,18 @@ export function voltageParser(): Parser {
       voltage <= 205 &&
       (lowVoltage === 'false' || lowVoltage === undefined)
     ) {
-      sendNotification(`⚡ *Energy Watcher*: Voltage is LOW \\(${voltage}v\\)`)
+      sendNotification(
+        `⚡ <b>Energy Watcher</b>: Voltage is LOW (${voltage}v)`,
+        'HTML'
+      )
       await setSystemStatus('lowVoltage', true)
     } else if (
       voltage >= 212 &&
       (lowVoltage === 'true' || lowVoltage === undefined)
     ) {
       sendNotification(
-        `⚡ *Energy Watcher*: Voltage is NORMAL \\(${voltage}v\\)`
+        `⚡ <b>Energy Watcher</b>: Voltage is NORMAL (${voltage}v)`,
+        'HTML'
       )
       await setSystemStatus('lowVoltage', false)
     }

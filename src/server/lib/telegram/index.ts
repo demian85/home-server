@@ -5,6 +5,7 @@ import logger from '@lib/logger'
 import { Redis } from '@telegraf/session/redis'
 import { ContextWithSession } from './types'
 import handlers from './handlers'
+import { ParseMode } from 'telegraf/typings/core/types/typegram'
 
 const bot = new Telegraf<ContextWithSession>(process.env.TELEGRAM_BOT_TOKEN!)
 
@@ -100,11 +101,11 @@ bot.on('inline_query', async (ctx) => {
 process.once('SIGINT', () => bot.stop('SIGINT'))
 process.once('SIGTERM', () => bot.stop('SIGTERM'))
 
-export async function sendNotification(text: string) {
+export async function sendNotification(text: string, parseMode?: ParseMode) {
   return bot.telegram.sendMessage(
     process.env.TELEGRAM_NOTIFICATIONS_TARGET!,
     text,
-    { parse_mode: 'MarkdownV2' }
+    { parse_mode: parseMode }
   )
 }
 
