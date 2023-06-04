@@ -32,16 +32,16 @@ import telegramBot, { sendNotification } from '@lib/telegram'
 
   client.on('message', (topic, payload) => {
     let data
+
     try {
       data = JSON.parse(payload.toString().trim())
     } catch (err) {
       data = payload.toString()
     }
+
     logger.trace({ topic, data })
 
-    const parser = parsers[topic]
-
-    parser?.(data)
+    parsers[topic]?.(data)
   })
 
   await telegramBot.launch()

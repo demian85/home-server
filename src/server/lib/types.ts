@@ -18,7 +18,7 @@ export interface Config {
   devices: Device[]
 }
 
-export type Parser = (data: unknown) => void
+export type Parser = (data: unknown) => Promise<void>
 
 export interface TasmotaSensorPayload {
   Time: string

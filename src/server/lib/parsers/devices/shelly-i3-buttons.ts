@@ -3,7 +3,7 @@ import { ShellyEvent, getBulbPayload, getBulbState } from '@lib/shelly'
 import { Parser } from '@lib/types'
 
 const parsers: Record<string, Parser> = {
-  'shellies/shelly-i3-buttons/input_event/0': (payload) => {
+  'shellies/shelly-i3-buttons/input_event/0': async (payload) => {
     const data = payload as ShellyEvent
     if (data.event === 'S') {
       // toggle state
@@ -14,7 +14,7 @@ const parsers: Record<string, Parser> = {
       )
     }
   },
-  'shellies/shelly-i3-buttons/input_event/1': (payload) => {
+  'shellies/shelly-i3-buttons/input_event/1': async (payload) => {
     const data = payload as ShellyEvent
     if (data.event === 'S') {
       const stateIndex = data.event_cnt % 3

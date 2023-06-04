@@ -1,15 +1,11 @@
-import { lwtHandler, voltageHandler } from '@lib/actions'
-import { Parser, TasmotaSensorPayload } from '@lib/types'
+import { Parser } from '@lib/types'
+import { lwtParser, voltageParser } from '../common'
+
+const deviceId = 'sonoff-pool-pump'
 
 const parsers: Record<string, Parser> = {
-  'tele/sonoff-pool-pump/LWT': (payload) => {
-    lwtHandler('🌊 *Pool Pump*', payload)
-  },
-  'tele/sonoff-pool-pump/SENSOR': (payload) => {
-    const data = payload as TasmotaSensorPayload
-    const voltage = data?.ENERGY?.Voltage ?? 0
-    voltageHandler(voltage)
-  },
+  'tele/sonoff-pool-pump/LWT': lwtParser(deviceId, '🌊 *Pool Pump*'),
+  'tele/sonoff-pool-pump/SENSOR': voltageParser(),
 }
 
 export default parsers
