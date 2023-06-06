@@ -5,6 +5,7 @@ export interface Device {
   name: string
   type: 'rgb' | 'switch' | 'input'
   subscriptions: string[]
+  url?: string
   sendCommand: (
     mqttClient: MqttClient,
     cmd: string,

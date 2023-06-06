@@ -26,6 +26,7 @@ const config: Config = {
       name: 'Living Room',
       type: 'switch',
       subscriptions: [],
+      url: 'http://192.168.0.141/',
       async sendCommand(mqttClient, cmd, value) {
         mqttClient.publish(`cmnd/wemos-living-room/${cmd.toUpperCase()}`, value)
       },
@@ -52,6 +53,7 @@ const config: Config = {
       name: 'Mobile Heater',
       type: 'switch',
       subscriptions: [],
+      url: 'http://192.168.0.86/',
       async sendCommand(mqttClient, cmd, value) {
         mqttClient.publish(`cmnd/mobile-heater-1/${cmd.toUpperCase()}`, value)
       },
@@ -71,6 +73,16 @@ const config: Config = {
             on SI7021#Temperature<${temp} do Power 1 endon
             on SI7021#Temperature>${temp + 0.5} do Power 0 endon`
         )
+      },
+    },
+    {
+      id: 'sonoff-water-pump',
+      name: 'Water Pump',
+      type: 'switch',
+      subscriptions: [],
+      url: 'http://192.168.0.118/',
+      async sendCommand(mqttClient, cmd, value) {
+        mqttClient.publish(`cmnd/sonoff-water-pump/${cmd.toUpperCase()}`, value)
       },
     },
   ],

@@ -8,6 +8,7 @@ import {
 } from '@lib/db'
 import { sendNotification } from '@lib/telegram'
 import { Parser, TasmotaSensorPayload } from '@lib/types'
+import config from 'src/config'
 
 export function lwtParser(deviceId: string, deviceName: string): Parser {
   return async (payload: unknown) => {
@@ -15,6 +16,9 @@ export function lwtParser(deviceId: string, deviceName: string): Parser {
     const currStatus = await getDeviceStatus(deviceId)
     if (newStatus !== currStatus?.value) {
       await setDeviceStatus(deviceId, newStatus)
+      if (newStatus === 'offline') {
+        await setDevicePower(deviceId, 'off')
+      }
       await sendNotification(
         `<b>${deviceName}</b> is ${
           newStatus === 'online' ? 'online 🟢' : 'offline 🔴'
@@ -32,9 +36,11 @@ export function powerParser(deviceId: string, deviceName: string): Parser {
     const powerValue = payload as string
     if (newStatus !== currStatus?.value) {
       await setDevicePower(deviceId, newStatus)
+      const srcUrl = config.devices.find((v) => v.id === deviceId)?.url
+      const srcStr = srcUrl ? `[${deviceName}](${srcUrl})` : deviceName
       await sendNotification(
-        `<b>${deviceName}</b> reported: Power ${powerValue}`,
-        'HTML'
+        `${srcStr} reported: Power ${powerValue}`,
+        'MarkdownV2'
       )
     }
   }
