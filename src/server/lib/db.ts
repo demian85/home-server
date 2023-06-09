@@ -35,7 +35,7 @@ export async function getSystemStatus(): Promise<SystemStatus> {
 }
 
 export async function setSystemStatus(
-  key: string,
+  key: keyof SystemStatus,
   value: string | number | boolean
 ) {
   await redisClient.hSet(`home_server:__status`, key, String(value))

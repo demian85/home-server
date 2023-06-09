@@ -11,10 +11,10 @@ export function highTemperatureHandler(
     return
   }
 
-  if (temp > 30 && !tempIsHigh) {
+  if (temp >= 30 && !tempIsHigh) {
     sendNotification(`🌡️ Temperature is HIGH (${temp} C)`)
     tempIsHigh = true
-  } else {
+  } else if (temp < 30) {
     tempIsHigh = false
   }
 }
@@ -27,10 +27,10 @@ export function highHumidityHandler(
     return
   }
 
-  if (humidity > 90 && !humidityIsHigh) {
+  if (humidity >= 90 && !humidityIsHigh) {
     sendNotification(`🌫️ Humidity is HIGH (${humidity}%)`)
     humidityIsHigh = true
-  } else {
+  } else if (humidity < 90) {
     humidityIsHigh = false
   }
 }
