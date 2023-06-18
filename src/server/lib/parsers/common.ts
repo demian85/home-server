@@ -60,22 +60,16 @@ export function voltageParser(): Parser {
     await setSystemStatus('voltage', voltage)
 
     if (
-      voltage <= 205 &&
+      voltage <= 202 &&
       (lowVoltage === 'false' || lowVoltage === undefined)
     ) {
-      sendNotification(
-        `⚡ <b>Energy Watcher</b>: Voltage is LOW (${voltage}v)`,
-        'HTML'
-      )
+      sendNotification(`⚡ Voltage is LOW (${voltage}v)`, 'HTML')
       await setSystemStatus('lowVoltage', true)
     } else if (
-      voltage >= 212 &&
+      voltage >= 208 &&
       (lowVoltage === 'true' || lowVoltage === undefined)
     ) {
-      sendNotification(
-        `⚡ <b>Energy Watcher</b>: Voltage is NORMAL (${voltage}v)`,
-        'HTML'
-      )
+      sendNotification(`⚡ Voltage is NORMAL (${voltage}v)`, 'HTML')
       await setSystemStatus('lowVoltage', false)
     }
   }
