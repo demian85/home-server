@@ -33,8 +33,8 @@ export default {
       if (device) {
         await device.setTemperature?.(mqttClient, temp)
         await ctx.reply(
-          `New temperature set for device _${device.name}_: ${temp} C`,
-          { parse_mode: 'MarkdownV2' }
+          `New temperature set for device <b>${device.name}</b>: ${temp} C`,
+          { parse_mode: 'HTML' }
         )
       }
 

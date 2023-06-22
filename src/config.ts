@@ -58,7 +58,7 @@ const config: Config = {
         mqttClient.publish(`cmnd/mobile-heater-1/${cmd.toUpperCase()}`, value)
       },
       async setTemperature(mqttClient, temp) {
-        const dayModeTemp = Math.max(1, temp - 5)
+        const dayModeTemp = Math.max(1, temp - 2)
         await this.sendCommand(
           mqttClient,
           'Rule1',
