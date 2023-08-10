@@ -1,4 +1,4 @@
-import { highHumidityHandler, highTemperatureHandler } from '@lib/actions'
+import { highTemperatureHandler } from '@lib/actions'
 import { Parser, TasmotaSensorPayload } from '@lib/types'
 import { lwtParser } from '../common'
 
@@ -11,7 +11,7 @@ const parsers: Record<string, Parser> = {
     const temp = data.SI7021?.Temperature ?? null
     const humidity = data.SI7021?.Humidity ?? null
     highTemperatureHandler('🛏 Mobile Heater', temp)
-    highHumidityHandler('🛏 Mobile Heater', humidity)
+    // highHumidityHandler('🛏 Mobile Heater', humidity)
   },
 }
 
