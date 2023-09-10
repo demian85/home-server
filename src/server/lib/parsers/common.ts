@@ -63,7 +63,7 @@ export function voltageParser(): Parser {
     if (powerGridVoltage !== undefined) {
       const voltageDiff = Math.abs(+powerGridVoltage - voltage)
       if (
-        voltageDiff >= 5 &&
+        voltageDiff >= 10 &&
         (voltageMismatch === 'false' || voltageMismatch === undefined)
       ) {
         sendNotification(
@@ -72,7 +72,7 @@ export function voltageParser(): Parser {
         )
         await setSystemStatus('voltageMismatch', true)
       } else if (
-        voltageDiff < 5 &&
+        voltageDiff < 10 &&
         (voltageMismatch === 'true' || voltageMismatch === undefined)
       ) {
         sendNotification(
