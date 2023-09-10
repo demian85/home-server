@@ -55,9 +55,33 @@ export function voltageParser(): Parser {
       return
     }
 
-    const { lowVoltage } = await getSystemStatus()
+    const { lowVoltage, powerGridVoltage, voltageMismatch } =
+      await getSystemStatus()
 
     await setSystemStatus('voltage', voltage)
+
+    if (powerGridVoltage !== undefined) {
+      const voltageDiff = Math.abs(+powerGridVoltage - voltage)
+      if (
+        voltageDiff >= 5 &&
+        (voltageMismatch === 'false' || voltageMismatch === undefined)
+      ) {
+        sendNotification(
+          `⚡ Voltage mismatch. Power Grid: ${powerGridVoltage}v. Main voltage: ${voltage}v`,
+          'HTML'
+        )
+        await setSystemStatus('voltageMismatch', true)
+      } else if (
+        voltageDiff < 5 &&
+        (voltageMismatch === 'true' || voltageMismatch === undefined)
+      ) {
+        sendNotification(
+          `⚡ Power Grid and main voltage are back to NORMAL`,
+          'HTML'
+        )
+        await setSystemStatus('voltageMismatch', false)
+      }
+    }
 
     if (
       voltage <= 202 &&

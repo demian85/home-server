@@ -3,8 +3,10 @@ import logger from './logger'
 import { DateTime } from 'luxon'
 
 interface SystemStatus {
-  lowVoltage: string
   voltage: string
+  powerGridVoltage: string
+  lowVoltage: string
+  voltageMismatch: string
 }
 
 export const redisClient = createClient({ url: process.env.REDIS_URL })
