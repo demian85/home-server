@@ -16,4 +16,12 @@ A smart home assistant server with the following features:
 - `temperature`
 - `food`
 
-Still in develpment...
+## Bot notifications
+
+The bot sends different notifications based on the reported values/events from connected devices.
+
+Examples:
+
+- Abnormal voltage changes
+- Water pump flow
+- High temperature/humidity
