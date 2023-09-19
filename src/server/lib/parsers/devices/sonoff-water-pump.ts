@@ -32,12 +32,12 @@ const parsers: Record<string, Parser> = {
     }
 
     if (power < 300) {
-      sendNotificationOnce(`❌ No water flow!`)
+      await sendNotificationOnce(`❌ No water flow!`)
       return
     }
 
     if (power < 450) {
-      sendNotificationOnce(`🚰 Poor water flow!`)
+      await sendNotificationOnce(`🚰 Poor water flow!`)
       return
     }
   },
