@@ -76,7 +76,7 @@ export function voltageParser(): Parser {
         (voltageMismatch === 'true' || voltageMismatch === undefined)
       ) {
         sendNotification(
-          `⚡ Power Grid and main voltage are back to NORMAL`,
+          `⚡ Power Grid and main voltage are back to NORMAL: ${voltage}v`,
           'HTML'
         )
         await setSystemStatus('voltageMismatch', false)
