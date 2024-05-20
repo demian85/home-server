@@ -3,11 +3,15 @@ import logger from './logger'
 import { DateTime } from 'luxon'
 
 interface SystemStatus {
-  voltage: string
-  powerGridVoltage: string
-  lowVoltage: string
-  voltageMismatch: string
+  voltage: number | null
+  powerGridVoltage: number | null
+  lowVoltage: boolean
+  voltageMismatch: boolean
+  autoTemp: boolean
+  targetTemp: number | null
 }
+
+type SystemStatusStr = Record<keyof SystemStatus, string>
 
 export const redisClient = createClient({ url: process.env.REDIS_URL })
 redisClient.on('error', (err) => logger.error({ err }, 'Redis Client Error'))
@@ -32,27 +36,38 @@ export async function setDevicePower(deviceId: string, status: string) {
 export async function getSystemStatus(): Promise<SystemStatus> {
   const data = (await redisClient.hGetAll(
     `home_server:__status`
-  )) as unknown as SystemStatus
-  return data
+  )) as unknown as SystemStatusStr
+  return {
+    voltage: data.voltage ? +data.voltage : null,
+    powerGridVoltage: data.powerGridVoltage ? +data.powerGridVoltage : null,
+    lowVoltage: data.lowVoltage === 'true' ? true : false,
+    voltageMismatch: data.voltageMismatch === 'true' ? true : false,
+    autoTemp: data.autoTemp === 'true' ? true : false,
+    targetTemp: data.targetTemp ? +data.targetTemp : null,
+  } as SystemStatus
 }
 
 export async function setSystemStatus(
   key: keyof SystemStatus,
-  value: string | number | boolean
+  value: string | number | boolean | null
 ) {
   await redisClient.hSet(`home_server:__status`, key, String(value))
 }
 
-async function setDeviceKey(deviceId: string, key: string, value: string) {
+export async function setDeviceKey(
+  deviceId: string,
+  key: string,
+  value: string | null
+) {
   await redisClient.set(
     `home_server:${deviceId}:${key}`,
     JSON.stringify({ value, timestamp: DateTime.local().toMillis() })
   )
 }
 
-async function getDeviceKey(deviceId: string, key: string) {
+export async function getDeviceKey(deviceId: string, key: string) {
   const data = await redisClient.get(`home_server:${deviceId}:${key}`)
   return data
-    ? (JSON.parse(data) as { value: string; timestamp: number })
+    ? (JSON.parse(data) as { value: string | null; timestamp: number })
     : null
 }

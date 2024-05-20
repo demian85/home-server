@@ -60,21 +60,15 @@ export function voltageParser(): Parser {
 
     await setSystemStatus('voltage', voltage)
 
-    if (powerGridVoltage !== undefined) {
-      const voltageDiff = Math.abs(+powerGridVoltage - voltage)
-      if (
-        voltageDiff >= 10 &&
-        (voltageMismatch === 'false' || voltageMismatch === undefined)
-      ) {
+    if (powerGridVoltage) {
+      const voltageDiff = Math.abs(powerGridVoltage - voltage)
+      if (voltageDiff >= 10 && !voltageMismatch) {
         sendNotification(
           `⚡ Voltage mismatch. Power Grid: ${powerGridVoltage}v. Main voltage: ${voltage}v`,
           'HTML'
         )
         await setSystemStatus('voltageMismatch', true)
-      } else if (
-        voltageDiff < 10 &&
-        (voltageMismatch === 'true' || voltageMismatch === undefined)
-      ) {
+      } else if (voltageDiff < 10 && voltageMismatch) {
         sendNotification(
           `⚡ Power Grid and main voltage are back to NORMAL: ${voltage}v`,
           'HTML'
@@ -83,16 +77,10 @@ export function voltageParser(): Parser {
       }
     }
 
-    if (
-      voltage <= 202 &&
-      (lowVoltage === 'false' || lowVoltage === undefined)
-    ) {
+    if (voltage <= 202 && !lowVoltage) {
       sendNotification(`⚡ Voltage is LOW (${voltage}v)`, 'HTML')
       await setSystemStatus('lowVoltage', true)
-    } else if (
-      voltage >= 208 &&
-      (lowVoltage === 'true' || lowVoltage === undefined)
-    ) {
+    } else if (voltage >= 208 && lowVoltage) {
       sendNotification(`⚡ Voltage is NORMAL (${voltage}v)`, 'HTML')
       await setSystemStatus('lowVoltage', false)
     }

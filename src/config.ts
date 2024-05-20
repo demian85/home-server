@@ -58,20 +58,12 @@ const config: Config = {
         mqttClient.publish(`cmnd/mobile-heater-1/${cmd.toUpperCase()}`, value)
       },
       async setTemperature(mqttClient, temp) {
-        const dayModeTemp = Math.max(1, temp - 2)
+        const targetTemp = Math.max(1, temp)
         await this.sendCommand(
           mqttClient,
           'Rule1',
-          ` on Clock#Timer=1 do Backlog Rule2 1; Rule1 0 break
-            on SI7021#Temperature<${dayModeTemp} do Power 1 endon
-            on SI7021#Temperature>${dayModeTemp + 0.5} do Power 0 endon`
-        )
-        await this.sendCommand(
-          mqttClient,
-          'Rule2',
-          ` on Clock#Timer=2 do Backlog Rule1 1; Rule2 0 break
-            on SI7021#Temperature<${temp} do Power 1 endon
-            on SI7021#Temperature>${temp + 0.5} do Power 0 endon`
+          ` on SI7021#Temperature<${targetTemp} do Power 1 endon
+            on SI7021#Temperature>${targetTemp + 0.5} do Power 0 endon`
         )
       },
     },
@@ -86,6 +78,10 @@ const config: Config = {
       },
     },
   ],
+}
+
+export function getDevice(id?: string) {
+  return config.devices.find((d) => d.id === id)
 }
 
 export default config
