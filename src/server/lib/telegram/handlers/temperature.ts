@@ -90,6 +90,7 @@ export default {
         )
       }
 
+      // reset target temp to force calculation
       await setSystemStatus('targetTemp', null)
 
       ctx.session.currentCommand = null

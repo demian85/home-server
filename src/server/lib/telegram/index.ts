@@ -60,6 +60,10 @@ bot.command('temperature', async (ctx) => {
   await handlers.temperature.message[0](ctx)
 })
 
+bot.command('system', async (ctx) => {
+  await handlers.system.message[0](ctx)
+})
+
 bot.on(message('text'), async (ctx) => {
   const prompt = ctx.message.text
 

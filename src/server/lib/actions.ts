@@ -54,9 +54,15 @@ export async function automaticTemperatureHandler() {
 
   let targetTemp = +outsideTemp.value < 18 ? 20 : 18
 
-  const hour = DateTime.local().hour
+  const today = DateTime.local()
+  const hour = today.hour
+  const weekDay = today.weekday
 
-  if (hour >= 4 && hour <= 9) {
+  if (
+    (weekDay >= 1 && weekDay <= 5 && hour >= 4 && hour <= 7) ||
+    (weekDay >= 6 && weekDay <= 7 && hour >= 4 && hour <= 9)
+  ) {
+    // mon-fri or weekends
     targetTemp += 1
   }
 
@@ -75,7 +81,7 @@ export async function automaticTemperatureHandler() {
   if (targetTemp !== currentTargetTemp) {
     const heatingDevice = getDevice('mobile-heater-1')
     await heatingDevice?.setTemperature?.(mqttClient, targetTemp)
-    await sendNotification(`Automatic temperature set to ${targetTemp} C`)
+    await sendNotification(`🌡️ Automatic temperature set to ${targetTemp} C`)
     await setSystemStatus('targetTemp', targetTemp)
   }
 }
