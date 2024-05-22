@@ -1,7 +1,9 @@
+import { automaticTemperatureHandler } from '@lib/actions'
 import {
   getDevicePower,
   getDeviceStatus,
   getSystemStatus,
+  setDeviceKey,
   setDevicePower,
   setDeviceStatus,
   setSystemStatus,
@@ -84,5 +86,19 @@ export function voltageParser(): Parser {
       sendNotification(`⚡ Voltage is NORMAL (${voltage}v)`, 'HTML')
       await setSystemStatus('lowVoltage', false)
     }
+  }
+}
+
+export function temperatureSensorParser(deviceId: string): Parser {
+  return async (payload: unknown) => {
+    const data = payload as TasmotaSensorPayload
+    const sensorData = data.SI7021 || data.AM2301 || data.DS18B20
+    const temp = sensorData?.Temperature ?? null
+    const humidity = sensorData?.Humidity ?? null
+
+    await setDeviceKey(deviceId, 'temperature', temp ? String(temp) : null)
+    await setDeviceKey(deviceId, 'humidity', humidity ? String(humidity) : null)
+
+    await automaticTemperatureHandler()
   }
 }

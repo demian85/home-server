@@ -1,29 +1,12 @@
-import {
-  automaticTemperatureHandler,
-  highHumidityHandler,
-  highTemperatureHandler,
-} from '@lib/actions'
-import { Parser, TasmotaSensorPayload } from '@lib/types'
-import { lwtParser } from '../common'
-import { setDeviceKey } from '@lib/db'
+import { Parser } from '@lib/types'
+import { lwtParser, temperatureSensorParser } from '../common'
 
 const deviceId = 'mobile-heater-1'
+const deviceName = '🛏 Mobile Heater'
 
 const parsers: Record<string, Parser> = {
-  'tele/mobile-heater-1/LWT': lwtParser(deviceId, '🛏 Mobile Heater'),
-  'tele/mobile-heater-1/SENSOR': async (payload) => {
-    const data = payload as TasmotaSensorPayload
-    const temp = data.SI7021?.Temperature ?? null
-    const humidity = data.SI7021?.Humidity ?? null
-
-    await setDeviceKey(deviceId, 'temperature', temp ? String(temp) : null)
-    await setDeviceKey(deviceId, 'humidity', humidity ? String(humidity) : null)
-
-    await automaticTemperatureHandler()
-
-    highTemperatureHandler('🛏 Mobile Heater', temp)
-    highHumidityHandler('🛏 Mobile Heater', humidity)
-  },
+  'tele/mobile-heater-1/LWT': lwtParser(deviceId, deviceName),
+  'tele/mobile-heater-1/SENSOR': temperatureSensorParser(deviceId),
 }
 
 export default parsers

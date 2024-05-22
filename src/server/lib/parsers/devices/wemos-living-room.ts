@@ -1,18 +1,12 @@
-import { highTemperatureHandler } from '@lib/actions'
-import { Parser, TasmotaSensorPayload } from '@lib/types'
-import { lwtParser } from '../common'
+import { Parser } from '@lib/types'
+import { lwtParser, temperatureSensorParser } from '../common'
 
 const deviceId = 'wemos-living-room'
+const deviceName = '🛋 Living Room'
 
 const parsers: Record<string, Parser> = {
-  'tele/wemos-living-room/LWT': lwtParser(deviceId, '🛋 Living Room'),
-  'tele/wemos-living-room/SENSOR': async (payload) => {
-    const data = payload as TasmotaSensorPayload
-    const temp = data.AM2301?.Temperature ?? null
-    const humidity = data.AM2301?.Humidity ?? null
-    highTemperatureHandler('🛋 Living Room', temp)
-    // highHumidityHandler('🛋 Living Room', humidity)
-  },
+  'tele/wemos-living-room/LWT': lwtParser(deviceId, deviceName),
+  'tele/wemos-living-room/SENSOR': temperatureSensorParser(deviceId),
 }
 
 export default parsers
