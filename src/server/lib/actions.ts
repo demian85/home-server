@@ -94,8 +94,11 @@ export async function automaticTemperatureHandler() {
 
   if (targetHumidity && targetHumidity.value !== null) {
     const hum = +targetHumidity.value
+    if (hum > 75) {
+      targetTemp -= 0.5
+    }
     if (hum > 80) {
-      targetTemp -= 1
+      targetTemp -= 0.5
     }
     if (hum > 90) {
       targetTemp -= 0.5
