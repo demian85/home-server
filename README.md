@@ -6,6 +6,7 @@ A smart home assistant server with the following features:
   - Switch device on/off
   - Monitor device status
   - Monitor/get/set temperatures
+  - Automatic temperature management
 - Home assistant Telegram bot
 - Food stock tracking using OpenAI API
 - ?
@@ -15,6 +16,7 @@ A smart home assistant server with the following features:
 - `help`
 - `temperature`
 - `food`
+- `system`
 
 ## Bot notifications
 

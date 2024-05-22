@@ -52,7 +52,31 @@ export async function automaticTemperatureHandler() {
     return
   }
 
-  let targetTemp = +outsideTemp.value < 18 ? 20 : 18
+  const tempMap: Record<string, number> = {
+    '5': 21,
+    '6': 20.9,
+    '7': 20.7,
+    '8': 20.7,
+    '9': 20.5,
+    '10': 20.5,
+    '11': 20.3,
+    '12': 20.1,
+    '13': 20,
+    '14': 20,
+    '15': 20,
+    '16': 20,
+    '17': 20,
+    '18': 19,
+    '19': 18,
+    '20': 17,
+  }
+
+  let targetTemp =
+    +outsideTemp.value >= 21
+      ? 17
+      : +outsideTemp.value < 5
+      ? 21
+      : tempMap[String(Math.floor(+outsideTemp.value))] ?? 20
 
   const today = DateTime.local()
   const hour = today.hour
