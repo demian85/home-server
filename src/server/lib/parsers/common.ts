@@ -1,5 +1,6 @@
 import { automaticTemperatureHandler } from '@lib/actions'
 import {
+  getDeviceKey,
   getDevicePower,
   getDeviceStatus,
   getSystemStatus,
@@ -10,6 +11,7 @@ import {
 } from '@lib/db'
 import { sendNotification } from '@lib/telegram'
 import { Parser, TasmotaSensorPayload } from '@lib/types'
+import { DateTime } from 'luxon'
 import config from 'src/config'
 
 export function lwtParser(deviceId: string, deviceName: string): Parser {
@@ -95,6 +97,23 @@ export function temperatureSensorParser(deviceId: string): Parser {
     const sensorData = data.SI7021 || data.AM2301 || data.DS18B20
     const temp = sensorData?.Temperature ?? null
     const humidity = sensorData?.Humidity ?? null
+
+    let realTemp = temp
+
+    // avoid erratic temp reports, do not allow reports +-0.5 in less than 65 seconds
+    if (temp !== null) {
+      const prevTempEntry = await getDeviceKey(deviceId, 'temperature')
+      if (prevTempEntry && prevTempEntry.value !== null) {
+        const diff = Math.abs(
+          DateTime.local()
+            .diff(DateTime.fromMillis(prevTempEntry?.timestamp), 'seconds')
+            .as('seconds')
+        )
+        if (Math.abs(temp - +prevTempEntry.value) >= 0.5 && diff < 65) {
+          return
+        }
+      }
+    }
 
     await setDeviceKey(deviceId, 'temperature', temp ? String(temp) : null)
     await setDeviceKey(deviceId, 'humidity', humidity ? String(humidity) : null)
