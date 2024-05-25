@@ -52,7 +52,7 @@ async function getSensorDataEntries(
     outputEntries.push(
       `<code>- Humidity: ${hum.value}%${
         DateTime.fromMillis(hum.timestamp).diffNow('minutes').as('minutes') < -5
-          ? '(outdated)'
+          ? ' (outdated)'
           : ''
       }</code>`
     )
