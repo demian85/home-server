@@ -21,6 +21,9 @@ export default {
       outputEntries.push(
         ...(await getSensorDataEntries('wemos-garage', 'Outdoor sensors'))
       )
+      outputEntries.push(
+        ...(await getSensorDataEntries('wemos-office', 'Office'))
+      )
 
       await ctx.reply(`<b>System</b>\n${outputEntries.join('\n')}`, {
         parse_mode: 'HTML',
@@ -37,7 +40,9 @@ async function getSensorDataEntries(
   const outputEntries = []
   const temp = (await getDeviceKey(deviceId, 'temperature')) ?? null
   const hum = (await getDeviceKey(deviceId, 'humidity')) ?? null
+
   outputEntries.push(`<b>${deviceName}</b>`)
+
   if (temp && temp.value !== null) {
     outputEntries.push(
       `<code>- Temperature: ${temp.value} C${
@@ -57,8 +62,10 @@ async function getSensorDataEntries(
       }</code>`
     )
   }
+
   if (outputEntries.length === 1) {
     outputEntries.push(`<code>(no data)</code>`)
   }
+
   return outputEntries
 }

@@ -3,7 +3,7 @@ import { MqttClient } from 'mqtt'
 export interface Device {
   id: string
   name: string
-  type: 'rgb' | 'switch' | 'input'
+  type: 'rgb' | 'switch' | 'input' | 'sensor'
   subscriptions: string[]
   url?: string
   sendCommand: (

@@ -77,6 +77,16 @@ const config: Config = {
         mqttClient.publish(`cmnd/sonoff-water-pump/${cmd.toUpperCase()}`, value)
       },
     },
+    {
+      id: 'wemos-office',
+      name: 'Office',
+      type: 'sensor',
+      subscriptions: [],
+      url: 'http://192.168.0.171/',
+      async sendCommand(mqttClient, cmd, value) {
+        mqttClient.publish(`cmnd/wemos-office/${cmd.toUpperCase()}`, value)
+      },
+    },
   ],
 }
 
