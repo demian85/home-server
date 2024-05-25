@@ -51,7 +51,11 @@ export async function setSystemStatus(
   key: keyof SystemStatus,
   value: string | number | boolean | null
 ) {
-  await redisClient.hSet(`home_server:__status`, key, String(value))
+  await redisClient.hSet(
+    `home_server:__status`,
+    key,
+    value === null ? '' : String(value)
+  )
 }
 
 export async function setDeviceKey(
