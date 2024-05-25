@@ -3,6 +3,7 @@ import config, { getDevice } from '../../../../config'
 import { CallbackQueryContext, MessageContext } from '../types'
 import { client as mqttClient } from '@lib/mqtt'
 import { setSystemStatus } from '@lib/db'
+import { automaticTemperatureHandler } from '@lib/actions'
 
 export default {
   message: [
@@ -92,6 +93,7 @@ export default {
 
       // reset target temp to force calculation
       await setSystemStatus('targetTemp', null)
+      await automaticTemperatureHandler()
 
       ctx.session.currentCommand = null
     },

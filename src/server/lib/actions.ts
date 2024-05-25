@@ -17,42 +17,29 @@ export async function automaticTemperatureHandler() {
     return
   }
 
-  const tempMap: Record<string, number> = {
-    '5': 20.8,
-    '6': 20.6,
-    '7': 20.5,
-    '8': 20.4,
-    '9': 20.3,
-    '10': 20.2,
-    '11': 20.1,
-    '12': 20,
-    '13': 20,
-    '14': 20,
-    '15': 20,
-    '16': 20,
-    '17': 20,
-    '18': 19,
-    '19': 18,
-    '20': 17,
-  }
-
   let targetTemp =
-    +outsideTemp.value >= 21
-      ? 17
-      : +outsideTemp.value < 5
-      ? 21
-      : tempMap[String(Math.floor(+outsideTemp.value))] ?? 20
+    +outsideTemp.value >= 21 ? 17 : +outsideTemp.value < 5 ? 20.5 : 20
 
   const today = DateTime.local()
   const hour = today.hour
   const weekDay = today.weekday
 
-  if (
-    (weekDay >= 1 && weekDay <= 5 && hour >= 4 && hour <= 7) ||
-    (weekDay >= 6 && weekDay <= 7 && hour >= 4 && hour <= 9)
-  ) {
-    // mon-fri or weekends
-    targetTemp += 1
+  if (hour >= 4 && hour < 5) {
+    targetTemp += 0.3
+  }
+
+  if (weekDay >= 1 && weekDay <= 5) {
+    // mon-fri
+    if (hour >= 5 && hour <= 7) {
+      targetTemp += 0.2
+    }
+  }
+
+  if (weekDay >= 6 && weekDay <= 7) {
+    // weekends
+    if (hour >= 5 && hour <= 9) {
+      targetTemp += 0.2
+    }
   }
 
   const targetHumidity = await getDeviceKey('mobile-heater-1', 'humidity')

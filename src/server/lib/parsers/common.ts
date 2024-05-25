@@ -98,8 +98,6 @@ export function temperatureSensorParser(deviceId: string): Parser {
     const temp = sensorData?.Temperature ?? null
     const humidity = sensorData?.Humidity ?? null
 
-    let realTemp = temp
-
     // avoid erratic temp reports, do not allow reports +-0.5 in less than 65 seconds
     if (temp !== null) {
       const prevTempEntry = await getDeviceKey(deviceId, 'temperature')
