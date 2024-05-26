@@ -24,12 +24,11 @@ export async function automaticTemperatureHandler() {
   const hour = today.hour
   const weekDay = today.weekday
 
-  if (hour >= 4 && hour < 5) {
-    targetTemp += 0.3
-  }
-
   if (weekDay >= 1 && weekDay <= 5) {
     // mon-fri
+    if (hour >= 4 && hour <= 7) {
+      targetTemp += 0.3
+    }
     if (hour >= 5 && hour <= 7) {
       targetTemp += 0.2
     }
@@ -37,9 +36,17 @@ export async function automaticTemperatureHandler() {
 
   if (weekDay >= 6 && weekDay <= 7) {
     // weekends
+    if (hour >= 4 && hour <= 9) {
+      targetTemp += 0.3
+    }
     if (hour >= 5 && hour <= 9) {
       targetTemp += 0.2
     }
+  }
+
+  // day mode, reduce temp
+  if (hour >= 10 && hour <= 17) {
+    targetTemp -= 1
   }
 
   const targetHumidity = await getDeviceKey('mobile-heater-1', 'humidity')
