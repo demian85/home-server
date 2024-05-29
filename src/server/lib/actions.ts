@@ -17,8 +17,14 @@ export async function automaticTemperatureHandler() {
     return
   }
 
+  const baseTemp = 19.5 // base temperature for sleeping
+
   let targetTemp =
-    +outsideTemp.value >= 21 ? 17 : +outsideTemp.value < 5 ? 20.5 : 20
+    +outsideTemp.value >= 21
+      ? 17
+      : +outsideTemp.value < 5
+      ? baseTemp + 0.5
+      : baseTemp
 
   const today = DateTime.local()
   const hour = today.hour
