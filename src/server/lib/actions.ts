@@ -19,7 +19,13 @@ export async function automaticTemperatureHandler() {
 
   const baseTemp = 20 // base temperature for sleeping
 
-  let targetTemp = +outsideTemp.value < 8 ? baseTemp + 0.5 : baseTemp
+  let targetTemp = baseTemp
+
+  if (
+    DateTime.fromMillis(outsideTemp.timestamp).diffNow().as('minutes') <= -30
+  ) {
+    targetTemp += +outsideTemp.value < 8 ? 0.5 : 0
+  }
 
   const today = DateTime.local()
   const hour = today.hour
