@@ -51,9 +51,14 @@ export async function automaticTemperatureHandler() {
     }
   }
 
-  // day mode, reduce temp
-  if (hour >= 10 && hour <= 17) {
-    targetTemp -= 1
+  // day mode, reduce temp except for nap time
+  // if ((hour >= 10 && hour <= 12) || (hour >= 15 && hour <= 17)) {
+  //   targetTemp -= 1
+  // }
+
+  // warmer at nap time and noon
+  if ((hour >= 19 && hour <= 21) || (hour >= 13 && hour <= 15)) {
+    targetTemp += 1
   }
 
   const targetHumidity = await getDeviceKey('mobile-heater-1', 'humidity')
