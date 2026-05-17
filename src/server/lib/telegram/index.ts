@@ -5,7 +5,7 @@ import logger from '@lib/logger'
 import { Redis } from '@telegraf/session/redis'
 import { ContextWithSession } from './types'
 import handlers from './handlers'
-import { ParseMode } from 'telegraf/typings/core/types/typegram'
+import type { ParseMode } from 'telegraf/types'
 
 const bot = new Telegraf<ContextWithSession>(process.env.TELEGRAM_BOT_TOKEN!)
 
@@ -89,7 +89,6 @@ bot.on('callback_query', async (ctx) => {
   const cmdId = cmd.id as keyof typeof handlers
   const handler = handlers?.[cmdId].callbackQuery[cmd.step]
 
-  // @ts-ignore
   if (handler) {
     return handler(ctx)
   }

@@ -1,15 +1,9 @@
 import {
-  getDevice,
   getHeatingDevice,
   getRoomsWithTargetTemp,
   getSensorDevice,
 } from '../../config'
-import {
-  getDeviceKey,
-  getDeviceStatus,
-  getSystemStatus,
-  setSystemStatus,
-} from './db'
+import { getDeviceKey, getSystemStatus } from './db'
 import { sendNotification } from './telegram'
 import { client as mqttClient } from '@lib/mqtt'
 import { DateTime } from 'luxon'

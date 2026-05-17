@@ -1,5 +1,4 @@
-import { getDeviceKey } from '@lib/db'
-import { Config, Room, RoomWithTargetTemp } from '@lib/types'
+import { Config, RoomWithTargetTemp } from '@lib/types'
 import { DateTime } from 'luxon'
 
 const config: Config = {
@@ -51,7 +50,7 @@ const config: Config = {
     },
     {
       id: 'laundry-sensors',
-      name: `🌡️​ Laundry`,
+      name: `🌡️ Laundry`,
       room: 'laundry',
       type: 'sensor',
       subscriptions: [],
@@ -62,7 +61,7 @@ const config: Config = {
     },
     {
       id: 'iotero-sht40-sensor-1',
-      name: `🌡️​ Sensor 1 (Office)`,
+      name: `🌡️ Sensor 1 (Office)`,
       room: 'office',
       type: 'sensor',
       subscriptions: [],
@@ -76,7 +75,7 @@ const config: Config = {
     },
     {
       id: 'iotero-sht40-sensor-2',
-      name: `🌡️​ Sensor 2 (Benja)`,
+      name: `🌡️ Sensor 2 (Benja)`,
       room: 'benja',
       type: 'sensor',
       subscriptions: [],
@@ -90,7 +89,7 @@ const config: Config = {
     },
     {
       id: 'athom-plug-1',
-      name: `🔌​ Plug 1 (Washing machine)`,
+      name: `🔌 Plug 1 (Washing machine)`,
       room: 'laundry',
       type: 'switch',
       subscriptions: [],
@@ -101,7 +100,7 @@ const config: Config = {
     },
     {
       id: 'athom-plug-2',
-      name: `🔌​ Plug 2 (Estufa Benja)`,
+      name: `🔌 Plug 2 (Estufa Benja)`,
       room: 'benja',
       type: 'switch',
       subscriptions: [],
@@ -112,7 +111,7 @@ const config: Config = {
     },
     // {
     //   id: 'athom-plug-3',
-    //   name: `🔌​ Plug 3 (Pool Pump)`,
+    //   name: `🔌 Plug 3 (Pool Pump)`,
     //   room: 'garden',
     //   type: 'switch',
     //   subscriptions: [],

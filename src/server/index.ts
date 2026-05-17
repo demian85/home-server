@@ -35,7 +35,7 @@ import telegramBot, { sendNotification } from '@lib/telegram'
 
     try {
       data = JSON.parse(payload.toString().trim())
-    } catch (err) {
+    } catch (_err) {
       data = payload.toString()
     }
 

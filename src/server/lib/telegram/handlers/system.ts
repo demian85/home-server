@@ -1,4 +1,4 @@
-import config from 'src/config'
+import config from '../../../../config'
 import { MessageContext } from '../types'
 import { getDeviceKey, getSystemStatus } from '@lib/db'
 import { DateTime } from 'luxon'

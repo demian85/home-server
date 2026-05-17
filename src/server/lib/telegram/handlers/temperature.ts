@@ -1,4 +1,4 @@
-import { CallbackQuery } from 'telegraf/typings/core/types/typegram'
+import type { CallbackQuery } from 'telegraf/types'
 import config, { getDevice } from '../../../../config'
 import { CallbackQueryContext, MessageContext } from '../types'
 import { client as mqttClient } from '@lib/mqtt'

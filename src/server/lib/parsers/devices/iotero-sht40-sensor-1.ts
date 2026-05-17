@@ -1,5 +1,5 @@
 import { Parser } from '@lib/types'
-import { lwtParser, temperatureSensorParser, voltageParser } from '../common'
+import { lwtParser, temperatureSensorParser } from '../common'
 
 const deviceId = 'iotero-sht40-sensor-1'
 

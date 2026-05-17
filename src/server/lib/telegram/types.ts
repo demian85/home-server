@@ -1,9 +1,5 @@
-import { Context, NarrowedContext } from 'telegraf'
-import {
-  CallbackQuery,
-  Message,
-  Update,
-} from 'telegraf/typings/core/types/typegram'
+import { Context } from 'telegraf'
+import type { CallbackQuery, Update } from 'telegraf/types'
 
 export interface FoodStockItem {
   name: string
@@ -14,18 +10,15 @@ export interface FoodStockItem {
 
 export type FoodStockList = FoodStockItem[]
 
-export type MessageContext = NarrowedContext<
-  ContextWithSession<Update>,
-  Update.MessageUpdate<Record<'text', {}> & Message.TextMessage>
->
+export type MessageContext = ContextWithSession
 
-export type CallbackQueryContext = NarrowedContext<
-  ContextWithSession,
+export type CallbackQueryContext = ContextWithSession<
   Update.CallbackQueryUpdate<CallbackQuery>
 >
 
-export interface ContextWithSession<U extends Update = Update>
-  extends Context<U> {
+export interface ContextWithSession<
+  U extends Update = Update,
+> extends Context<U> {
   session: {
     currentCommand: CurrentCommand | null
   }
