@@ -1,6 +1,6 @@
-import logger from 'pino'
+import logger, { LoggerOptions } from 'pino'
 
-const loggerOptions = {
+const loggerOptions: LoggerOptions = {
   name: 'home-server',
   level: process.env.LOG_LEVEL || 'info',
   serializers: {
@@ -9,9 +9,12 @@ const loggerOptions = {
   base: null,
 }
 
-export default logger(
-  loggerOptions,
-  process.env.NODE_ENV !== 'test'
-    ? logger.destination(1)
-    : logger.destination('./log')
-)
+if (process.env.LOG_PRETTY === 'true' && process.env.NODE_ENV !== 'test') {
+  loggerOptions.transport = {
+    target: 'pino-pretty',
+  }
+}
+
+export default process.env.NODE_ENV === 'test'
+  ? logger(loggerOptions, logger.destination('./log'))
+  : logger(loggerOptions)

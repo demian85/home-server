@@ -24,7 +24,7 @@ docker run --restart=always --name redis -d -p 6379:6379 redis redis-server --sa
 
 ## Development
 
-- `npm run dev` starts `src/server/index.ts` with `tsx watch` and pretty logs.
+- `npm run dev` starts `src/server/index.ts` with `tsx watch` and `pino-pretty` logs.
 - `npm start` runs the same entrypoint without pretty logging.
 - `npm run build` compiles TypeScript and rewrites TS path aliases in `build/`.
 - `npm run typecheck`, `npm run lint`, and `npm test` run focused checks.

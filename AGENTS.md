@@ -8,7 +8,7 @@
 
 ## Commands
 - Install: `npm ci` (or `npm install` when updating the lockfile). `postinstall` runs `npm run build`; use `--ignore-scripts` only when intentionally avoiding that build.
-- Dev server with watch + pretty logs: `npm run dev`; production-like source runner: `npm start`.
+- Dev server with `tsx watch` + `pino-pretty` logs: `npm run dev`; production-like source runner: `npm start`.
 - Background process scripts use pm2 and watch `src`: `npm run start:bg` / `npm run stop:bg`.
 - Format tracked source: `npm run format` (only `src/**/*.{js,jsx,ts,tsx}`).
 - Intended checks: `npm run lint`, `npm run typecheck`, `npm run build`, `npm test -- <jest args>`.

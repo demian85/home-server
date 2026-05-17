@@ -16,7 +16,7 @@
     "build": "npm run clean && tsc && tsc-alias",
     "typecheck": "tsc --noEmit",
     "start": "tsx src/server/index.ts",
-    "dev": "tsx watch src/server/index.ts | pino-pretty",
+    "dev": "LOG_PRETTY=true tsx watch src/server/index.ts",
     "start:bg": "pm2 start 'npm run start' --exp-backoff-restart-delay=100 --watch src --name $npm_package_name",
     "stop:bg": "pm2 stop $npm_package_name",
     "lint": "eslint ./src",
