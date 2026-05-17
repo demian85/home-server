@@ -1,6 +1,6 @@
 {
   "name": "@demian85/home-server",
-  "version": "3.1.0",
+  "version": "4.0.0",
   "description": "Smart Home server",
   "main": "build/index.js",
   "engines": {
@@ -14,9 +14,9 @@
     "postinstall": "npm run build",
     "build": "tsc",
     "start": "ts-node -r tsconfig-paths/register src/server/index.ts",
-    "start:dev": "ts-node -r tsconfig-paths/register src/server/index.ts | pino-pretty",
+    "dev": "ts-node -r tsconfig-paths/register src/server/index.ts | pino-pretty",
     "start:bg": "pm2 start 'npm run start' --exp-backoff-restart-delay=100 --watch build --name $npm_package_name",
-    "dev": "tsc --watch",
+    "stop:bg": "pm2 stop $npm_package_name",
     "lint": "eslint ./src",
     "format": "prettier --write './src/**/*.{js,jsx,ts,tsx}'",
     "test": "jest --detectOpenHandles",
@@ -57,7 +57,7 @@
     "prettier": "^2.7.1",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.1.2",
-    "typescript": "^4.8.2"
+    "typescript": "^6.0.3"
   },
   "jest": {
     "transform": {

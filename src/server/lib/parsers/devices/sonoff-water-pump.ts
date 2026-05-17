@@ -8,10 +8,10 @@ const deviceId = 'sonoff-water-pump'
 
 const notifications: string[] = []
 
-const powerHandler = powerParser(deviceId, '🚰 Water Pump')
+const powerHandler = powerParser(deviceId)
 
 const parsers: Record<string, Parser> = {
-  'tele/sonoff-water-pump/LWT': lwtParser(deviceId, '🚰 Water Pump'),
+  'tele/sonoff-water-pump/LWT': lwtParser(deviceId),
   'stat/sonoff-water-pump/POWER': async (payload: unknown) => {
     await powerHandler(payload)
     notifications.splice(0, notifications.length)

@@ -2,6 +2,7 @@ import { MqttClient } from 'mqtt'
 
 export interface Device {
   id: string
+  room: string
   name: string
   type: 'rgb' | 'switch' | 'input' | 'sensor'
   subscriptions: string[]
@@ -14,8 +15,25 @@ export interface Device {
   setTemperature?: (mqttClient: MqttClient, temp: number) => Promise<void>
 }
 
+export type Room = {
+  id: string
+  name: string
+  temperatures?: TemperatureRange[]
+}
+
+export type RoomWithTargetTemp = { id: string; temp: number | null }
+
+// hours are inclusive -> exclusive, 24h format
+// week days: 1-7, https://en.wikipedia.org/wiki/ISO_week_date
+export type TemperatureRange = {
+  temp: number
+  weekDays: [number, number]
+  hours: [number, number]
+}
+
 export interface Config {
   subscriptions: string[]
+  rooms: Room[]
   devices: Device[]
 }
 
@@ -31,6 +49,7 @@ export interface TasmotaSensorPayload {
   DS18B20?: TasmotaTempSensorValues
   AM2301?: TasmotaTempSensorValues
   SI7021?: TasmotaTempSensorValues
+  SHT4X?: TasmotaTempSensorValues
 }
 
 interface TasmotaEnergyValues {

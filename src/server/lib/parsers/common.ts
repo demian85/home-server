@@ -12,10 +12,11 @@ import {
 import { sendNotification } from '@lib/telegram'
 import { Parser, TasmotaSensorPayload } from '@lib/types'
 import { DateTime } from 'luxon'
-import config from 'src/config'
+import { getDevice } from '../../../../src/config'
 
-export function lwtParser(deviceId: string, deviceName: string): Parser {
+export function lwtParser(deviceId: string): Parser {
   return async (payload: unknown) => {
+    const deviceName = getDevice(deviceId)
     const newStatus = String(payload).toLowerCase()
     const currStatus = await getDeviceStatus(deviceId)
     if (newStatus !== currStatus?.value) {
@@ -33,14 +34,15 @@ export function lwtParser(deviceId: string, deviceName: string): Parser {
   }
 }
 
-export function powerParser(deviceId: string, deviceName: string): Parser {
+export function powerParser(deviceId: string): Parser {
   return async (payload: unknown) => {
+    const deviceName = getDevice(deviceId)
     const newStatus = String(payload).toLowerCase()
     const currStatus = await getDevicePower(deviceId)
     const powerValue = payload as string
     if (newStatus !== currStatus?.value) {
       await setDevicePower(deviceId, newStatus)
-      const srcUrl = config.devices.find((v) => v.id === deviceId)?.url
+      const srcUrl = getDevice(deviceId)?.url
       const srcStr = srcUrl ? `[${deviceName}](${srcUrl})` : deviceName
       await sendNotification(
         `${srcStr} reported: Power ${powerValue}`,
@@ -88,13 +90,15 @@ export function voltageParser(): Parser {
       sendNotification(`⚡ Voltage is NORMAL (${voltage}v)`, 'HTML')
       await setSystemStatus('lowVoltage', false)
     }
+
+    await automaticTemperatureHandler()
   }
 }
 
 export function temperatureSensorParser(deviceId: string): Parser {
   return async (payload: unknown) => {
     const data = payload as TasmotaSensorPayload
-    const sensorData = data.SI7021 || data.AM2301 || data.DS18B20
+    const sensorData = data.SI7021 || data.AM2301 || data.DS18B20 || data.SHT4X
     const temp = sensorData?.Temperature ?? null
     const humidity = sensorData?.Humidity ?? null
 

@@ -1,12 +1,11 @@
 import { Parser } from '@lib/types'
 import { lwtParser, voltageParser } from '../common'
 
+const deviceId = 'athom-plug-1'
+
 const parsers: Record<string, Parser> = {
-  'tele/shelly-door-light/LWT': lwtParser(
-    'shelly-door-light',
-    '💡 Main Door Light'
-  ),
-  'tele/shelly-door-light/SENSOR': voltageParser(),
+  [`tele/${deviceId}/LWT`]: lwtParser(deviceId),
+  [`tele/${deviceId}/SENSOR`]: voltageParser(),
 }
 
 export default parsers

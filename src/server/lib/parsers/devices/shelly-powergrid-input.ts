@@ -2,9 +2,10 @@ import { Parser, TasmotaSensorPayload } from '@lib/types'
 import { setDeviceStatus, setSystemStatus } from '@lib/db'
 import { sendNotification } from '@lib/telegram'
 
+const deviceId = 'shelly-powergrid-input'
+
 const parsers: Record<string, Parser> = {
-  'tele/shelly-powergrid-input/LWT': async (payload: unknown) => {
-    const deviceId = 'shelly-powergrid-input'
+  [`tele/${deviceId}/LWT`]: async (payload: unknown) => {
     const newStatus = String(payload).toLowerCase()
     await setDeviceStatus(deviceId, newStatus)
     await sendNotification(
@@ -14,7 +15,7 @@ const parsers: Record<string, Parser> = {
       'HTML'
     )
   },
-  'tele/shelly-powergrid-input/SENSOR': async (payload: unknown) => {
+  [`tele/${deviceId}/SENSOR`]: async (payload: unknown) => {
     const data = payload as TasmotaSensorPayload
     const powerGridVoltage = data?.ENERGY?.Voltage ?? 0
 

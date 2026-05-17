@@ -1,7 +1,7 @@
 import logger from 'pino'
 
 const loggerOptions = {
-  name: 'home-server-v3',
+  name: 'home-server',
   level: process.env.LOG_LEVEL || 'info',
   serializers: {
     err: logger.stdSerializers.err,

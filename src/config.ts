@@ -1,59 +1,41 @@
-import { Config } from '@lib/types'
+import { getDeviceKey } from '@lib/db'
+import { Config, Room, RoomWithTargetTemp } from '@lib/types'
+import { DateTime } from 'luxon'
 
 const config: Config = {
   subscriptions: ['tele/+/SENSOR', 'tele/+/LWT', 'stat/+/POWER'],
+  rooms: [
+    {
+      id: 'living',
+      name: 'Living Room',
+      temperatures: [
+        { temp: 10, weekDays: [1, 7], hours: [0, 6] },
+        { temp: 18, weekDays: [1, 7], hours: [6, 0] },
+      ],
+    },
+    {
+      id: 'benja',
+      name: "Benja's room",
+      temperatures: [
+        { temp: 16, weekDays: [6, 7], hours: [9, 17] },
+        { temp: 20, weekDays: [6, 7], hours: [17, 9] },
+        { temp: 16, weekDays: [1, 5], hours: [7, 17] },
+        { temp: 20, weekDays: [1, 5], hours: [17, 7] },
+      ],
+    },
+    { id: 'office', name: 'Office' },
+    { id: 'garden', name: 'Garden' },
+    { id: 'laundry', name: 'Laundry' },
+    { id: 'garage', name: 'Garage' },
+  ],
   devices: [
     {
-      id: 'bulb-1',
-      name: 'Light bulb 1',
-      type: 'rgb',
-      subscriptions: [],
-      async sendCommand(mqttClient, cmd, value) {},
-    },
-    {
-      id: 'shelly-i3',
-      name: 'Button commander',
-      type: 'input',
-      subscriptions: [
-        'shellies/shelly-i3-buttons/input_event/0',
-        'shellies/shelly-i3-buttons/input_event/1',
-        'shellies/shelly-i3-buttons/input_event/2',
-      ],
-      async sendCommand(mqttClient, cmd, value) {},
-    },
-    {
-      id: 'wemos-living-room',
-      name: 'Living Room',
-      type: 'switch',
-      subscriptions: [],
-      url: 'http://192.168.0.141/',
-      async sendCommand(mqttClient, cmd, value) {
-        mqttClient.publish(`cmnd/wemos-living-room/${cmd.toUpperCase()}`, value)
-      },
-      async setTemperature(mqttClient, temp) {
-        const nightModeTemp = Math.max(1, temp - 10)
-        await this.sendCommand(
-          mqttClient,
-          'Rule1',
-          ` on Clock#Timer=1 do Backlog Rule2 1; Rule1 0 break
-            on AM2301#Temperature<${temp} do Power 1 endon
-            on AM2301#Temperature>${temp + 0.5} do Power 0 endon`
-        )
-        await this.sendCommand(
-          mqttClient,
-          'Rule2',
-          ` on Clock#Timer=2 do Backlog Rule1 1; Rule2 0 break
-            on AM2301#Temperature<${nightModeTemp} do Power 1 endon
-            on AM2301#Temperature>${nightModeTemp + 0.5} do Power 0 endon`
-        )
-      },
-    },
-    {
       id: 'mobile-heater-1',
-      name: 'Mobile Heater',
+      name: '♨️​ Mobile Heater',
+      room: 'living',
       type: 'switch',
       subscriptions: [],
-      url: 'http://192.168.0.86/',
+      url: 'http://192.168.68.63/',
       async sendCommand(mqttClient, cmd, value) {
         mqttClient.publish(`cmnd/mobile-heater-1/${cmd.toUpperCase()}`, value)
       },
@@ -68,23 +50,86 @@ const config: Config = {
       },
     },
     {
-      id: 'sonoff-water-pump',
-      name: 'Water Pump',
-      type: 'switch',
+      id: 'laundry-sensors',
+      name: `🌡️​ Laundry`,
+      room: 'laundry',
+      type: 'sensor',
       subscriptions: [],
-      url: 'http://192.168.0.118/',
+      url: 'http://192.168.68.56/',
       async sendCommand(mqttClient, cmd, value) {
-        mqttClient.publish(`cmnd/sonoff-water-pump/${cmd.toUpperCase()}`, value)
+        mqttClient.publish(`cmnd/laundry-sensors/${cmd.toUpperCase()}`, value)
       },
     },
     {
-      id: 'wemos-office',
-      name: 'Office',
+      id: 'iotero-sht40-sensor-1',
+      name: `🌡️​ Sensor 1 (Office)`,
+      room: 'office',
       type: 'sensor',
       subscriptions: [],
-      url: 'http://192.168.0.171/',
+      url: 'http://192.168.68.73/',
       async sendCommand(mqttClient, cmd, value) {
-        mqttClient.publish(`cmnd/wemos-office/${cmd.toUpperCase()}`, value)
+        mqttClient.publish(
+          `cmnd/iotero-sht40-sensor-1/${cmd.toUpperCase()}`,
+          value
+        )
+      },
+    },
+    {
+      id: 'iotero-sht40-sensor-2',
+      name: `🌡️​ Sensor 2 (Benja)`,
+      room: 'benja',
+      type: 'sensor',
+      subscriptions: [],
+      url: 'http://192.168.68.74/',
+      async sendCommand(mqttClient, cmd, value) {
+        mqttClient.publish(
+          `cmnd/iotero-sht40-sensor-2/${cmd.toUpperCase()}`,
+          value
+        )
+      },
+    },
+    {
+      id: 'athom-plug-1',
+      name: `🔌​ Plug 1 (Washing machine)`,
+      room: 'laundry',
+      type: 'switch',
+      subscriptions: [],
+      url: 'http://192.168.68.72/',
+      async sendCommand(mqttClient, cmd, value) {
+        mqttClient.publish(`cmnd/athom-plug-1/${cmd.toUpperCase()}`, value)
+      },
+    },
+    {
+      id: 'athom-plug-2',
+      name: `🔌​ Plug 2 (Estufa Benja)`,
+      room: 'benja',
+      type: 'switch',
+      subscriptions: [],
+      url: 'http://192.168.68.76/',
+      async sendCommand(mqttClient, cmd, value) {
+        mqttClient.publish(`cmnd/athom-plug-2/${cmd.toUpperCase()}`, value)
+      },
+    },
+    // {
+    //   id: 'athom-plug-3',
+    //   name: `🔌​ Plug 3 (Pool Pump)`,
+    //   room: 'garden',
+    //   type: 'switch',
+    //   subscriptions: [],
+    //   url: 'http://192.168.68.76/',
+    //   async sendCommand(mqttClient, cmd, value) {
+    //     mqttClient.publish(`cmnd/athom-plug-3/${cmd.toUpperCase()}`, value)
+    //   },
+    // },
+    {
+      id: 'sonoff-water-pump',
+      name: '🚰 Water Pump',
+      room: 'garage',
+      type: 'switch',
+      subscriptions: [],
+      url: 'http://192.168.68.60/',
+      async sendCommand(mqttClient, cmd, value) {
+        mqttClient.publish(`cmnd/sonoff-water-pump/${cmd.toUpperCase()}`, value)
       },
     },
   ],
@@ -92,6 +137,40 @@ const config: Config = {
 
 export function getDevice(id?: string) {
   return config.devices.find((d) => d.id === id)
+}
+
+export function getRoom(id?: string) {
+  return config.rooms.find((d) => d.id === id)
+}
+
+export function getHeatingDevice(roomId?: string) {
+  return config.devices.find((d) => d.room === roomId && d.type === 'switch')
+}
+
+export function getSensorDevice(roomId?: string) {
+  return config.devices.find((d) => d.room === roomId && d.type === 'sensor')
+}
+
+export function getRoomsWithTargetTemp(): RoomWithTargetTemp[] {
+  const today = DateTime.local()
+  const hour = today.hour
+  const weekDay = today.weekday
+  const rooms: RoomWithTargetTemp[] = []
+
+  config.rooms.reduce((prev, curr) => {
+    const targetTemp = curr.temperatures?.find((item) => {
+      return (
+        hour >= item.hours[0] &&
+        hour < item.hours[1] &&
+        weekDay >= item.weekDays[0] &&
+        weekDay < item.weekDays[1]
+      )
+    })
+    prev.push({ id: curr.id, temp: targetTemp ? targetTemp.temp : null })
+    return prev
+  }, rooms)
+
+  return rooms
 }
 
 export default config
