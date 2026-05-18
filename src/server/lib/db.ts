@@ -1,6 +1,7 @@
 import { createClient } from 'redis'
 import logger from './logger'
 import { DateTime } from 'luxon'
+import { getRedisClientOptions } from './redis-options'
 
 interface SystemStatus {
   voltage: number | null
@@ -13,9 +14,36 @@ interface SystemStatus {
 
 type SystemStatusStr = Record<keyof SystemStatus, string>
 
-export const redisClient = createClient({ url: process.env.REDIS_URL })
-redisClient.on('error', (err) => logger.error({ err }, 'Redis Client Error'))
-redisClient.connect()
+export const redisClient = createClient({
+  ...getRedisClientOptions(),
+  socket: {
+    ...getRedisClientOptions().socket,
+    reconnectStrategy: () => 5000,
+  },
+})
+
+redisClient.on('error', (err) => {
+  if ('code' in err && ['EHOSTUNREACH', 'ECONNREFUSED'].includes(err.code)) {
+    return
+  }
+
+  logger.error({ err }, 'Redis Client Error')
+})
+
+let redisConnection: Promise<unknown> | null = null
+
+export async function connectRedis() {
+  if (redisClient.isReady) {
+    return
+  }
+
+  redisConnection ??= redisClient.connect().catch((err) => {
+    redisConnection = null
+    throw err
+  })
+
+  await redisConnection
+}
 
 export async function getDeviceStatus(deviceId: string) {
   return getDeviceKey(deviceId, 'status')

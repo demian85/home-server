@@ -1,8 +1,8 @@
 import { Telegraf, session } from 'telegraf'
 import { message } from 'telegraf/filters'
 import logger from '@lib/logger'
+import { redisClient } from '@lib/db'
 
-import { Redis } from '@telegraf/session/redis'
 import { ContextWithSession } from './types'
 import handlers from './handlers'
 import type { ParseMode } from 'telegraf/types'
@@ -11,9 +11,18 @@ const bot = new Telegraf<ContextWithSession>(process.env.TELEGRAM_BOT_TOKEN!)
 
 bot.use(
   session({
-    store: Redis<object>({
-      url: process.env.REDIS_URL,
-    }),
+    store: {
+      async get(key) {
+        const value = await redisClient.get(`telegraf:${key}`)
+        return value ? JSON.parse(value) : undefined
+      },
+      async set(key, session) {
+        await redisClient.set(`telegraf:${key}`, JSON.stringify(session))
+      },
+      async delete(key) {
+        await redisClient.del(`telegraf:${key}`)
+      },
+    },
   })
 )
 

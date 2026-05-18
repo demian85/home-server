@@ -5,9 +5,12 @@ import logger from '@lib/logger'
 import { loadParsers } from '@lib/parsers'
 import config from '../config'
 import telegramBot, { sendNotification } from '@lib/telegram'
+import { connectRedis } from '@lib/db'
 
 /////------------------------------------
 ;(async function init() {
+  await connectRedis()
+
   const parsers = await loadParsers()
 
   logger.debug(Object.keys(parsers))
@@ -44,6 +47,21 @@ import telegramBot, { sendNotification } from '@lib/telegram'
     parsers[topic]?.(data)
   })
 
-  await telegramBot.launch()
+  telegramBot.launch(() => {
+        logger.info('Telegram bot is up and running')
+      })
+      .catch((error: any) => {
+        if (error?.response?.error_code === 409) {
+          logger.error(
+            { error: error.message },
+            'Another bot instance is already running (409 Conflict). Kill all node processes and try again.'
+          )
+          throw new Error(
+            'Telegram bot 409 Conflict: Another instance is already running. Run: pkill -f "ai-telegram-assistant-bot.*tsx" && sleep 2'
+          )
+        }
+        throw error
+      })
+  }
   await sendNotification('Server initialized')
 })()
