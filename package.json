@@ -5,7 +5,7 @@
   "type": "module",
   "main": "build/src/index.js",
   "engines": {
-    "node": "24.x"
+    "node": "22.x"
   },
   "repository": {
     "type": "git",
@@ -51,10 +51,10 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@tsconfig/node24": "^24.0.4",
+    "@tsconfig/node22": "^22.0.1",
     "@types/lodash": "^4.17.24",
     "@types/luxon": "^3.7.1",
-    "@types/node": "^24.10.0",
+    "@types/node": "^22.15.3",
     "@typescript-eslint/eslint-plugin": "^8.59.3",
     "@typescript-eslint/parser": "^8.59.3",
     "eslint": "^10.4.0",

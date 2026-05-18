@@ -1,7 +1,7 @@
 # AGENTS.md
 
 ## Repo shape
-- Node 24 project (`.nvmrc`, `package.json#engines`); use npm/package-lock, not yarn/pnpm.
+- Node 22 project (`.nvmrc`, `package.json#engines`); use npm/package-lock, not yarn/pnpm.
 - Real server entrypoint is `src/index.ts`; `npm start` and `npm run dev` run it with `tsx`.
 - `package.json#main` points at `build/src/index.js`; `npm run build` cleans `build/`, runs `tsc`, then `tsc-alias` so emitted `@lib/*` imports are rewritten.
 - `@lib/*` is a TS path alias for `src/lib/*`; source runtime commands rely on `tsx` reading `tsconfig.json` paths.

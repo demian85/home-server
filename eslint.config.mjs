@@ -2,6 +2,8 @@ import js from '@eslint/js'
 import tsParser from '@typescript-eslint/parser'
 import tsPlugin from '@typescript-eslint/eslint-plugin'
 import prettierConfig from 'eslint-config-prettier'
+import { dirname } from 'path'
+import { fileURLToPath } from 'url'
 
 export default [
   {
@@ -14,7 +16,7 @@ export default [
       parser: tsParser,
       parserOptions: {
         project: './tsconfig.json',
-        tsconfigRootDir: import.meta.dirname,
+        tsconfigRootDir: dirname(fileURLToPath(import.meta.url)),
       },
     },
     plugins: {
