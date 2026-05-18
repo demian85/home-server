@@ -19,9 +19,9 @@ const config: Config = {
       name: "Benja's room",
       temperatures: [
         { temp: 16, weekDays: [6, 7], hours: [9, 17] },
-        { temp: 20, weekDays: [6, 7], hours: [17, 9] },
+        { temp: 21, weekDays: [6, 7], hours: [17, 9] },
         { temp: 16, weekDays: [1, 5], hours: [7, 17] },
-        { temp: 20, weekDays: [1, 5], hours: [17, 7] },
+        { temp: 21, weekDays: [1, 5], hours: [17, 7] },
       ],
     },
     { id: 'office', name: 'Office' },

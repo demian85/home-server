@@ -22,7 +22,10 @@ export async function automaticTemperatureHandler() {
   // Find target temp per room
   const roomsWithHeatingDevices = getRoomsWithTargetTemp()
 
-  logger.debug({ roomsWithHeatingDevices }, 'Rooms with target temperature set')
+  logger.debug(
+    { outsideTemp, roomsWithHeatingDevices },
+    'Rooms with target temperature set'
+  )
 
   for (const room of roomsWithHeatingDevices) {
     logger.debug({ room }, `Processing room...`)
