@@ -9,7 +9,9 @@ import { connectRedis } from '@lib/db'
 
 /////------------------------------------
 ;(async function init() {
+  logger.info('Connecting to Redis...')
   await connectRedis()
+  logger.info('Redis connected')
 
   const parsers = await loadParsers()
 

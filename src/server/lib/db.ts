@@ -23,10 +23,6 @@ export const redisClient = createClient({
 })
 
 redisClient.on('error', (err) => {
-  if ('code' in err && ['EHOSTUNREACH', 'ECONNREFUSED'].includes(err.code)) {
-    return
-  }
-
   logger.error({ err }, 'Redis Client Error')
 })
 
