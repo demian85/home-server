@@ -12,7 +12,7 @@ import {
 import { sendNotification } from '@lib/telegram'
 import { Parser, TasmotaSensorPayload } from '@lib/types'
 import { DateTime } from 'luxon'
-import { getDevice } from '../../../../src/config'
+import { getDevice } from '../../../../src/config.js'
 
 export function lwtParser(deviceId: string): Parser {
   return async (payload: unknown) => {

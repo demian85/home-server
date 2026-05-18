@@ -1,5 +1,5 @@
 import { Parser } from '@lib/types'
-import { lwtParser, voltageParser } from '../common'
+import { lwtParser, voltageParser } from '../common.js'
 
 const deviceId = 'athom-plug-2'
 

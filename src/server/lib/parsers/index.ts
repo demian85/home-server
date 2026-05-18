@@ -1,9 +1,9 @@
-import { Parser } from '../types'
+import { Parser } from '../types.js'
 import { readdir } from 'fs/promises'
 import { join } from 'path'
 
 export async function loadParsers() {
-  const baseDir = join(__dirname, 'devices')
+  const baseDir = join(import.meta.dirname, 'devices')
   const files = await readdir(baseDir)
   const parserEntries: [string, Parser][] = []
 

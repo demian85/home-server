@@ -3,7 +3,7 @@ import 'dotenv/config'
 import { client } from '@lib/mqtt'
 import logger from '@lib/logger'
 import { loadParsers } from '@lib/parsers'
-import config from '../config'
+import config from '../config.js'
 import telegramBot, { sendNotification } from '@lib/telegram'
 import { connectRedis } from '@lib/db'
 
@@ -15,7 +15,7 @@ import { connectRedis } from '@lib/db'
 
   logger.debug(Object.keys(parsers))
 
-  client.once('connect', () => {
+  function onMqttConnect() {
     logger.info('Client connected')
 
     const topics = config.subscriptions.concat(
@@ -31,7 +31,13 @@ import { connectRedis } from '@lib/db'
       }
       logger.debug({ topics }, 'Subscribed to topics')
     })
-  })
+  }
+
+  if (client.connected) {
+    onMqttConnect()
+  }
+
+  client.on('connect', onMqttConnect)
 
   client.on('message', (topic, payload) => {
     let data
@@ -48,20 +54,20 @@ import { connectRedis } from '@lib/db'
   })
 
   telegramBot.launch(() => {
-        logger.info('Telegram bot is up and running')
-      })
-      .catch((error: any) => {
-        if (error?.response?.error_code === 409) {
-          logger.error(
-            { error: error.message },
-            'Another bot instance is already running (409 Conflict). Kill all node processes and try again.'
-          )
-          throw new Error(
-            'Telegram bot 409 Conflict: Another instance is already running. Run: pkill -f "ai-telegram-assistant-bot.*tsx" && sleep 2'
-          )
-        }
-        throw error
-      })
-  }
+    logger.info('Telegram bot is up and running')
+  }).catch((error: any) => {
+    if (error?.response?.error_code === 409) {
+      logger.error(
+        { error: error.message },
+        'Another bot instance is already running (409 Conflict). Kill all node processes and try again.'
+      )
+      throw new Error(
+        'Telegram bot 409 Conflict: Another instance is already running. Run: pkill -f "ai-telegram-assistant-bot.*tsx" && sleep 2'
+      )
+    }
+    throw error
+  })
+
+  logger.info('Server initialized')
   await sendNotification('Server initialized')
 })()

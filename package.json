@@ -2,6 +2,7 @@
   "name": "@demian85/home-server",
   "version": "4.0.0",
   "description": "Smart Home server",
+  "type": "module",
   "main": "build/src/server/index.js",
   "engines": {
     "node": "24.x"
@@ -12,8 +13,8 @@
   },
   "scripts": {
     "postinstall": "npm run build",
-    "clean": "node -e \"require('node:fs').rmSync('build', { recursive: true, force: true })\"",
-    "build": "npm run clean && tsc && tsc-alias",
+    "clean": "node --input-type=module -e \"import { rmSync } from 'node:fs'; rmSync('build', { recursive: true, force: true });\"",
+    "build": "npm run clean && tsc && tsc-alias -f -fe .js",
     "typecheck": "tsc --noEmit",
     "start": "tsx src/server/index.ts",
     "dev": "LOG_PRETTY=true tsx watch src/server/index.ts",

@@ -1,7 +1,7 @@
 import { createClient } from 'redis'
-import logger from './logger'
+import logger from './logger.js'
 import { DateTime } from 'luxon'
-import { getRedisClientOptions } from './redis-options'
+import { getRedisClientOptions } from './redis-options.js'
 
 interface SystemStatus {
   voltage: number | null

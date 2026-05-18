@@ -1,5 +1,5 @@
-import config from '../../../../config'
-import { MessageContext } from '../types'
+import config from '../../../../config.js'
+import { MessageContext } from '../types.js'
 import { getDeviceKey, getSystemStatus } from '@lib/db'
 import { DateTime } from 'luxon'
 

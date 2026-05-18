@@ -2,9 +2,9 @@ import {
   getHeatingDevice,
   getRoomsWithTargetTemp,
   getSensorDevice,
-} from '../../config'
-import { getDeviceKey, getSystemStatus } from './db'
-import { sendNotification } from './telegram'
+} from '../../config.js'
+import { getDeviceKey, getSystemStatus } from './db.js'
+import { sendNotification } from './telegram/index.js'
 import { client as mqttClient } from '@lib/mqtt'
 import { DateTime } from 'luxon'
 
@@ -16,15 +16,6 @@ export async function automaticTemperatureHandler() {
   }
 
   const outsideTemp = await getDeviceKey('laundry-sensors', 'temperature')
-
-  const targetHumidity = (
-    await Promise.all([
-      getDeviceKey('mobile-heater-1', 'humidity'),
-      getDeviceKey('iotero-sht40-sensor-1', 'humidity'),
-      getDeviceKey('iotero-sht40-sensor-2', 'humidity'),
-    ])
-  ).find((v) => v && v.value !== null) as { value: string }
-  const hum = +targetHumidity.value
 
   // Find target temp per room
   const roomsWithHeatingDevices = getRoomsWithTargetTemp()
@@ -39,6 +30,7 @@ export async function automaticTemperatureHandler() {
     }
 
     const currentRoomTemp = await getDeviceKey(sensorDevice.id, 'temperature')
+    const currentRoomHumidity = await getDeviceKey(sensorDevice.id, 'humidity')
 
     if (!currentRoomTemp?.value) {
       continue
@@ -59,15 +51,19 @@ export async function automaticTemperatureHandler() {
       ) {
         targetTemp += +outsideTemp.value < 8 ? 0.5 : 0
       }
-      if (hum > 75) {
-        targetTemp -= 0.3
+      if (currentRoomHumidity?.value) {
+        const hum = +currentRoomHumidity.value
+        if (hum > 75) {
+          targetTemp -= 0.3
+        }
+        if (hum > 80) {
+          targetTemp -= 0.3
+        }
+        if (hum > 90) {
+          targetTemp -= 0.4
+        }
       }
-      if (hum > 80) {
-        targetTemp -= 0.3
-      }
-      if (hum > 90) {
-        targetTemp -= 0.4
-      }
+      
       const shouldPowerOn = +currentRoomTemp.value <= targetTemp + 0.5
       await heater.sendCommand(mqttClient, 'POWER', shouldPowerOn ? '1' : '0')
       await sendNotification(

@@ -1,5 +1,5 @@
 import { Parser, TasmotaSensorPayload } from '@lib/types'
-import { lwtParser, powerParser } from '../common'
+import { lwtParser, powerParser } from '../common.js'
 import { sendNotification } from '@lib/telegram'
 import { getDevicePower } from '@lib/db'
 import { DateTime } from 'luxon'

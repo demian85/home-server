@@ -1,6 +1,6 @@
-import temperatureHandlers from './temperature'
-import systemHandlers from './system'
-import { Handler } from '../types'
+import temperatureHandlers from './temperature.js'
+import systemHandlers from './system.js'
+import { Handler } from '../types.js'
 
 const handlers: Record<string, Handler> = {
   temperature: temperatureHandlers,

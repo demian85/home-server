@@ -1,4 +1,5 @@
 import logger, { LoggerOptions } from 'pino'
+import pretty from 'pino-pretty'
 
 const loggerOptions: LoggerOptions = {
   name: 'home-server',
@@ -9,12 +10,8 @@ const loggerOptions: LoggerOptions = {
   base: null,
 }
 
-if (process.env.LOG_PRETTY === 'true' && process.env.NODE_ENV !== 'test') {
-  loggerOptions.transport = {
-    target: 'pino-pretty',
-  }
-}
-
 export default process.env.NODE_ENV === 'test'
   ? logger(loggerOptions, logger.destination('./log'))
-  : logger(loggerOptions)
+  : process.env.LOG_PRETTY === 'true' && process.env.NODE_ENV !== 'test'
+    ? logger(loggerOptions, pretty())
+    : logger(loggerOptions)

@@ -1,5 +1,5 @@
 import { Parser } from '@lib/types'
-import { lwtParser, temperatureSensorParser } from '../common'
+import { lwtParser, temperatureSensorParser } from '../common.js'
 
 const deviceId = 'mobile-heater-1'
 

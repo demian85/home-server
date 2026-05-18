@@ -1,6 +1,6 @@
 import type { CallbackQuery } from 'telegraf/types'
-import config, { getDevice } from '../../../../config'
-import { CallbackQueryContext, MessageContext } from '../types'
+import config, { getDevice } from '../../../../config.js'
+import { CallbackQueryContext, MessageContext } from '../types.js'
 import { client as mqttClient } from '@lib/mqtt'
 import { setSystemStatus } from '@lib/db'
 import { automaticTemperatureHandler } from '@lib/actions'

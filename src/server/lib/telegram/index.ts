@@ -3,8 +3,8 @@ import { message } from 'telegraf/filters'
 import logger from '@lib/logger'
 import { redisClient } from '@lib/db'
 
-import { ContextWithSession } from './types'
-import handlers from './handlers'
+import { ContextWithSession } from './types.js'
+import handlers from './handlers/index.js'
 import type { ParseMode } from 'telegraf/types'
 
 const bot = new Telegraf<ContextWithSession>(process.env.TELEGRAM_BOT_TOKEN!)
