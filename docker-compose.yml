@@ -1,7 +1,6 @@
 services:
   redis:
     image: redis:7-alpine
-    container_name: redis-home-server
     ports:
       - "6379:6379"
     volumes:
@@ -9,9 +8,11 @@ services:
     command: redis-server --appendonly yes
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
+      interval: 5s
       timeout: 3s
       retries: 5
+    networks:
+      - home-server
 
   app:
     build:
@@ -22,6 +23,12 @@ services:
       redis:
         condition: service_healthy
     restart: unless-stopped
+    networks:
+      - home-server
 
 volumes:
   redis_data:
+
+networks:
+  home-server:
+    driver: bridge
