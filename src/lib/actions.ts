@@ -3,9 +3,8 @@ import {
   getRoomsWithTargetTemp,
   getSensorDevice,
 } from '../config.js'
-import { getDeviceKey, getDevicePower, getSystemStatus } from './db.js'
+import { getDeviceKey, getSystemStatus } from './db.js'
 import logger from './logger.js'
-import { sendNotification } from './telegram/index.js'
 import { client as mqttClient } from '@lib/mqtt.js'
 import { DateTime } from 'luxon'
 
@@ -70,17 +69,16 @@ export async function automaticTemperatureHandler() {
 
       const shouldPowerOn = +currentRoomTemp.value <= targetTemp + 0.5
       await sendCommand(heater.id, 'POWER', shouldPowerOn ? '1' : '0')
-      const currStatus = await getDevicePower(heater.id)
-      if (
-        !currStatus ||
-        (shouldPowerOn && currStatus.value === 'off') ||
-        (!shouldPowerOn && currStatus.value === 'on')
-      ) {
-        await sendNotification(
-          `(${heater.name}) Power ${shouldPowerOn ? 'ON' : 'OFF'}. Current temperature: ${currentRoomTemp.value} C`
-        )
-      }
-      continue
+      // const currStatus = await getDevicePower(heater.id)
+      // if (
+      //   !currStatus ||
+      //   (shouldPowerOn && currStatus.value === 'off') ||
+      //   (!shouldPowerOn && currStatus.value === 'on')
+      // ) {
+      //   await sendNotification(
+      //     `(${heater.name}) Power ${shouldPowerOn ? 'ON' : 'OFF'}. Current temperature: ${currentRoomTemp.value} C`
+      //   )
+      // }
     }
   }
 }
