@@ -85,17 +85,12 @@ export async function automaticTemperatureHandler() {
         }
       }
 
-      const shouldPowerOn = +currentRoomTemp.value <= targetTemp + 0.5
-
-      logger.debug(
-        {
-          targetTemp,
-          shouldPowerOn,
-        },
-        `Room ${room.id} state`
-      )
-
-      await sendCommand(heater.id, 'POWER', shouldPowerOn ? '1' : '0')
+      const tempValue = +currentRoomTemp.value
+      if (tempValue < targetTemp) {
+        await sendCommand(heater.id, 'POWER', '1')
+      } else if (tempValue > targetTemp + 0.5) {
+        await sendCommand(heater.id, 'POWER', '0')
+      }
     }
   }
 }
