@@ -10,7 +10,8 @@ const config: Config = {
       temperatures: [
         { temp: 10, weekDays: [1, 7], hours: [0, 6] },
         { temp: 18, weekDays: [1, 7], hours: [6, 10] },
-        { temp: 16, weekDays: [1, 7], hours: [10, 0] },
+        { temp: 16, weekDays: [1, 7], hours: [10, 17] },
+        { temp: 18, weekDays: [1, 7], hours: [17, 0] },
       ],
     },
     {
