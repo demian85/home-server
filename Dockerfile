@@ -8,5 +8,4 @@ RUN npm ci --ignore-scripts
 COPY . .
 RUN npm run build
 
-ENV NODE_ENV=production
-CMD ["node", "build/src/index.js"]
+CMD ["npm", "start"]
