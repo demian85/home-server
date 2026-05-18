@@ -9,9 +9,9 @@ import { client as mqttClient } from '@lib/mqtt.js'
 import { DateTime } from 'luxon'
 
 export async function automaticTemperatureHandler() {
-  logger.debug(`automaticTemperatureHandler()`)
-
   const { autoTemp, lowVoltage } = await getSystemStatus()
+
+  logger.debug({ autoTemp, lowVoltage }, `automaticTemperatureHandler()`)
 
   if (!autoTemp) {
     return
@@ -25,16 +25,34 @@ export async function automaticTemperatureHandler() {
   logger.debug({ roomsWithHeatingDevices }, 'Rooms with target temperature set')
 
   for (const room of roomsWithHeatingDevices) {
+    logger.debug({ room }, `Processing room...`)
+
     let targetTemp = room.temp
+
     const heater = getHeatingDevice(room.id)
     const sensorDevice = getSensorDevice(room.id)
 
     if (!heater || !sensorDevice) {
+      logger.debug(
+        {
+          heater,
+          sensorDevice,
+        },
+        `Room ${room.id} has no heating or sensor devices`
+      )
       continue
     }
 
     const currentRoomTemp = await getDeviceKey(sensorDevice.id, 'temperature')
     const currentRoomHumidity = await getDeviceKey(sensorDevice.id, 'humidity')
+
+    logger.debug(
+      {
+        currentRoomTemp,
+        currentRoomHumidity,
+      },
+      `Room ${room.id} sensor values`
+    )
 
     if (!currentRoomTemp?.value) {
       continue
@@ -68,17 +86,16 @@ export async function automaticTemperatureHandler() {
       }
 
       const shouldPowerOn = +currentRoomTemp.value <= targetTemp + 0.5
+
+      logger.debug(
+        {
+          targetTemp,
+          shouldPowerOn,
+        },
+        `Room ${room.id} state`
+      )
+
       await sendCommand(heater.id, 'POWER', shouldPowerOn ? '1' : '0')
-      // const currStatus = await getDevicePower(heater.id)
-      // if (
-      //   !currStatus ||
-      //   (shouldPowerOn && currStatus.value === 'off') ||
-      //   (!shouldPowerOn && currStatus.value === 'on')
-      // ) {
-      //   await sendNotification(
-      //     `(${heater.name}) Power ${shouldPowerOn ? 'ON' : 'OFF'}. Current temperature: ${currentRoomTemp.value} C`
-      //   )
-      // }
     }
   }
 }
@@ -88,5 +105,6 @@ export async function sendCommand(
   cmd: string,
   value: string
 ) {
+  logger.debug({ deviceId, cmd, value }, 'Sending command...')
   mqttClient.publish(`cmnd/${deviceId}/${cmd.toUpperCase()}`, value)
 }
