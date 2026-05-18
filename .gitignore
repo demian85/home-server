@@ -7,3 +7,4 @@ docs/Tasmota rules.txt
 .eslintcache
 build
 dist
+.sisyphus

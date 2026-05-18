@@ -41,18 +41,22 @@ export function powerParser(deviceId: string): Parser {
   return async (payload: unknown) => {
     logger.debug({ payload }, `powerParser(${deviceId})`)
 
-    const deviceName = getDevice(deviceId)?.name
+    const device = getDevice(deviceId)
+
+    if (!device) {
+      return
+    }
+
     const newStatus = String(payload).toLowerCase() as PowerStatus
     const currStatus = await getDevicePower(deviceId)
     const powerValue = payload as string
     if (newStatus !== currStatus?.value) {
       await setDevicePower(deviceId, newStatus)
-      const srcUrl = getDevice(deviceId)?.url
-      const srcStr = srcUrl ? `[${deviceName}](${srcUrl})` : deviceName
-      await sendNotification(
-        `${srcStr} reported: Power ${powerValue}`,
-        'MarkdownV2'
-      )
+      const srcUrl = device.url
+      const srcStr = srcUrl
+        ? `<a href="${srcUrl}">${device.name}</a>`
+        : device.name
+      await sendNotification(`${srcStr} reported: Power ${powerValue}`, 'HTML')
     }
   }
 }

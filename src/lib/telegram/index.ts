@@ -113,10 +113,25 @@ bot.on('inline_query', async (ctx) => {
 process.once('SIGINT', () => bot.stop('SIGINT'))
 process.once('SIGTERM', () => bot.stop('SIGTERM'))
 
+function escapeMarkdownV2(text: string): string {
+  return text.replace(/[_*[\]()~`>#+=|{}.!-]/g, '\\$&')
+}
+
+function escapeMarkdown(text: string): string {
+  return text.replace(/[_*[\]()]/g, '\\$&')
+}
+
 export async function sendNotification(text: string, parseMode?: ParseMode) {
+  const escapedText =
+    parseMode === 'MarkdownV2'
+      ? escapeMarkdownV2(text)
+      : parseMode === 'Markdown'
+        ? escapeMarkdown(text)
+        : text
+
   return bot.telegram.sendMessage(
     process.env.TELEGRAM_NOTIFICATIONS_TARGET!,
-    text,
+    escapedText,
     { parse_mode: parseMode }
   )
 }
