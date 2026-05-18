@@ -5,13 +5,9 @@ export interface Device {
   room: string
   name: string
   type: 'rgb' | 'switch' | 'input' | 'sensor'
+  subtype?: 'heater' | 'light'
   subscriptions: string[]
   url?: string
-  sendCommand: (
-    mqttClient: MqttClient,
-    cmd: string,
-    value: string
-  ) => Promise<void>
   setTemperature?: (mqttClient: MqttClient, temp: number) => Promise<void>
 }
 

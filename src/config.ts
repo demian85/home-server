@@ -33,20 +33,9 @@ const config: Config = {
       name: '♨️​ Mobile Heater',
       room: 'living',
       type: 'switch',
+      subtype: 'heater',
       subscriptions: [],
       url: 'http://192.168.68.63/',
-      async sendCommand(mqttClient, cmd, value) {
-        mqttClient.publish(`cmnd/mobile-heater-1/${cmd.toUpperCase()}`, value)
-      },
-      async setTemperature(mqttClient, temp) {
-        const targetTemp = Math.max(1, temp)
-        await this.sendCommand(
-          mqttClient,
-          'Rule1',
-          ` on SI7021#Temperature<${targetTemp} do Power 1 endon
-            on SI7021#Temperature>${targetTemp + 0.5} do Power 0 endon`
-        )
-      },
     },
     {
       id: 'laundry-sensors',
@@ -55,9 +44,6 @@ const config: Config = {
       type: 'sensor',
       subscriptions: [],
       url: 'http://192.168.68.56/',
-      async sendCommand(mqttClient, cmd, value) {
-        mqttClient.publish(`cmnd/laundry-sensors/${cmd.toUpperCase()}`, value)
-      },
     },
     {
       id: 'iotero-sht40-sensor-1',
@@ -66,12 +52,6 @@ const config: Config = {
       type: 'sensor',
       subscriptions: [],
       url: 'http://192.168.68.73/',
-      async sendCommand(mqttClient, cmd, value) {
-        mqttClient.publish(
-          `cmnd/iotero-sht40-sensor-1/${cmd.toUpperCase()}`,
-          value
-        )
-      },
     },
     {
       id: 'iotero-sht40-sensor-2',
@@ -80,12 +60,6 @@ const config: Config = {
       type: 'sensor',
       subscriptions: [],
       url: 'http://192.168.68.74/',
-      async sendCommand(mqttClient, cmd, value) {
-        mqttClient.publish(
-          `cmnd/iotero-sht40-sensor-2/${cmd.toUpperCase()}`,
-          value
-        )
-      },
     },
     {
       id: 'athom-plug-1',
@@ -94,20 +68,15 @@ const config: Config = {
       type: 'switch',
       subscriptions: [],
       url: 'http://192.168.68.72/',
-      async sendCommand(mqttClient, cmd, value) {
-        mqttClient.publish(`cmnd/athom-plug-1/${cmd.toUpperCase()}`, value)
-      },
     },
     {
       id: 'athom-plug-2',
       name: `🔌 Plug 2 (Estufa Benja)`,
       room: 'benja',
       type: 'switch',
+      subtype: 'heater',
       subscriptions: [],
       url: 'http://192.168.68.76/',
-      async sendCommand(mqttClient, cmd, value) {
-        mqttClient.publish(`cmnd/athom-plug-2/${cmd.toUpperCase()}`, value)
-      },
     },
     // {
     //   id: 'athom-plug-3',
@@ -127,9 +96,6 @@ const config: Config = {
       type: 'switch',
       subscriptions: [],
       url: 'http://192.168.68.60/',
-      async sendCommand(mqttClient, cmd, value) {
-        mqttClient.publish(`cmnd/sonoff-water-pump/${cmd.toUpperCase()}`, value)
-      },
     },
   ],
 }
@@ -143,7 +109,9 @@ export function getRoom(id?: string) {
 }
 
 export function getHeatingDevice(roomId?: string) {
-  return config.devices.find((d) => d.room === roomId && d.type === 'switch')
+  return config.devices.find(
+    (d) => d.room === roomId && d.type === 'switch' && d.subtype === 'heater'
+  )
 }
 
 export function getSensorDevice(roomId?: string) {
@@ -162,7 +130,7 @@ export function getRoomsWithTargetTemp(): RoomWithTargetTemp[] {
         hour >= item.hours[0] &&
         hour < item.hours[1] &&
         weekDay >= item.weekDays[0] &&
-        weekDay < item.weekDays[1]
+        weekDay <= item.weekDays[1]
       )
     })
     prev.push({ id: curr.id, temp: targetTemp ? targetTemp.temp : null })

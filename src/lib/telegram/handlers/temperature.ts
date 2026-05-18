@@ -91,8 +91,6 @@ export default {
         )
       }
 
-      // reset target temp to force calculation
-      await setSystemStatus('targetTemp', null)
       await automaticTemperatureHandler()
 
       ctx.session.currentCommand = null

@@ -9,7 +9,6 @@ interface SystemStatus {
   lowVoltage: boolean
   voltageMismatch: boolean
   autoTemp: boolean
-  targetTemp: number | null
 }
 
 type SystemStatusStr = Record<keyof SystemStatus, string>
@@ -66,8 +65,7 @@ export async function getSystemStatus(): Promise<SystemStatus> {
     powerGridVoltage: data.powerGridVoltage ? +data.powerGridVoltage : null,
     lowVoltage: data.lowVoltage === 'true' ? true : false,
     voltageMismatch: data.voltageMismatch === 'true' ? true : false,
-    autoTemp: data.autoTemp === 'true' ? true : false,
-    targetTemp: data.targetTemp ? +data.targetTemp : null,
+    autoTemp: data.autoTemp === 'false' ? false : true,
   } as SystemStatus
 }
 
