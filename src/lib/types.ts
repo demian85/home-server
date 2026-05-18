@@ -4,7 +4,7 @@ export interface Device {
   id: string
   room: string
   name: string
-  type: 'rgb' | 'switch' | 'input' | 'sensor'
+  types: ('rgb' | 'switch' | 'sensor')[]
   subtype?: 'heater' | 'light'
   subscriptions: string[]
   url?: string
@@ -90,3 +90,5 @@ export interface TasmotaStatePayload {
     Downtime: string
   }
 }
+
+export type PowerStatus = 'on' | 'off'

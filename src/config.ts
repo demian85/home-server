@@ -32,7 +32,7 @@ const config: Config = {
       id: 'mobile-heater-1',
       name: '♨️​ Mobile Heater',
       room: 'living',
-      type: 'switch',
+      types: ['switch', 'sensor'],
       subtype: 'heater',
       subscriptions: [],
       url: 'http://192.168.68.63/',
@@ -41,59 +41,48 @@ const config: Config = {
       id: 'laundry-sensors',
       name: `🌡️ Laundry`,
       room: 'laundry',
-      type: 'sensor',
+      types: ['sensor'],
       subscriptions: [],
       url: 'http://192.168.68.56/',
     },
     {
       id: 'iotero-sht40-sensor-1',
-      name: `🌡️ Sensor 1 (Office)`,
+      name: `🌡️ Sensor 1 - Office`,
       room: 'office',
-      type: 'sensor',
+      types: ['sensor'],
       subscriptions: [],
       url: 'http://192.168.68.73/',
     },
     {
       id: 'iotero-sht40-sensor-2',
-      name: `🌡️ Sensor 2 (Benja)`,
+      name: `🌡️ Sensor 2 - Habitación Benja`,
       room: 'benja',
-      type: 'sensor',
+      types: ['sensor'],
       subscriptions: [],
       url: 'http://192.168.68.74/',
     },
     {
       id: 'athom-plug-1',
-      name: `🔌 Plug 1 (Washing machine)`,
+      name: `🔌 Plug 1 - Washing machine`,
       room: 'laundry',
-      type: 'switch',
+      types: ['switch'],
       subscriptions: [],
       url: 'http://192.168.68.72/',
     },
     {
       id: 'athom-plug-2',
-      name: `🔌 Plug 2 (Estufa Benja)`,
+      name: `🔌 Plug 2 - Estufa Benja`,
       room: 'benja',
-      type: 'switch',
+      types: ['switch'],
       subtype: 'heater',
       subscriptions: [],
       url: 'http://192.168.68.76/',
     },
-    // {
-    //   id: 'athom-plug-3',
-    //   name: `🔌 Plug 3 (Pool Pump)`,
-    //   room: 'garden',
-    //   type: 'switch',
-    //   subscriptions: [],
-    //   url: 'http://192.168.68.76/',
-    //   async sendCommand(mqttClient, cmd, value) {
-    //     mqttClient.publish(`cmnd/athom-plug-3/${cmd.toUpperCase()}`, value)
-    //   },
-    // },
     {
       id: 'sonoff-water-pump',
       name: '🚰 Water Pump',
       room: 'garage',
-      type: 'switch',
+      types: ['switch'],
       subscriptions: [],
       url: 'http://192.168.68.60/',
     },
@@ -110,12 +99,15 @@ export function getRoom(id?: string) {
 
 export function getHeatingDevice(roomId?: string) {
   return config.devices.find(
-    (d) => d.room === roomId && d.type === 'switch' && d.subtype === 'heater'
+    (d) =>
+      d.room === roomId && d.types.includes('switch') && d.subtype === 'heater'
   )
 }
 
 export function getSensorDevice(roomId?: string) {
-  return config.devices.find((d) => d.room === roomId && d.type === 'sensor')
+  return config.devices.find(
+    (d) => d.room === roomId && d.types.includes('sensor')
+  )
 }
 
 export function getRoomsWithTargetTemp(): RoomWithTargetTemp[] {
@@ -126,12 +118,20 @@ export function getRoomsWithTargetTemp(): RoomWithTargetTemp[] {
 
   config.rooms.reduce((prev, curr) => {
     const targetTemp = curr.temperatures?.find((item) => {
-      return (
-        hour >= item.hours[0] &&
-        hour < item.hours[1] &&
-        weekDay >= item.weekDays[0] &&
-        weekDay <= item.weekDays[1]
-      )
+      const [startHour, endHour] = item.hours
+      const [startDay, endDay] = item.weekDays
+
+      const matchesHour =
+        startHour < endHour
+          ? hour >= startHour && hour < endHour
+          : hour >= startHour || hour < endHour
+
+      const matchesDay =
+        startDay < endDay
+          ? weekDay >= startDay && weekDay <= endDay
+          : weekDay >= startDay || weekDay <= endDay
+
+      return matchesHour && matchesDay
     })
     prev.push({ id: curr.id, temp: targetTemp ? targetTemp.temp : null })
     return prev

@@ -48,11 +48,11 @@ export async function setDeviceStatus(deviceId: string, status: string) {
   return setDeviceKey(deviceId, 'status', status)
 }
 
-export async function getDevicePower(deviceId: string) {
-  return getDeviceKey(deviceId, 'power')
+export async function getDevicePower<T = 'off' | 'on'>(deviceId: string) {
+  return getDeviceKey<T>(deviceId, 'power')
 }
 
-export async function setDevicePower(deviceId: string, status: string) {
+export async function setDevicePower(deviceId: string, status: 'off' | 'on') {
   return setDeviceKey(deviceId, 'power', status)
 }
 
@@ -91,9 +91,10 @@ export async function setDeviceKey(
   )
 }
 
-export async function getDeviceKey(deviceId: string, key: string) {
+export async function getDeviceKey<T = string>(
+  deviceId: string,
+  key: string
+): Promise<{ value: T; timestamp: number } | null> {
   const data = await redisClient.get(`home_server:${deviceId}:${key}`)
-  return data
-    ? (JSON.parse(data) as { value: string | null; timestamp: number })
-    : null
+  return data ? (JSON.parse(data) as { value: T; timestamp: number }) : null
 }

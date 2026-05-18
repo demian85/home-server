@@ -10,7 +10,7 @@ import {
   setSystemStatus,
 } from '@lib/db.js'
 import { sendNotification } from '@lib/telegram/index.js'
-import { Parser, TasmotaSensorPayload } from '@lib/types.js'
+import { Parser, PowerStatus, TasmotaSensorPayload } from '@lib/types.js'
 import { DateTime } from 'luxon'
 import { getDevice } from '../../../src/config.js'
 import logger from '@lib/logger.js'
@@ -42,7 +42,7 @@ export function powerParser(deviceId: string): Parser {
     logger.debug({ payload }, `powerParser(${deviceId})`)
 
     const deviceName = getDevice(deviceId)?.name
-    const newStatus = String(payload).toLowerCase()
+    const newStatus = String(payload).toLowerCase() as PowerStatus
     const currStatus = await getDevicePower(deviceId)
     const powerValue = payload as string
     if (newStatus !== currStatus?.value) {

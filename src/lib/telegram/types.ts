@@ -1,15 +1,6 @@
 import { Context } from 'telegraf'
 import type { CallbackQuery, Update } from 'telegraf/types'
 
-export interface FoodStockItem {
-  name: string
-  category: string
-  stock: number
-  expiry: string
-}
-
-export type FoodStockList = FoodStockItem[]
-
 export type MessageContext = ContextWithSession
 
 export type CallbackQueryContext = ContextWithSession<
