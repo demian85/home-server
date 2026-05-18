@@ -1,6 +1,6 @@
-import config from '../../../../config.js'
+import config from '../../../config.js'
 import { MessageContext } from '../types.js'
-import { getDeviceKey, getSystemStatus } from '@lib/db'
+import { getDeviceKey, getSystemStatus } from '@lib/db.js'
 import { DateTime } from 'luxon'
 
 export default {

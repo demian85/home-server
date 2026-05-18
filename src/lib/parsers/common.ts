@@ -1,4 +1,4 @@
-import { automaticTemperatureHandler } from '@lib/actions'
+import { automaticTemperatureHandler } from '@lib/actions.js'
 import {
   getDeviceKey,
   getDevicePower,
@@ -8,11 +8,11 @@ import {
   setDevicePower,
   setDeviceStatus,
   setSystemStatus,
-} from '@lib/db'
-import { sendNotification } from '@lib/telegram'
-import { Parser, TasmotaSensorPayload } from '@lib/types'
+} from '@lib/db.js'
+import { sendNotification } from '@lib/telegram/index.js'
+import { Parser, TasmotaSensorPayload } from '@lib/types.js'
 import { DateTime } from 'luxon'
-import { getDevice } from '../../../../src/config.js'
+import { getDevice } from '../../../src/config.js'
 
 export function lwtParser(deviceId: string): Parser {
   return async (payload: unknown) => {

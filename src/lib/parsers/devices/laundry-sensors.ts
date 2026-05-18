@@ -1,4 +1,4 @@
-import { Parser } from '@lib/types'
+import { Parser } from '@lib/types.js'
 import { lwtParser, temperatureSensorParser } from '../common.js'
 
 const deviceId = 'laundry-sensors'

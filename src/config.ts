@@ -1,4 +1,4 @@
-import { Config, RoomWithTargetTemp } from '@lib/types'
+import { Config, RoomWithTargetTemp } from '@lib/types.js'
 import { DateTime } from 'luxon'
 
 const config: Config = {

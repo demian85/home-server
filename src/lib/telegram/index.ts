@@ -1,7 +1,7 @@
 import { Telegraf, session } from 'telegraf'
 import { message } from 'telegraf/filters'
-import logger from '@lib/logger'
-import { redisClient } from '@lib/db'
+import logger from '@lib/logger.js'
+import { redisClient } from '@lib/db.js'
 
 import { ContextWithSession } from './types.js'
 import handlers from './handlers/index.js'

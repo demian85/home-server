@@ -2,10 +2,10 @@ import {
   getHeatingDevice,
   getRoomsWithTargetTemp,
   getSensorDevice,
-} from '../../config.js'
+} from '../config.js'
 import { getDeviceKey, getSystemStatus } from './db.js'
 import { sendNotification } from './telegram/index.js'
-import { client as mqttClient } from '@lib/mqtt'
+import { client as mqttClient } from '@lib/mqtt.js'
 import { DateTime } from 'luxon'
 
 export async function automaticTemperatureHandler() {

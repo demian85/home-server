@@ -1,11 +1,11 @@
 import 'dotenv/config'
 
-import { client } from '@lib/mqtt'
-import logger from '@lib/logger'
-import { loadParsers } from '@lib/parsers'
-import config from '../config.js'
-import telegramBot, { sendNotification } from '@lib/telegram'
-import { connectRedis } from '@lib/db'
+import { client } from '@lib/mqtt.js'
+import logger from '@lib/logger.js'
+import { loadParsers } from '@lib/parsers/index.js'
+import config from './config.js'
+import telegramBot, { sendNotification } from '@lib/telegram/index.js'
+import { connectRedis } from '@lib/db.js'
 
 /////------------------------------------
 ;(async function init() {
@@ -15,10 +15,8 @@ import { connectRedis } from '@lib/db'
 
   const parsers = await loadParsers()
 
-  logger.debug(Object.keys(parsers))
-
   function onMqttConnect() {
-    logger.info('Client connected')
+    logger.info('MQTT Client connected')
 
     const topics = config.subscriptions.concat(
       config.devices.reduce((prev, curr) => {
@@ -31,7 +29,7 @@ import { connectRedis } from '@lib/db'
       if (err) {
         logger.error(err)
       }
-      logger.debug({ topics }, 'Subscribed to topics')
+      logger.debug({ topics }, 'MQTT: Subscribed to topics')
     })
   }
 

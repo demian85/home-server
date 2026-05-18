@@ -1,6 +1,6 @@
-import { client } from '@lib/mqtt'
-import { ShellyEvent, getBulbPayload, getBulbState } from '@lib/shelly'
-import { Parser } from '@lib/types'
+import { client } from '@lib/mqtt.js'
+import { ShellyEvent, getBulbPayload, getBulbState } from '@lib/shelly.js'
+import { Parser } from '@lib/types.js'
 
 const parsers: Record<string, Parser> = {
   'shellies/shelly-i3-buttons/input_event/0': async (payload) => {

@@ -1,17 +1,17 @@
-import logger, { LoggerOptions } from 'pino'
+import { pino, LoggerOptions } from 'pino'
 import pretty from 'pino-pretty'
 
 const loggerOptions: LoggerOptions = {
   name: 'home-server',
   level: process.env.LOG_LEVEL || 'info',
   serializers: {
-    err: logger.stdSerializers.err,
+    err: pino.stdSerializers.err,
   },
   base: null,
 }
 
 export default process.env.NODE_ENV === 'test'
-  ? logger(loggerOptions, logger.destination('./log'))
+  ? pino(loggerOptions, pino.destination('./log'))
   : process.env.LOG_PRETTY === 'true' && process.env.NODE_ENV !== 'test'
-    ? logger(loggerOptions, pretty())
-    : logger(loggerOptions)
+    ? pino(loggerOptions, pretty())
+    : pino(loggerOptions)

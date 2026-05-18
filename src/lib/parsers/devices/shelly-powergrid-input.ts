@@ -1,6 +1,6 @@
-import { Parser, TasmotaSensorPayload } from '@lib/types'
-import { setDeviceStatus, setSystemStatus } from '@lib/db'
-import { sendNotification } from '@lib/telegram'
+import { Parser, TasmotaSensorPayload } from '@lib/types.js'
+import { setDeviceStatus, setSystemStatus } from '@lib/db.js'
+import { sendNotification } from '@lib/telegram/index.js'
 
 const deviceId = 'shelly-powergrid-input'
 

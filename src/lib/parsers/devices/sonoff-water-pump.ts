@@ -1,7 +1,7 @@
-import { Parser, TasmotaSensorPayload } from '@lib/types'
+import { Parser, TasmotaSensorPayload } from '@lib/types.js'
 import { lwtParser, powerParser } from '../common.js'
-import { sendNotification } from '@lib/telegram'
-import { getDevicePower } from '@lib/db'
+import { sendNotification } from '@lib/telegram/index.js'
+import { getDevicePower } from '@lib/db.js'
 import { DateTime } from 'luxon'
 
 const deviceId = 'sonoff-water-pump'
