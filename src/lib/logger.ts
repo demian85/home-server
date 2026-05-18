@@ -1,5 +1,4 @@
-import { pino, LoggerOptions } from 'pino'
-import pretty from 'pino-pretty'
+import { pino, LoggerOptions, DestinationStream } from 'pino'
 
 const loggerOptions: LoggerOptions = {
   name: 'home-server',
@@ -10,8 +9,20 @@ const loggerOptions: LoggerOptions = {
   base: null,
 }
 
-export default process.env.NODE_ENV === 'test'
-  ? pino(loggerOptions, pino.destination('./log'))
-  : process.env.LOG_PRETTY === 'true' && process.env.NODE_ENV !== 'test'
-    ? pino(loggerOptions, pretty())
-    : pino(loggerOptions)
+async function getDestination(): Promise<DestinationStream | undefined> {
+  if (process.env.NODE_ENV === 'test') {
+    return pino.destination('./log')
+  }
+  if (process.env.LOG_PRETTY === 'true') {
+    try {
+      const { default: pretty } = await import('pino-pretty')
+      return pretty()
+    } catch {
+      return undefined
+    }
+  }
+  return undefined
+}
+
+const destination = await getDestination()
+export default pino(loggerOptions, destination)

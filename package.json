@@ -3,7 +3,7 @@
   "version": "4.0.0",
   "description": "Smart Home server",
   "type": "module",
-  "main": "build/src/server/index.js",
+  "main": "build/src/index.js",
   "engines": {
     "node": "24.x"
   },
