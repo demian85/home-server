@@ -1,8 +1,10 @@
 node_modules/
+docs/mosquitto
+docs/Tasmota rules.txt
 .env
-test.js
-dist
 .DS_Store
 .vscode
 .eslintcache
 build
+dist
+.sisyphus
