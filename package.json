@@ -18,11 +18,11 @@
     "typecheck": "tsc --noEmit",
     "start": "tsx src/index.ts",
     "dev": "LOG_PRETTY=true tsx watch src/index.ts",
-    "start:bg": "pm2 start 'npm run start' --exp-backoff-restart-delay=100 --watch src --name $npm_package_name",
-    "stop:bg": "pm2 stop $npm_package_name",
     "lint": "eslint ./src",
     "format": "prettier --write './src/**/*.{js,jsx,ts,tsx}'",
-    "test": "jest --detectOpenHandles --passWithNoTests"
+    "test": "jest --detectOpenHandles --passWithNoTests",
+    "docker:start": "docker compose up --build -d",
+    "docker:logs": "docker logs -f home-server-app | pino-pretty"
   },
   "keywords": [
     "sonoff",
