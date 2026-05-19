@@ -22,7 +22,8 @@
     "format": "prettier --write './src/**/*.{js,jsx,ts,tsx}'",
     "test": "jest --detectOpenHandles --passWithNoTests",
     "docker:start": "docker compose up --build -d",
-    "docker:logs": "docker logs -f home-server-app | pino-pretty"
+    "docker:restart": "docker compose down && docker compose up --build -d",
+    "docker:logs": "docker logs -f home-server-app-1 | pino-pretty"
   },
   "keywords": [
     "sonoff",
