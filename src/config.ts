@@ -8,9 +8,11 @@ const config: Config = {
       id: 'living',
       name: 'Living Room',
       temperatures: [
-        { temp: 18, weekDays: [1, 7], hours: [6, 10] },
-        { temp: 16, weekDays: [1, 7], hours: [10, 17] },
-        { temp: 18, weekDays: [1, 7], hours: [17, 22] },
+        { temp: 18, weekDays: [1, 6], hours: [6, 8] },
+        { temp: 18, weekDays: [6, 7], hours: [7, 9] },
+        { temp: 18, weekDays: [1, 6], hours: [17, 21] },
+        { temp: 18, weekDays: [6, 7], hours: [17, 22] },
+        { temp: 16, weekDays: [1, 7], hours: [18, 21] },
       ],
     },
     {
