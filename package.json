@@ -23,7 +23,7 @@
     "test": "jest --detectOpenHandles --passWithNoTests",
     "docker:start": "docker compose up --build -d",
     "docker:restart": "docker compose down && docker compose up --build -d",
-    "docker:logs": "docker logs -f home-server-app-1 | pino-pretty"
+    "docker:logs": "docker logs -f home-server-app-1 -n 100 -f | pino-pretty"
   },
   "keywords": [
     "sonoff",
