@@ -87,7 +87,7 @@ const config: Config = {
       room: 'office',
       types: ['switch'],
       subscriptions: [],
-      url: 'http://192.168.68.62/',
+      url: 'http://192.168.68.75/',
     },
     {
       id: 'sonoff-water-pump',
