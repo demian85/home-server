@@ -8,7 +8,6 @@ A smart home assistant server with the following features:
   - Monitor/get/set temperatures
   - Automatic temperature management
 - Home assistant Telegram bot
-- Food stock tracking using OpenAI API
 - ?
 
 ## Setup
@@ -35,8 +34,6 @@ docker run --restart=always --name redis -d -p 6379:6379 redis redis-server --sa
 - `temperature`
 - `system`
 - `abort`
-
-Note: `/food` is still registered in the bot entrypoint, but there is no `food` handler in `src/lib/telegram/handlers/index.ts` yet.
 
 ## Bot notifications
 

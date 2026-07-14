@@ -26,7 +26,7 @@
 - Adding a device usually means updating both `src/config.ts` and a parser module under `src/lib/parsers/devices/`.
 - Automatic temperature control is triggered from temperature and voltage parsers, persists state in Redis keys under `home_server:*`, and turns heaters off when `lowVoltage` is true.
 - Temperature schedule matching in `getRoomsWithTargetTemp()` is simple inclusive/exclusive comparison (`hour >= start && hour < end`); it does not wrap ranges across midnight.
-- Telegram command routing is split between `src/lib/telegram/index.ts` and `src/lib/telegram/handlers/index.ts`; keep both in sync. `/food` is registered in the bot entrypoint, but the handler map currently exports only `temperature` and `system`.
+- Telegram command routing is split between `src/lib/telegram/index.ts` and `src/lib/telegram/handlers/index.ts`; keep both in sync.
 
 ## Conventions and gotchas
 - Prettier config is 2 spaces, single quotes, no semicolons, trailing commas where valid in ES5.

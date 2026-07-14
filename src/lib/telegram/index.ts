@@ -61,10 +61,6 @@ bot.command('abort', async (ctx) => {
   await ctx.reply(`Current operation aborted`)
 })
 
-bot.command('food', async (ctx) => {
-  await handlers.food.message[0](ctx)
-})
-
 bot.command('temperature', async (ctx) => {
   await handlers.temperature.message[0](ctx)
 })
