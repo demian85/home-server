@@ -82,6 +82,14 @@ const config: Config = {
       url: 'http://192.168.68.76/',
     },
     {
+      id: 'athom-plug-3',
+      name: `🔌 Plug 3 - Salt Lamp`,
+      room: 'office',
+      types: ['switch'],
+      subscriptions: [],
+      url: 'http://192.168.68.62/',
+    },
+    {
       id: 'sonoff-water-pump',
       name: '🚰 Water Pump',
       room: 'garage',
