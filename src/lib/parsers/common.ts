@@ -136,3 +136,16 @@ export function temperatureSensorParser(deviceId: string): Parser {
     await automaticTemperatureHandler()
   }
 }
+
+export function automationEventParser(deviceId: string): Parser {
+  return async (payload: unknown) => {
+    logger.debug({ payload }, `automationEventParser(${deviceId})`)
+
+    const data = payload as string
+
+    await sendNotification(
+      `<b>${getDevice(deviceId)?.name}</b> reported event: <code>${data}</code>`,
+      'HTML'
+    )
+  }
+}
