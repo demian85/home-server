@@ -129,11 +129,15 @@ export async function sendNotification(text: string, parseMode?: ParseMode) {
         ? escapeMarkdown(text)
         : text
 
-  return bot.telegram.sendMessage(
-    process.env.TELEGRAM_NOTIFICATIONS_TARGET!,
-    escapedText,
-    { parse_mode: parseMode }
-  )
+  try {
+    return await bot.telegram.sendMessage(
+      process.env.TELEGRAM_NOTIFICATIONS_TARGET!,
+      escapedText,
+      { parse_mode: parseMode }
+    )
+  } catch (error) {
+    logger.error({ error, text }, 'Failed to send Telegram notification')
+  }
 }
 
 export default bot
