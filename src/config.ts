@@ -1,104 +1,63 @@
-import { Config, RoomWithTargetTemp } from '@lib/types.js'
-import { DateTime } from 'luxon'
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 
-const config: Config = {
-  subscriptions: ['tele/+/SENSOR', 'tele/+/LWT', 'stat/+/POWER'],
-  rooms: [
-    {
-      id: 'living',
-      name: 'Living Room',
-      temperatures: [
-        { temp: 18, weekDays: [1, 6], hours: [6, 8] },
-        { temp: 18, weekDays: [6, 7], hours: [7, 9] },
-        { temp: 18, weekDays: [1, 6], hours: [17, 21] },
-        { temp: 18, weekDays: [6, 7], hours: [17, 22] },
-        { temp: 16, weekDays: [1, 7], hours: [18, 21] },
-      ],
-    },
-    {
-      id: 'benja',
-      name: "Benja's room",
-      temperatures: [
-        { temp: 16, weekDays: [6, 7], hours: [9, 17] },
-        { temp: 22, weekDays: [6, 7], hours: [17, 9] },
-        { temp: 16, weekDays: [1, 5], hours: [7, 17] },
-        { temp: 22, weekDays: [1, 5], hours: [17, 7] },
-      ],
-    },
-    { id: 'office', name: 'Office' },
-    { id: 'garden', name: 'Garden' },
-    { id: 'laundry', name: 'Laundry' },
-    { id: 'garage', name: 'Garage' },
-  ],
-  devices: [
-    {
-      id: 'mobile-heater-1',
-      name: '♨️​ Mobile Heater',
-      room: 'living',
-      types: ['switch', 'sensor'],
-      subtype: 'heater',
-      subscriptions: [],
-      url: 'http://192.168.68.63/',
-    },
-    {
-      id: 'laundry-sensors',
-      name: `🌡️ Laundry`,
-      room: 'laundry',
-      types: ['sensor'],
-      subscriptions: [],
-      url: 'http://192.168.68.56/',
-    },
-    {
-      id: 'iotero-sht40-sensor-1',
-      name: `🌡️ Sensor 1 - Office`,
-      room: 'office',
-      types: ['sensor'],
-      subscriptions: [],
-      url: 'http://192.168.68.73/',
-    },
-    {
-      id: 'iotero-sht40-sensor-2',
-      name: `🌡️ Sensor 2 - Habitación Benja`,
-      room: 'benja',
-      types: ['sensor'],
-      subscriptions: [],
-      url: 'http://192.168.68.74/',
-    },
-    {
-      id: 'athom-plug-1',
-      name: `🔌 Plug 1 - Washing machine`,
-      room: 'laundry',
-      types: ['switch'],
-      subscriptions: [],
-      url: 'http://192.168.68.72/',
-    },
-    {
-      id: 'athom-plug-2',
-      name: `🔌 Plug 2 - Estufa Benja`,
-      room: 'benja',
-      types: ['switch'],
-      subtype: 'heater',
-      subscriptions: [],
-      url: 'http://192.168.68.76/',
-    },
-    {
-      id: 'athom-plug-3',
-      name: `🔌 Plug 3 - Salt Lamp`,
-      room: 'office',
-      types: ['switch'],
-      subscriptions: [],
-      url: 'http://192.168.68.75/',
-    },
-    {
-      id: 'sonoff-water-pump',
-      name: '🚰 Water Pump',
-      room: 'garage',
-      types: ['switch'],
-      subscriptions: [],
-      url: 'http://192.168.68.60/',
-    },
-  ],
+import type { Config, RoomWithTargetTemp } from '@lib/types.js'
+import { parse, printParseErrorCode, type ParseError } from 'jsonc-parser'
+import { DateTime } from 'luxon'
+import { z } from 'zod'
+
+const hourSchema = z.number().int().min(0).max(23)
+const weekDaySchema = z.number().int().min(1).max(7)
+const temperatureRangeSchema = z.strictObject({
+  temp: z.number(),
+  weekDays: z.tuple([weekDaySchema, weekDaySchema]),
+  hours: z.tuple([hourSchema, hourSchema]),
+})
+const roomSchema = z.strictObject({
+  id: z.string().min(1),
+  name: z.string().min(1),
+  temperatures: z.array(temperatureRangeSchema).optional(),
+})
+const deviceSchema = z.strictObject({
+  id: z.string().min(1),
+  room: z.string().min(1),
+  name: z.string().min(1),
+  types: z.array(z.enum(['rgb', 'switch', 'sensor'])).min(1),
+  subtype: z.enum(['heater', 'light']).optional(),
+  subscriptions: z.array(z.string().min(1)),
+  url: z.url().optional(),
+})
+const configSchema: z.ZodType<Config> = z.strictObject({
+  subscriptions: z.array(z.string().min(1)),
+  rooms: z.array(roomSchema),
+  devices: z.array(deviceSchema),
+})
+
+class ConfigSyntaxError extends Error {
+  constructor(path: string, error: ParseError) {
+    super(
+      `Invalid JSONC in ${path} at offset ${error.offset}: ${printParseErrorCode(error.error)}`
+    )
+    this.name = 'ConfigSyntaxError'
+  }
 }
+
+const configPath = resolve(process.cwd(), 'config.jsonc')
+const parseErrors: ParseError[] = []
+const rawConfig: unknown = parse(
+  readFileSync(configPath, 'utf8'),
+  parseErrors,
+  {
+    allowTrailingComma: true,
+  }
+)
+const firstParseError = parseErrors[0]
+
+if (firstParseError) {
+  throw new ConfigSyntaxError(configPath, firstParseError)
+}
+
+const config = configSchema.parse(rawConfig)
 
 export function getDevice(id?: string) {
   return config.devices.find((d) => d.id === id)

@@ -22,7 +22,7 @@
     "format": "prettier --write './src/**/*.{js,jsx,ts,tsx}'",
     "test": "jest --detectOpenHandles --passWithNoTests",
     "docker:start": "docker compose up --build -d",
-    "docker:restart": "docker compose down && docker compose up --build -d",
+    "docker:restart": "docker compose restart app",
     "docker:logs": "docker logs -f home-server-app-1 -n 100 -f | pino-pretty"
   },
   "keywords": [
@@ -42,12 +42,14 @@
   "dependencies": {
     "@telegraf/types": "^9.2.1",
     "dotenv": "^16.0.2",
+    "jsonc-parser": "^3.3.1",
     "lodash": "^4.17.21",
     "luxon": "^3.3.0",
     "mqtt": "^4.3.7",
     "pino": "^8.4.2",
     "redis": "^4.7.1",
-    "telegraf": "^4.12.2"
+    "telegraf": "^4.12.2",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

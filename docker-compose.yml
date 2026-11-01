@@ -25,6 +25,8 @@ services:
       context: .
     env_file:
       - .env
+    volumes:
+      - ./config.jsonc:/app/config.jsonc:ro
     depends_on:
       redis:
         condition: service_healthy

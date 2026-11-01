@@ -28,6 +28,21 @@ docker run --restart=always --name redis -d -p 6379:6379 redis redis-server --sa
 - `npm run build` compiles TypeScript and rewrites TS path aliases in `build/`.
 - `npm run typecheck`, `npm run lint`, and `npm test` run focused checks.
 
+## Home configuration
+
+Rooms, devices, MQTT subscriptions, and heating schedules are defined in
+`config.jsonc`. Comments and trailing commas are supported, and the file is
+validated when the app starts.
+
+The Docker app service mounts this file read-only. After editing it, reload the
+configuration without rebuilding the image or restarting Redis:
+
+```sh
+npm run docker:restart
+```
+
+Run `npm run docker:start` after application code or dependencies change.
+
 ## Bot commands
 
 - `help`
