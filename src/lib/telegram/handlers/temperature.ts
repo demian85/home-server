@@ -9,10 +9,15 @@ export default {
   message: [
     // step = 0
     async (ctx: MessageContext) => {
-      ctx.session.currentCommand = { id: 'temperature', step: 0 }
       const editableDevices = config.devices.filter(
         (device) => !!device.setTemperature
       )
+      if (editableDevices.length === 0) {
+        ctx.session.currentCommand = null
+        await ctx.reply('No devices support manual temperature settings.')
+        return
+      }
+      ctx.session.currentCommand = { id: 'temperature', step: 0 }
       const keyboardButtons = editableDevices.map((device) => ({
         text: device.name,
         callback_data: device.id,
@@ -76,7 +81,7 @@ export default {
         const device = getDevice(cmd.data)
 
         if (!device) {
-          ctx.reply('Device not found')
+          await ctx.reply('Device not found')
           return
         }
 

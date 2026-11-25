@@ -1,6 +1,9 @@
+import { AbortController } from 'abort-controller'
 import { Telegraf, session } from 'telegraf'
 import { message } from 'telegraf/filters'
-import logger from '@lib/logger.js'
+import { z } from 'zod'
+import { errorDetails } from '@lib/log-error.js'
+import logger, { withLogContext } from '@lib/logger.js'
 import { redisClient } from '@lib/db.js'
 
 import { ContextWithSession } from './types.js'
@@ -9,15 +12,69 @@ import type { ParseMode } from 'telegraf/types'
 
 const bot = new Telegraf<ContextWithSession>(process.env.TELEGRAM_BOT_TOKEN!)
 
+bot.catch((error, ctx) => {
+  logger.error(
+    { ...errorDetails(error), updateId: ctx.update.update_id },
+    'Telegram update failed'
+  )
+})
+
+bot.use((ctx, next) =>
+  withLogContext({ updateId: ctx.update.update_id }, async () => {
+    const fields = { updateType: ctx.updateType }
+    if (
+      ctx.chat?.type !== 'private' ||
+      !ctx.chat.username ||
+      !['demian85', 'SilvanaFontana'].includes(ctx.chat.username)
+    ) {
+      logger.debug(fields, 'Ignored Telegram update outside allowed chats')
+      return
+    }
+
+    logger.debug(fields, 'Telegram update received')
+    await next()
+    logger.debug(fields, 'Telegram update completed')
+  })
+)
+
+const sessionSchema = z.object({
+  currentCommand: z
+    .object({
+      id: z.string().refine((id) => Object.hasOwn(handlers, id)),
+      step: z.int().nonnegative(),
+      data: z.string().optional(),
+    })
+    .nullable(),
+})
+
+// Telegraf 4 caches rejected store reads. Resolve outages with an identity
+// marker so the next update retries Redis without overwriting the session.
+const unavailableSession = { currentCommand: null }
+
 bot.use(
   session({
+    defaultSession: () => ({ currentCommand: null }),
     store: {
       async get(key) {
-        const value = await redisClient.get(`telegraf:${key}`)
-        return value ? JSON.parse(value) : undefined
+        let value: string | null
+        try {
+          value = await redisClient.get(`telegraf:${key}`)
+        } catch (error) {
+          logger.error(errorDetails(error), 'Telegram session read failed')
+          return unavailableSession
+        }
+        if (value === null) return undefined
+        try {
+          return sessionSchema.parse(JSON.parse(value))
+        } catch {
+          logger.warn('Discarding invalid Telegram session')
+          return undefined
+        }
       },
       async set(key, session) {
-        await redisClient.set(`telegraf:${key}`, JSON.stringify(session))
+        if (session !== unavailableSession) {
+          await redisClient.set(`telegraf:${key}`, JSON.stringify(session))
+        }
       },
       async delete(key) {
         await redisClient.del(`telegraf:${key}`)
@@ -25,32 +82,15 @@ bot.use(
     },
   })
 )
+bot.drop((ctx) => ctx.session === unavailableSession)
 
-bot.use((ctx, _next) => {
-  logger.debug(
-    {
-      message: ctx.message,
-      session: ctx.session,
-      update: ctx.update,
-      updateType: ctx.updateType,
-    },
-    'Middleware call'
-  )
-
-  ctx.session ??= { currentCommand: null }
-
-  if (ctx.chat?.type !== 'private') {
-    throw new Error('Bot not allowed in groups')
+bot.command(
+  ['start', 'help', 'abort', ...Object.keys(handlers)],
+  (ctx, next) => {
+    logger.debug({ command: ctx.command, step: 0 }, 'Routing Telegram command')
+    return next()
   }
-  if (
-    !ctx.chat.username ||
-    !['demian85', 'SilvanaFontana'].includes(ctx.chat.username)
-  ) {
-    throw new Error('Forbidden')
-  }
-
-  return _next()
-})
+)
 
 bot.start((ctx) => ctx.reply(`Welcome! I'm your home assistant`))
 
@@ -79,8 +119,11 @@ bot.on(message('text'), async (ctx) => {
   const cmd = ctx.session.currentCommand
 
   if (cmd !== null) {
-    const cmdId = cmd.id as keyof typeof handlers
-    await handlers?.[cmdId].message[cmd.step](ctx)
+    const handler = handlers[cmd.id]?.message[cmd.step]
+    if (handler) {
+      logger.debug({ command: cmd.id, step: cmd.step }, 'Routing Telegram text')
+      await handler(ctx)
+    }
   }
 })
 
@@ -91,10 +134,13 @@ bot.on('callback_query', async (ctx) => {
     return ctx.answerCbQuery('Invalid callback')
   }
 
-  const cmdId = cmd.id as keyof typeof handlers
-  const handler = handlers?.[cmdId].callbackQuery[cmd.step]
+  const handler = handlers[cmd.id]?.callbackQuery[cmd.step]
 
   if (handler) {
+    logger.debug(
+      { command: cmd.id, step: cmd.step },
+      'Routing Telegram callback'
+    )
     return handler(ctx)
   }
 
@@ -105,16 +151,29 @@ bot.on('inline_query', async (ctx) => {
   await ctx.answerInlineQuery([])
 })
 
-// Enable graceful stop
-process.once('SIGINT', () => bot.stop('SIGINT'))
-process.once('SIGTERM', () => bot.stop('SIGTERM'))
-
 function escapeMarkdownV2(text: string): string {
   return text.replace(/[_*[\]()~`>#+=|{}.!-]/g, '\\$&')
 }
 
 function escapeMarkdown(text: string): string {
   return text.replace(/[_*[\]()]/g, '\\$&')
+}
+
+const notificationTimeoutMs = 15_000
+const notificationStatus: {
+  lastAttemptAt: string | null
+  lastSuccessAt: string | null
+  inFlight: number
+  failures: number
+} = {
+  lastAttemptAt: null,
+  lastSuccessAt: null,
+  inFlight: 0,
+  failures: 0,
+}
+
+export function getNotificationStatus() {
+  return { ...notificationStatus }
 }
 
 export async function sendNotification(text: string, parseMode?: ParseMode) {
@@ -125,14 +184,41 @@ export async function sendNotification(text: string, parseMode?: ParseMode) {
         ? escapeMarkdown(text)
         : text
 
+  const startedAt = Date.now()
+  notificationStatus.lastAttemptAt = new Date(startedAt).toISOString()
+  notificationStatus.inFlight++
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), notificationTimeoutMs)
+  const { signal } = controller
   try {
-    return await bot.telegram.sendMessage(
-      process.env.TELEGRAM_NOTIFICATIONS_TARGET!,
-      escapedText,
-      { parse_mode: parseMode }
+    const result = await bot.telegram.callApi(
+      'sendMessage',
+      {
+        chat_id: process.env.TELEGRAM_NOTIFICATIONS_TARGET!,
+        text: escapedText,
+        parse_mode: parseMode,
+      },
+      { signal }
     )
+    notificationStatus.lastSuccessAt = new Date().toISOString()
+    logger.debug(
+      { durationMs: Date.now() - startedAt },
+      'Telegram notification sent'
+    )
+    return result
   } catch (error) {
-    logger.error({ error, text }, 'Failed to send Telegram notification')
+    notificationStatus.failures++
+    logger.error(
+      {
+        ...errorDetails(error),
+        timedOut: signal.aborted,
+        durationMs: Date.now() - startedAt,
+      },
+      'Failed to send Telegram notification'
+    )
+  } finally {
+    clearTimeout(timer)
+    notificationStatus.inFlight--
   }
 }
 

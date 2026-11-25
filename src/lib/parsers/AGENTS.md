@@ -7,7 +7,7 @@
 2. Key the map by the exact published topic, such as `tele/athom-plug-1/SENSOR`.
    Keep keys unique across modules. A later entry with the same key replaces the earlier handler.
 3. Check the global and per-device `subscriptions` in `config.jsonc`.
-   MQTT accepts filters such as `tele/+/SENSOR`, while `src/index.ts` looks up the concrete topic.
+   MQTT accepts filters such as `tele/+/SENSOR`, while `src/lib/mqtt-reporting.ts` looks up the concrete topic.
    The checked-in filters cover Tasmota SENSOR, LWT, and POWER. AUTO and Shelly button events need additional subscriptions to reach their handlers.
 
 ## Handle a payload
@@ -15,7 +15,7 @@
 - `Parser` in `src/lib/types.ts` takes `unknown` and returns `Promise<void>`.
 - The listener tries `JSON.parse` on trimmed payload text. Valid JSON numbers, booleans, and null arrive as those values.
   On a parse error it passes the original string, including whitespace.
-- The listener invokes handlers without awaiting them. Separate messages can overlap.
+- Separate messages can overlap. The listener awaits each handler independently and records its success or failure. Failure logs include the registered topic and byte count. Keep raw payloads out of logs.
 
 ## Reuse the factories in `common.ts`
 
