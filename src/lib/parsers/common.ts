@@ -13,12 +13,9 @@ import { sendNotification } from '@lib/telegram/index.js'
 import { Parser, PowerStatus, TasmotaSensorPayload } from '@lib/types.js'
 import { DateTime } from 'luxon'
 import { getDevice } from '../../../src/config.js'
-import logger from '@lib/logger.js'
 
 export function lwtParser(deviceId: string): Parser {
   return async (payload: unknown) => {
-    logger.debug({ payload }, `lwtParser(${deviceId})`)
-
     const deviceName = getDevice(deviceId)?.name
     const newStatus = String(payload).toLowerCase()
     const currStatus = await getDeviceStatus(deviceId)
@@ -39,8 +36,6 @@ export function lwtParser(deviceId: string): Parser {
 
 export function powerParser(deviceId: string): Parser {
   return async (payload: unknown) => {
-    logger.debug({ payload }, `powerParser(${deviceId})`)
-
     const device = getDevice(deviceId)
 
     if (!device) {
@@ -63,8 +58,6 @@ export function powerParser(deviceId: string): Parser {
 
 export function voltageParser(): Parser {
   return async (payload: unknown) => {
-    logger.debug({ payload }, `voltageParser()`)
-
     const data = payload as TasmotaSensorPayload
     const voltage = data?.ENERGY?.Voltage ?? 0
 
@@ -108,8 +101,6 @@ export function voltageParser(): Parser {
 
 export function temperatureSensorParser(deviceId: string): Parser {
   return async (payload: unknown) => {
-    logger.debug({ payload }, `temperatureSensorParser(${deviceId})`)
-
     const data = payload as TasmotaSensorPayload
     const sensorData = data.SI7021 || data.AM2301 || data.DS18B20 || data.SHT4X
     const temp = sensorData?.Temperature ?? null
@@ -139,8 +130,6 @@ export function temperatureSensorParser(deviceId: string): Parser {
 
 export function automationEventParser(deviceId: string): Parser {
   return async (payload: unknown) => {
-    logger.debug({ payload }, `automationEventParser(${deviceId})`)
-
     const data = payload as string
 
     await sendNotification(

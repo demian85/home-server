@@ -1,4 +1,12 @@
 import { pino, LoggerOptions, DestinationStream } from 'pino'
+import { AsyncLocalStorage } from 'node:async_hooks'
+
+type LogContext = { topic: string } | { updateId: number }
+const context = new AsyncLocalStorage<LogContext>()
+
+export function withLogContext<T>(fields: LogContext, run: () => T): T {
+  return context.run(fields, run)
+}
 
 const loggerOptions: LoggerOptions = {
   name: 'home-server',
@@ -7,6 +15,7 @@ const loggerOptions: LoggerOptions = {
     err: pino.stdSerializers.err,
   },
   base: null,
+  mixin: () => ({ ...context.getStore() }),
 }
 
 async function getDestination(): Promise<DestinationStream | undefined> {

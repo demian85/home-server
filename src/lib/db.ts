@@ -2,6 +2,7 @@ import { createClient } from 'redis'
 import logger from './logger.js'
 import { DateTime } from 'luxon'
 import { getRedisClientOptions } from './redis-options.js'
+import { errorDetails } from './log-error.js'
 
 interface SystemStatus {
   voltage: number | null
@@ -13,17 +14,25 @@ interface SystemStatus {
 
 type SystemStatusStr = Record<keyof SystemStatus, string>
 
+const redisOptions = getRedisClientOptions()
 export const redisClient = createClient({
-  ...getRedisClientOptions(),
+  ...redisOptions,
+  // Reports arriving during an outage must not queue stale readings and heater decisions for recovery.
+  disableOfflineQueue: true,
   socket: {
-    ...getRedisClientOptions().socket,
+    ...redisOptions.socket,
     reconnectStrategy: () => 5000,
   },
 })
 
 redisClient.on('error', (err) => {
-  logger.error({ err }, 'Redis Client Error')
+  logger.error(
+    { error: errorDetails(err), ready: redisClient.isReady },
+    'Redis connection error'
+  )
 })
+redisClient.on('ready', () => logger.info('Redis ready'))
+redisClient.on('reconnecting', () => logger.debug('Redis reconnecting'))
 
 let redisConnection: Promise<unknown> | null = null
 

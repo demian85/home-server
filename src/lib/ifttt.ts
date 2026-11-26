@@ -1,3 +1,5 @@
+import logger from './logger.js'
+
 export async function callWebhook(
   event: string,
   value1?: string,
@@ -17,7 +19,7 @@ export async function callWebhook(
     url.searchParams.append('value3', value3)
   }
 
-  console.debug('Calling webhook:', url.toString())
+  logger.debug({ event }, 'IFTTT webhook requested')
 
   if (process.env.NODE_ENV !== 'development') {
     const res = await fetch(url.toString())

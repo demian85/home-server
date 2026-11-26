@@ -11,7 +11,7 @@ Source snapshot reviewed on 2026-11-25 at `master` commit `925f31d`.
 | Configuration validation and room/device selection | `src/config.ts` and `src/lib/types.ts` |
 | MQTT payloads and per-device behavior | [Parser guide](src/lib/parsers/AGENTS.md) |
 | Bot commands, sessions, and notifications | [Telegram guide](src/lib/telegram/AGENTS.md) |
-| Service startup and subscription wiring | `src/index.ts` |
+| Service startup, reporting status, and subscriptions | `src/index.ts`, `src/lib/server.ts`, and `src/lib/mqtt-reporting.ts` |
 | Container startup, Redis storage, and config mount | `Dockerfile` and `docker-compose.yml` |
 
 ## Git workflow
@@ -61,7 +61,7 @@ Call sites below come from the source. Project-wide reference counts were unavai
 | Symbol | Location | Role and call sites |
 | --- | --- | --- |
 | `connectRedis` | `src/lib/db.ts` | Startup awaits the connection before loading parsers and launching Telegram. |
-| `loadParsers` | `src/lib/parsers/index.ts` | Builds the topic map used by the MQTT message listener in `src/index.ts`. |
+| `loadParsers` | `src/lib/parsers/index.ts` | Builds the topic map consumed by `startMqttReporting` in `src/lib/mqtt-reporting.ts`. |
 | `getDeviceKey` / `setDeviceKey` | `src/lib/db.ts` | Read and write timestamped JSON at `home_server:<deviceId>:<key>`. A missing key reads as null. |
 | `getSystemStatus` / `setSystemStatus` | `src/lib/db.ts` | Translate fields in the `home_server:__status` hash. Automatic mode defaults on when its field is absent. |
 | `automaticTemperatureHandler` | `src/lib/actions.ts` | Runs from temperature and main-voltage parsers and the Telegram temperature flow. |

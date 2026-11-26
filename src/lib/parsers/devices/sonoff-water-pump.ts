@@ -6,7 +6,7 @@ import { DateTime } from 'luxon'
 
 const deviceId = 'sonoff-water-pump'
 
-const notifications: string[] = []
+let notifications = new Set<string>()
 
 const powerHandler = powerParser(deviceId)
 
@@ -14,7 +14,7 @@ const parsers: Record<string, Parser> = {
   'tele/sonoff-water-pump/LWT': lwtParser(deviceId),
   'stat/sonoff-water-pump/POWER': async (payload: unknown) => {
     await powerHandler(payload)
-    notifications.splice(0, notifications.length)
+    notifications = new Set()
   },
   'tele/sonoff-water-pump/SENSOR': async (payload: unknown) => {
     const data = payload as TasmotaSensorPayload
@@ -44,9 +44,11 @@ const parsers: Record<string, Parser> = {
 }
 
 async function sendNotificationOnce(msg: string) {
-  if (!notifications.includes(msg)) {
-    await sendNotification(msg, 'HTML')
-    notifications.push(msg)
+  const powerCycle = notifications
+  if (powerCycle.has(msg)) return
+  powerCycle.add(msg)
+  if (!(await sendNotification(msg, 'HTML'))) {
+    powerCycle.delete(msg)
   }
 }
 

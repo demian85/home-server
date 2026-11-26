@@ -38,8 +38,8 @@ export async function automaticTemperatureHandler() {
     if (!heater || !sensorDevice) {
       logger.debug(
         {
-          heater,
-          sensorDevice,
+          heaterId: heater?.id,
+          sensorId: sensorDevice?.id,
         },
         `Room ${room.id} has no heating or sensor devices`
       )

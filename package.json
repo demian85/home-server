@@ -23,7 +23,7 @@
     "test": "jest --detectOpenHandles --passWithNoTests",
     "docker:start": "docker compose up --build -d",
     "docker:restart": "docker compose restart app",
-    "docker:logs": "docker logs -f home-server-app-1 -n 100 -f | pino-pretty"
+    "docker:logs": "docker compose logs --no-log-prefix --tail=100 --follow app | pino-pretty"
   },
   "keywords": [
     "sonoff",
@@ -41,6 +41,7 @@
   "license": "ISC",
   "dependencies": {
     "@telegraf/types": "^9.2.1",
+    "abort-controller": "^3.0.0",
     "dotenv": "^16.0.2",
     "jsonc-parser": "^3.3.1",
     "lodash": "^4.17.21",
