@@ -1,0 +1,4 @@
+services:
+  redis:
+    ports: !reset []
+    restart: unless-stopped
