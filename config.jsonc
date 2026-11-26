@@ -6,7 +6,7 @@
       "id": "living",
       "name": "Living Room",
       "temperatures": [
-        { "temp": 18, "weekDays": [1, 6], "hours": [6, 8] },
+        { "temp": 20, "weekDays": [1, 6], "hours": [6, 12] },
         { "temp": 18, "weekDays": [6, 7], "hours": [7, 9] },
         { "temp": 18, "weekDays": [1, 6], "hours": [17, 21] },
         { "temp": 18, "weekDays": [6, 7], "hours": [17, 22] },
